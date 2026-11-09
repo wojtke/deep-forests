@@ -14,7 +14,8 @@ without them (the *base cascade*) on 32 public datasets.
   follow-up runs. In short, none of H1–H5 is supported, while on synthetic data with a planted
   interaction the products do help.
 - Generated summaries of each experiment: [main](reports/main/summary.md),
-  [sensitivity](reports/sensitivity/summary.md), [positive control](reports/positive/summary.md).
+  [sensitivity](reports/sensitivity/summary.md), [positive control](reports/positive/summary.md),
+  [exploratory follow-up](reports/explore/summary.md).
 - [Settings and their sources](docs/decisions.md): the plan, the DF21 source, a library default, or ours.
 - [Data audit](docs/data-audit.md): what each dataset contributes and what is excluded.
 - [DF21 check](docs/df21-check.md): on four datasets, the base cascade scores within fold-to-fold noise
@@ -37,7 +38,15 @@ uv run dfx report main             # statistics, tables and figures -> reports/m
 The other experiments in `experiments/` run the same way:
 - `sensitivity`: 3,840 runs, 59 CPU-hours;
 - `positive`: 330 runs, 2 minutes; every method on two synthetic datasets with one planted interaction;
+- `explore`, `explore_synthetic`, `explore_encoding`, `explore_sweep`: the exploratory follow-up runs of the
+  results report (Appendix B), with `scripts/` for the interaction measure, the split counts and the summary;
 - `smoke`: every method on tiny built-in data, 30 s; not a result.
+
+The planned runs (`main`, `sensitivity`, `positive`) were made with the code of the repository's first commit.
+The exploratory variants added later are off by default but change the code's fingerprint, so here those runs
+count as out of date (rerun here, base and residual-XX reproduce the 320 runs of seed 0 bit for bit). To resume
+or verify them, check out the first commit:
+`git checkout $(git rev-list --max-parents=0 HEAD)`.
 
 `dfx run -h` shows how to run a subset. CPU-hours are for an Apple M4 (10 cores); the main run took 7.5
 hours on 8 workers, at most 0.7 GB of memory each. Every seed is fixed and none depends on the method,

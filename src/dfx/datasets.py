@@ -362,6 +362,8 @@ SPECS = [
 # --- smoke datasets: no download, built in memory ---------------------------------------------
 
 def smoke_dataset(name: str) -> Dataset:
+    if name in SEMI:
+        return semi_dataset(name)
     rng = np.random.default_rng(0)
     if name == "smoke_xor":  # pure interaction: no marginal effect (plan §1 example)
         X = rng.normal(size=(300, 6))
@@ -370,6 +372,26 @@ def smoke_dataset(name: str) -> Dataset:
     elif name == "smoke_pair":
         X = rng.normal(size=(300, 6))
         y = X[:, 0] + 3 * X[:, 1] * X[:, 2] + rng.normal(scale=0.5, size=300)
+        classes, task = [], "regression"
+    # Exploratory controls, branch explore (08.11.2026): the positive control at a realistic width
+    # (30 features, 435 candidate products), and interactions on the raw scale of positive features,
+    # where products of mean-centred features pivot at the wrong point.
+    elif name == "wide_xor":
+        X = rng.normal(size=(1000, 30))
+        y = ((X[:, 0] * X[:, 1] > 0) ^ (rng.random(1000) < 0.1)).astype(int)
+        classes, task = ["neg", "pos"], "classification"
+    elif name == "wide_pair":
+        X = rng.normal(size=(1000, 30))
+        y = X[:, 0] + 3 * X[:, 1] * X[:, 2] + rng.normal(scale=0.5, size=1000)
+        classes, task = [], "regression"
+    elif name == "raw_xor":
+        X = rng.uniform(1, 4, size=(1000, 6))
+        s = X[:, 1] * X[:, 2]
+        y = ((s > np.median(s)) ^ (rng.random(1000) < 0.1)).astype(int)
+        classes, task = ["neg", "pos"], "classification"
+    elif name == "raw_pair":
+        X = rng.uniform(1, 4, size=(1000, 6))
+        y = X[:, 1] * X[:, 2] + 0.5 * X[:, 0] + rng.normal(scale=0.5, size=1000)
         classes, task = [], "regression"
     elif name == "smoke_mixed":  # categorical column with missing values, three classes
         X = rng.normal(size=(300, 5))
@@ -391,6 +413,54 @@ def smoke_dataset(name: str) -> Dataset:
                    categorical, classes, f"smoke-{name}")
 
 
-SMOKE = {"smoke_xor", "smoke_pair", "smoke_mixed", "smoke_diabetes"}  # built in memory, for tests
+# Exploratory interaction sweep, branch explore (09.11.2026): a real regression dataset plus two
+# independent N(0,1) columns u1, u2, and y' = y + lam * sd(y) * u1 * u2, so the planted pure interaction
+# is lam^2 / (1 + lam^2) of the target's variance (0, 6, 20, 50%; strengths ours). u1, u2 come from a
+# fixed seed per dataset and are the same at every strength. Groups are the real dataset's, so the
+# outer folds equal its saved ones (GroupKFold ignores y).
+SEMI_BASES = ("abalone", "air_quality", "auto_mpg", "automobile", "ccpp", "communities", "concrete_slump",
+              "energy", "parkinsons", "real_estate", "servo", "student_math", "wine_red")
+SEMI_STRENGTHS = {"l000": 0.0, "l025": 0.25, "l050": 0.5, "l100": 1.0}
+SEMI = {f"semi_{d}_{tag}": (d, lam) for d in SEMI_BASES for tag, lam in SEMI_STRENGTHS.items()}
+
+
+def semi_dataset(name: str) -> Dataset:
+    import hashlib
+    import zlib
+
+    from .data import load
+
+    base_name, lam = SEMI[name]
+    base = load(base_name)
+    u = np.random.default_rng(zlib.crc32(base_name.encode())).normal(size=(len(base.y), 2))
+    X = np.column_stack([base.X, u])
+    y = base.y + lam * base.y.std() * u[:, 0] * u[:, 1]
+    digest = hashlib.sha256(X.tobytes() + y.tobytes() + base.groups.tobytes()).hexdigest()
+    return Dataset(name, "regression", X, y, base.groups, base.row_ids, [*base.features, "u1", "u2"],
+                   np.r_[base.categorical, False, False], [], digest)
+
+
+SMOKE = {"smoke_xor", "smoke_pair", "smoke_mixed", "smoke_diabetes",  # built in memory, for tests
+         "wide_xor", "wide_pair", "raw_xor", "raw_pair",  # exploratory controls (branch explore)
+         *SEMI}
 DATASETS = {spec.name: spec for spec in SPECS}
 ALL = list(DATASETS)  # what experiments mean by datasets = "all"
+
+
+def _onehot(name: str, categorical: tuple[str, ...]) -> Spec:
+    """Exploratory, branch explore (09.11.2026): `name` with its number-coded categories listed as
+    categorical, so prep one-hot encodes them as plan §4 says. Reads the original's checked archive.
+    Not in ALL, so "all" still means the 32 datasets as run."""
+    from dataclasses import replace
+
+    from .data import download
+
+    spec = DATASETS[name]
+    return replace(spec, name=f"{name}_onehot", read=lambda raw: spec.read(download(spec)), url=None,
+                   sha256=None, categorical=categorical,
+                   note=f"{name} with {', '.join(categorical)} one-hot encoded (exploratory)")
+
+
+ONEHOT = [_onehot("credit_default", ("SEX", "EDUCATION", "MARRIAGE")), _onehot("auto_mpg", ("origin",)),
+          _onehot("energy", ("X6", "X8"))]  # Energy: X6 orientation, X8 glazing-area distribution
+DATASETS.update({spec.name: spec for spec in ONEHOT})

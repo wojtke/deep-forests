@@ -38,6 +38,9 @@ class CascadeConfig:
     delta: float = 1e-5  # DF21
     k_mode: str = "base"  # K, ceil(K/2) or 2K (sensitivity check)
     activation: str = "sigmoid"  # monotone variant (plan §3)
+    # Exploratory, branch explore (08.11.2026, after the main results; docs/decisions.md):
+    product_origin: str = "mean"  # "mean": products of standardized features (plan); "raw": of x / sd
+    split_scale: bool = False  # try each original and P column at a split as often as in the base cascade
 
 
 @dataclass
@@ -134,10 +137,15 @@ def fit_predict(xs_tr, y_tr, groups_tr, xs_te, *, method: str, task: str, n_clas
                 z_tr = np.hstack([xb_tr, binner.transform(a_tr)])
                 z_te = np.hstack([xb_te, binner.transform(a_te)])
             test = empty(len(xs_te))
+            max_features = "sqrt"
+            m_base = xs_tr.shape[1] + (0 if prev_tr is None else prev_tr.P.shape[1])
+            if cfg.split_scale and z_tr.shape[1] > m_base:
+                # exploratory: each original or P column keeps the base cascade's chance int(sqrt(m))/m
+                max_features = max(1, round(z_tr.shape[1] * int(np.sqrt(m_base)) / m_base))
             for j, kind in enumerate(kinds):
                 (va_mean, va_sq), (te_mean, te_sq) = grow_forest(
                     kind, task, cfg.n_trees, z_tr[tr], y_tr[tr], [z_tr[va], z_te], n_classes,
-                    seed_for(*keys, layer, f, TREES, j))
+                    seed_for(*keys, layer, f, TREES, j), max_features=max_features)
                 oof.forests[va, j], test.forests[:, j] = va_mean, te_mean
                 if regression:
                     oof.sq[va, j], test.sq[:, j] = va_sq, te_sq

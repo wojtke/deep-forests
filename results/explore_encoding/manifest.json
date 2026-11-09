@@ -1,0 +1,23 @@
+{
+ "experiment": "explore_encoding",
+ "settings": "# Exploratory follow-up (09.11.2026, branch explore), chosen after the main results: the one deviation\n# found after the runs (Codex audit, 08.11). Credit Default (SEX, EDUCATION, MARRIAGE), Auto MPG (origin)\n# and Energy (X6 orientation, X8 glazing-area distribution) were run with number-coded categories as\n# numeric columns; plan \u00a74 one-hot encodes categorical features. Here the same rows, targets and outer\n# folds (checked), with those columns one-hot encoded (src/dfx/datasets.py: ONEHOT). All 11 methods,\n# seed 0, main settings: 3 x 11 x 5 = 165 tasks. The seed streams depend on the dataset name, so the\n# per-dataset errors also differ by seed noise; compare against the main run's seed-to-seed spread.\n#\n# Bar, written down before running: recompute the six comparisons of plan Table 4 on seed 0 over the\n# 32 datasets with these three swapped in. The deviation \"matters\" only if a median reduction changes\n# sign or a Holm p crosses 0.05. The per-dataset changes are reported either way.\ndatasets = [\"credit_default_onehot\", \"auto_mpg_onehot\", \"energy_onehot\"]\nmethods = [\"base\", \"random_xx\", \"target_xx\", \"residual_xx\", \"xp_mi\", \"nonlinear\", \"monotone\", \"combined\", \"rf\",\n           \"rf_target_xx\", \"lightgbm\"]  # the 11 methods of plan Table 1\nseeds = [0]\nouter_folds = 5\n",
+ "python": "3.12.13",
+ "platform": "macOS-27.0.1-arm64-arm-64bit",
+ "packages": {
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "scikit-learn": "1.9.1",
+  "pandas": "3.0.6",
+  "lightgbm": "4.7.0"
+ },
+ "code_and_lock_sha256": "9fa3910db6a5e940a1c4e76e906263829989ca552c84c8d7f0447bea55935d99",
+ "git": {
+  "commit": "1a38519a3e2f961bdf586b845b2060483ef44451",
+  "dirty": false
+ },
+ "datasets": {
+  "credit_default_onehot": "c1cda448dc95575547acf31299e780b44bc250d5a1437fcaaff7ef546e2223f7",
+  "auto_mpg_onehot": "7aabe85292b2733fd7d10a83a70ff0447b613a6a534ba99db019c305e230bf40",
+  "energy_onehot": "3ddfd4fe8941352b0e39e229c6702cab7dcf89e761d16a713899c8ca7cbe597e"
+ }
+}

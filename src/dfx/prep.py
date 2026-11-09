@@ -8,7 +8,13 @@ class Preprocessor:
 
     Unseen categories become all-zero dummies, which stay 0/1. Columns constant on the training
     rows are dropped (ours).
+
+    center=False (exploratory, branch explore): numeric columns are only divided by their sd, so
+    products of them pivot at the raw zero. Binning is rank-based, so the binned features are the same.
     """
+
+    def __init__(self, center: bool = True):
+        self.center = center
 
     def fit(self, X: np.ndarray, categorical: np.ndarray):
         self.parts = []
@@ -35,7 +41,7 @@ class Preprocessor:
                 blocks.append((col[:, None] == extra[None, :]).astype(float))
             else:
                 mean, std = extra
-                blocks.append(((col - mean) / std)[:, None])
+                blocks.append(((col - mean if self.center else col) / std)[:, None])
         return np.hstack(blocks) if blocks else np.zeros((len(X), 0))
 
 

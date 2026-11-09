@@ -1,0 +1,57 @@
+dataset,method,layers,true pair chosen,share
+raw_pair,random,layer 1,14/45,0.311
+raw_pair,random,layers 2+,28/135,0.207
+raw_pair,residual,layer 1,45/45,1.0
+raw_pair,residual,layers 2+,81/135,0.6
+raw_pair,residual raw,layer 1,45/45,1.0
+raw_pair,residual raw,layers 2+,58/90,0.644
+raw_pair,rf + target,layer 1,15/15,1.0
+raw_pair,rf + target raw,layer 1,15/15,1.0
+raw_pair,shuffled,layer 1,45/45,1.0
+raw_pair,shuffled,layers 2+,97/135,0.719
+raw_pair,target,layer 1,45/45,1.0
+raw_pair,target,layers 2+,135/135,1.0
+raw_pair,target raw,layer 1,45/45,1.0
+raw_pair,target raw,layers 2+,90/90,1.0
+raw_xor,random,layer 1,12/45,0.267
+raw_xor,random,layers 2+,18/108,0.167
+raw_xor,residual,layer 1,45/45,1.0
+raw_xor,residual,layers 2+,28/93,0.301
+raw_xor,residual raw,layer 1,45/45,1.0
+raw_xor,residual raw,layers 2+,56/129,0.434
+raw_xor,rf + target,layer 1,15/15,1.0
+raw_xor,rf + target raw,layer 1,15/15,1.0
+raw_xor,shuffled,layer 1,45/45,1.0
+raw_xor,shuffled,layers 2+,50/114,0.439
+raw_xor,target,layer 1,45/45,1.0
+raw_xor,target,layers 2+,99/99,1.0
+raw_xor,target raw,layer 1,45/45,1.0
+raw_xor,target raw,layers 2+,132/132,1.0
+wide_pair,random,layer 1,4/45,0.089
+wide_pair,random,layers 2+,5/135,0.037
+wide_pair,residual,layer 1,45/45,1.0
+wide_pair,residual,layers 2+,189/189,1.0
+wide_pair,residual raw,layer 1,45/45,1.0
+wide_pair,residual raw,layers 2+,189/189,1.0
+wide_pair,rf + target,layer 1,15/15,1.0
+wide_pair,rf + target raw,layer 1,15/15,1.0
+wide_pair,shuffled,layer 1,45/45,1.0
+wide_pair,shuffled,layers 2+,138/138,1.0
+wide_pair,target,layer 1,45/45,1.0
+wide_pair,target,layers 2+,183/183,1.0
+wide_pair,target raw,layer 1,45/45,1.0
+wide_pair,target raw,layers 2+,189/189,1.0
+wide_xor,random,layer 1,3/45,0.067
+wide_xor,random,layers 2+,10/138,0.072
+wide_xor,residual,layer 1,45/45,1.0
+wide_xor,residual,layers 2+,140/153,0.915
+wide_xor,residual raw,layer 1,45/45,1.0
+wide_xor,residual raw,layers 2+,126/144,0.875
+wide_xor,rf + target,layer 1,15/15,1.0
+wide_xor,rf + target raw,layer 1,15/15,1.0
+wide_xor,shuffled,layer 1,45/45,1.0
+wide_xor,shuffled,layers 2+,165/165,1.0
+wide_xor,target,layer 1,45/45,1.0
+wide_xor,target,layers 2+,153/153,1.0
+wide_xor,target raw,layer 1,45/45,1.0
+wide_xor,target raw,layers 2+,138/138,1.0

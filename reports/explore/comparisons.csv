@@ -1,0 +1,28 @@
+comparison,method,reference,datasets,median_reduction,wins,losses,zeros,p,hl_estimate,ci95_low,ci95_high,scope
+raw products vs base,residual raw,base,32,-0.0022548971480265767,15,17,0,0.4104635491967201,-0.004041654534810597,-0.03063941656976962,0.005189900776736844,all
+raw vs centred products,residual raw,residual,32,0.0030960041808959222,17,14,1,0.6521909795586408,0.0027199368686273255,-0.013075934950687191,0.01342138621341733,all
+centred products vs base,residual,base,32,-0.005649452895339458,13,18,1,0.12638087355671032,-0.009351014245454661,-0.026587182327095796,0.0021165361918416207,all
+cost: shuffled products vs base,shuffled,base,32,-0.03044179277433897,6,26,0,0.00023426301777362823,-0.052713885964650126,-0.08357660765721363,-0.020311196571341304,all
+information: products vs shuffled,residual,shuffled,32,0.023910555590295222,25,7,0,0.0005131973884999752,0.0308920643453439,0.01319806264082286,0.08061503817932024,all
+scaled sampling: products,residual scaled,residual,32,0.0,15,14,3,0.5095698444848895,0.0018536997507774267,-0.004427512649834294,0.020612212056528127,all
+scaled sampling: shuffled,shuffled scaled,shuffled,32,0.006262232703992568,20,10,2,0.11560818762398352,0.007379669748954519,-0.0036362972945609365,0.023112208893177305,all
+scaled products vs base,residual scaled,base,32,-0.006600943455810149,10,22,0,0.23122967779636383,-0.006689308515350336,-0.023536810782154763,0.008204078859304614,all
+scaled shuffled vs base,shuffled scaled,base,32,-0.028400273327597397,5,27,0,2.0234379917383194e-05,-0.03551782941393215,-0.0740939100537291,-0.018325271923104743,all
+raw products vs base,residual raw,base,16,-0.0023020960355577,8,8,0,0.4637451171875,,,,classification
+raw vs centred products,residual raw,residual,16,-0.0025447054291148816,6,9,1,0.9095609385561121,,,,classification
+centred products vs base,residual,base,16,-0.0021622818236876544,7,8,1,0.39424586721077726,,,,classification
+cost: shuffled products vs base,shuffled,base,16,-0.07479922754649666,4,12,0,0.0443115234375,,,,classification
+information: products vs shuffled,residual,shuffled,16,0.036461984263070485,13,3,0,0.02899169921875,,,,classification
+scaled sampling: products,residual scaled,residual,16,-0.006248023583344079,6,10,0,1.0,,,,classification
+scaled sampling: shuffled,shuffled scaled,shuffled,16,-0.0006330111130751337,7,9,0,0.820892333984375,,,,classification
+scaled products vs base,residual scaled,base,16,-0.0056199626265814595,6,10,0,0.705718994140625,,,,classification
+scaled shuffled vs base,shuffled scaled,base,16,-0.036354592613402514,3,13,0,0.00628662109375,,,,classification
+raw products vs base,residual raw,base,16,-0.0022548971480265767,7,9,0,0.632171630859375,,,,regression
+raw vs centred products,residual raw,residual,16,0.006326949727007595,11,5,0,0.274444580078125,,,,regression
+centred products vs base,residual,base,16,-0.007827851380258608,6,10,0,0.116668701171875,,,,regression
+cost: shuffled products vs base,shuffled,base,16,-0.028248233573458528,2,14,0,0.00030517578125,,,,regression
+information: products vs shuffled,residual,shuffled,16,0.014617849177824313,12,4,0,0.009185791015625,,,,regression
+scaled sampling: products,residual scaled,residual,16,0.0026217219216606493,9,4,3,0.06403014843302322,,,,regression
+scaled sampling: shuffled,shuffled scaled,shuffled,16,0.009553265284788654,13,1,2,0.009181421103092478,,,,regression
+scaled products vs base,residual scaled,base,16,-0.006600943455810149,4,12,0,0.129730224609375,,,,regression
+scaled shuffled vs base,shuffled scaled,base,16,-0.02411178335018093,2,14,0,0.000579833984375,,,,regression

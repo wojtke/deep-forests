@@ -135,7 +135,10 @@ def run_task(task: Task, results: Path, fingerprint: str) -> dict:
     data = load(task.dataset)
     fold_of, _ = outer_split(data, task.seed, task.outer_folds)
     train, test = np.flatnonzero(fold_of != task.fold), np.flatnonzero(fold_of == task.fold)
-    prep = Preprocessor().fit(data.X[train], data.categorical)  # outer-training rows only
+    if task.cascade.product_origin not in ("mean", "raw"):
+        raise ValueError(f"product_origin must be 'mean' or 'raw', not {task.cascade.product_origin!r}")
+    center = task.cascade.product_origin == "mean"  # "raw" changes only the products (exploratory)
+    prep = Preprocessor(center=center).fit(data.X[train], data.categorical)  # outer-training rows only
     xs_tr, xs_te = prep.transform(data.X[train]), prep.transform(data.X[test])
     common = dict(task=data.task, n_classes=data.n_classes, cfg=task.cascade,
                   keys=(task.seed, zlib.crc32(task.dataset.encode()), task.fold))

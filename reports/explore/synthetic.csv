@@ -1,0 +1,45 @@
+dataset,method,mean,std,reduction_vs_base
+raw_pair,base,0.5858,0.0329,0.0
+raw_pair,lightgbm,0.5809,0.0234,0.0084
+raw_pair,random,0.6014,0.0377,-0.0259
+raw_pair,residual,0.6,0.0348,-0.0237
+raw_pair,residual raw,0.5588,0.0312,0.0461
+raw_pair,rf,0.788,0.0405,-0.2566
+raw_pair,rf + target,0.6891,0.0312,-0.1499
+raw_pair,rf + target raw,0.5631,0.0264,0.0388
+raw_pair,shuffled,0.5942,0.0339,-0.0141
+raw_pair,target,0.6009,0.0356,-0.0251
+raw_pair,target raw,0.5588,0.0312,0.0461
+raw_xor,base,0.8505,0.0183,0.0
+raw_xor,lightgbm,0.8491,0.0242,-0.0093
+raw_xor,random,0.8485,0.0208,-0.0132
+raw_xor,residual,0.8554,0.0207,0.0328
+raw_xor,residual raw,0.8796,0.0198,0.1946
+raw_xor,rf,0.8436,0.0242,-0.0441
+raw_xor,rf + target,0.8498,0.0201,-0.0047
+raw_xor,rf + target raw,0.8776,0.0185,0.1813
+raw_xor,shuffled,0.8543,0.02,0.0254
+raw_xor,target,0.8547,0.0205,0.0281
+raw_xor,target raw,0.8803,0.0199,0.1993
+wide_pair,base,2.4907,0.1851,0.0
+wide_pair,lightgbm,1.4609,0.1456,0.4135
+wide_pair,random,2.5244,0.266,-0.0133
+wide_pair,residual,1.0697,0.1389,0.5705
+wide_pair,residual raw,1.0685,0.1365,0.571
+wide_pair,rf,2.6768,0.1851,-0.0695
+wide_pair,rf + target,1.7298,0.1758,0.3055
+wide_pair,rf + target raw,1.7329,0.1735,0.3043
+wide_pair,shuffled,2.7114,0.1897,-0.0814
+wide_pair,target,1.0724,0.1361,0.5694
+wide_pair,target raw,1.0708,0.1325,0.5701
+wide_xor,base,0.603,0.0338,0.0
+wide_xor,lightgbm,0.7748,0.061,0.4327
+wide_xor,random,0.6967,0.1486,0.236
+wide_xor,residual,0.8697,0.0197,0.6718
+wide_xor,residual raw,0.8798,0.0202,0.6972
+wide_xor,rf,0.6022,0.0371,-0.002
+wide_xor,rf + target,0.8674,0.0215,0.666
+wide_xor,rf + target raw,0.8801,0.0209,0.698
+wide_xor,shuffled,0.5535,0.0312,-0.1109
+wide_xor,target,0.8691,0.0207,0.6703
+wide_xor,target raw,0.8795,0.0199,0.6965

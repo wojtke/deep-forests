@@ -1,0 +1,29 @@
+# Exploratory follow-up (09.11.2026, branch explore), chosen after the main results: how strong must a
+# pure interaction be before products help? The 13 regression datasets outside the six largest, each
+# with two added N(0,1) columns u1, u2 and y' = y + lam * sd(y) * u1 * u2 (src/dfx/datasets.py: SEMI);
+# lam = 0, 0.25, 0.5, 1 puts 0, 6, 20 and 50% of the target's variance in the planted interaction
+# (strengths ours; design from the 08.11 review, O4 C4, plus lam = 0). Outer folds equal the main run's.
+# Seed 0, main settings: 13 x 4 strengths x 4 methods x 5 folds = 1,040 tasks.
+#
+# Bar (ours), written down before running: at a given strength, products "help" if residual-XX beats
+# base with a positive median reduction and at least 9 of 13 wins. Reported: the smallest such strength,
+# and RF + target-XX against RF as the single-forest reference.
+# Prediction, written down before running: met at 50% and probably at 20%; open at 6%; not met at 0%.
+datasets = [
+  "semi_abalone_l000", "semi_abalone_l025", "semi_abalone_l050", "semi_abalone_l100",
+  "semi_air_quality_l000", "semi_air_quality_l025", "semi_air_quality_l050", "semi_air_quality_l100",
+  "semi_auto_mpg_l000", "semi_auto_mpg_l025", "semi_auto_mpg_l050", "semi_auto_mpg_l100",
+  "semi_automobile_l000", "semi_automobile_l025", "semi_automobile_l050", "semi_automobile_l100",
+  "semi_ccpp_l000", "semi_ccpp_l025", "semi_ccpp_l050", "semi_ccpp_l100",
+  "semi_communities_l000", "semi_communities_l025", "semi_communities_l050", "semi_communities_l100",
+  "semi_concrete_slump_l000", "semi_concrete_slump_l025", "semi_concrete_slump_l050", "semi_concrete_slump_l100",
+  "semi_energy_l000", "semi_energy_l025", "semi_energy_l050", "semi_energy_l100",
+  "semi_parkinsons_l000", "semi_parkinsons_l025", "semi_parkinsons_l050", "semi_parkinsons_l100",
+  "semi_real_estate_l000", "semi_real_estate_l025", "semi_real_estate_l050", "semi_real_estate_l100",
+  "semi_servo_l000", "semi_servo_l025", "semi_servo_l050", "semi_servo_l100",
+  "semi_student_math_l000", "semi_student_math_l025", "semi_student_math_l050", "semi_student_math_l100",
+  "semi_wine_red_l000", "semi_wine_red_l025", "semi_wine_red_l050", "semi_wine_red_l100",
+]
+methods = ["base", "residual_xx", "rf", "rf_target_xx"]
+seeds = [0]
+outer_folds = 5

@@ -1,0 +1,24 @@
+{
+ "experiment": "explore_synthetic",
+ "settings": "# Exploratory controls (08.11.2026, branch explore), chosen after the main results. Synthetic data\n# built in memory (src/dfx/datasets.py), 1,000 rows each, 3 seeds as in positive.toml.\n# - wide_xor, wide_pair: the positive control with 28 noise features (435 candidate products, K = 30).\n# - raw_xor, raw_pair: a multiplicative interaction of positive features on their raw scale, where\n#   products of mean-centred features pivot at the wrong point. Expected if centring matters: the\n#   \"raw\" check helps here and the default products do not.\ndatasets = [\"wide_xor\", \"wide_pair\", \"raw_xor\", \"raw_pair\"]\nseeds = [0, 1, 2]\nouter_folds = 5\n\n[[check]]\nname = \"default\"\nmethods = [\"base\", \"random_xx\", \"target_xx\", \"residual_xx\", \"shuffled_xx\", \"rf\", \"rf_target_xx\", \"lightgbm\"]\n\n[[check]]\nname = \"raw\"\nmethods = [\"target_xx\", \"residual_xx\", \"rf_target_xx\"]\ncascade = { product_origin = \"raw\" }\n",
+ "python": "3.12.13",
+ "platform": "macOS-27.0.1-arm64-arm-64bit",
+ "packages": {
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "scikit-learn": "1.9.1",
+  "pandas": "3.0.6",
+  "lightgbm": "4.7.0"
+ },
+ "code_and_lock_sha256": "9fa3910db6a5e940a1c4e76e906263829989ca552c84c8d7f0447bea55935d99",
+ "git": {
+  "commit": "927721d70eafc2446fdd47f10b44fa389cbd19c6",
+  "dirty": false
+ },
+ "datasets": {
+  "wide_xor": "smoke-wide_xor",
+  "wide_pair": "smoke-wide_pair",
+  "raw_xor": "smoke-raw_xor",
+  "raw_pair": "smoke-raw_pair"
+ }
+}

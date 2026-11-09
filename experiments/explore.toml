@@ -1,0 +1,32 @@
+# Exploratory follow-up (08.11.2026, branch explore), chosen after the main results and the review of
+# 08.11 (course folder pro/review-2026-11-08). Not in the plan; decides no hypothesis. Seed 0, all 32
+# datasets, main settings otherwise. 6 configurations x 32 datasets x 5 folds = 960 tasks.
+#
+# Questions, and the bar written down before running:
+# - raw: do products of uncentred features (x / sd, pivot at the raw zero) help where the plan's
+#   mean-centred products do not? "Changes the picture" only if residual-XX raw beats base with a
+#   positive median and at least 20 of 32 wins.
+# - default + split_scale (2 x 2): how much of the products' effect is information (residual vs
+#   shuffled products) and how much is the cost of extra columns (shuffled vs base), and does trying
+#   the original and P columns as often as in the base cascade remove that cost (scaled vs not)?
+#   Descriptive; the 26-dataset pilot of 08.11 gave shuffled -5.5%, residual vs shuffled +2.5%,
+#   scaled residual vs residual +0.06%.
+# - base and residual_xx re-run the main runs of seed 0 under this branch's code: their predictions
+#   must equal the main runs bit for bit (identity check of the branch).
+datasets = "all"
+seeds = [0]
+outer_folds = 5
+
+[[check]]
+name = "default"
+methods = ["base", "residual_xx", "shuffled_xx"]
+
+[[check]]
+name = "raw"
+methods = ["residual_xx"]
+cascade = { product_origin = "raw" }
+
+[[check]]
+name = "split_scale"
+methods = ["residual_xx", "shuffled_xx"]
+cascade = { split_scale = true }

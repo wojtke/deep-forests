@@ -23,6 +23,9 @@ CASCADE_METHODS = {
     "nonlinear": ("nonlinear",),
     "monotone": ("monotone",),
     "combined": ("nonlinear", "residual_xx"),
+    # Exploratory, branch explore (08.11.2026): residual-chosen products with their rows permuted,
+    # so the added columns keep their values but carry no information about the row.
+    "shuffled_xx": ("shuffled_xx",),
 }
 
 
@@ -96,8 +99,9 @@ class Products:
     XP uses p_t, the mean of the type's forests; in regression it is standardized on the training rows.
     """
 
-    def __init__(self, kind: str, selector: str, k: int):
-        self.kind, self.selector, self.k = kind, selector, k
+    def __init__(self, kind: str, selector: str, k: int, shuffle: bool = False):
+        # shuffle (exploratory): the chosen products' rows are permuted, keeping their values
+        self.kind, self.selector, self.k, self.shuffle = kind, selector, k, shuffle
 
     def _right(self, Xs, prev):
         """Second factors: the features (XX) or the scaled p_{t,c} columns (XP)."""
@@ -135,7 +139,7 @@ class Products:
                 score = _chunked(lambda c: _abs_corr(values(c), target), pool)
             chosen = pool[np.argsort(-score, kind="stable")[:k]]
         chosen = np.sort(chosen)  # candidate order, so the column order never depends on the scores
-        self.i, self.j = i[chosen], j[chosen]
+        self.i, self.j, self.seed = i[chosen], j[chosen], seed
         self.info = {"pairs": np.column_stack([self.i, self.j]).tolist(), "pool": len(pool)}
         if self.kind == "xp" and k:
             # Plan §3: how strongly the chosen XP products repeat the prediction columns.
@@ -143,7 +147,10 @@ class Products:
         return self
 
     def transform(self, Xs, prev):
-        return Xs[:, self.i] * self._right(Xs, prev)[:, self.j]
+        out = Xs[:, self.i] * self._right(Xs, prev)[:, self.j]
+        if self.shuffle:  # a fixed permutation per row set: same values, no information about the row
+            out = out[np.random.default_rng([self.seed, len(Xs)]).permutation(len(Xs))]
+        return out
 
 
 class NonLinear:
@@ -194,5 +201,6 @@ def components(method: str, layer: int, k: int, activation: str) -> list[tuple[s
     every layer, the others start at layer 2 (plan Table 1)."""
     make = {"random_xx": Products("xx", "random", k), "target_xx": Products("xx", "target", k),
             "residual_xx": Products("xx", "residual", k), "xp_mi": Products("xp", "mi", k),
+            "shuffled_xx": Products("xx", "residual", k, shuffle=True),
             "nonlinear": NonLinear(), "monotone": Monotone(activation)}
     return [(name, make[name]) for name in CASCADE_METHODS[method] if name.endswith("_xx") or layer >= 2]

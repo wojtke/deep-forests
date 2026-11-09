@@ -283,3 +283,68 @@ def test_interim_report_pairs_runs():
     runs = pd.DataFrame({"check": "default", "dataset": "a", "method": ["base", "base", "rf"], "seed": 0,
                          "fold": [0, 1, 0]})
     assert paired(runs).fold.tolist() == [0, 0]
+
+
+# --- exploratory variants (branch explore, 08.11.2026) ---------------------------------------------
+
+def test_uncentred_features_bin_like_centred_ones():
+    """product_origin = "raw" divides by the sd without centring; the binned features must not change."""
+    rng = np.random.default_rng(3)
+    X = np.column_stack([rng.uniform(1, 4, 500), rng.lognormal(size=500), rng.integers(0, 7, 500).astype(float)])
+    cat = np.zeros(3, bool)
+    a = Preprocessor().fit(X, cat).transform(X)
+    b = Preprocessor(center=False).fit(X, cat).transform(X)
+    assert not np.allclose(a, b)
+    assert np.array_equal(Binner().fit(a).transform(a), Binner().fit(b).transform(b))
+
+
+def test_shuffled_products_keep_values_and_choices_but_not_rows():
+    X, y = problem()
+    xs = Preprocessor().fit(X, np.zeros(X.shape[1], bool)).transform(X)
+    kw = dict(task="classification", n_classes=2, seed=7)
+    real = Products("xx", "residual", 3).fit(xs, None, y, **kw)
+    shuf = Products("xx", "residual", 3, shuffle=True).fit(xs, None, y, **kw)
+    assert real.info == shuf.info
+    a, b = real.transform(xs, None), shuf.transform(xs, None)
+    assert not np.array_equal(a, b) and np.array_equal(np.sort(a, 0), np.sort(b, 0))
+
+
+def test_split_scale_leaves_the_base_cascade_unchanged():
+    X, y = problem()
+    plain = cascade("base", X, y)
+    scaled = cascade("base", X, y, cfg=CascadeConfig(n_trees=4, max_layers=3, split_scale=True))
+    for p, s in zip(plain.layers, scaled.layers):
+        assert np.array_equal(p.test_pred, s.test_pred)
+
+
+# --- exploratory follow-up (branch explore, 09.11.2026) --------------------------------------------
+
+def test_interaction_sweep_adds_a_pure_product_and_keeps_rows_groups_and_folds(monkeypatch):
+    from dfx import data as data_module
+    from dfx import datasets
+
+    base = datasets.smoke_dataset("smoke_diabetes")
+    monkeypatch.setattr(data_module, "load", lambda name: base)
+    for lam in (0.0, 1.0):
+        monkeypatch.setitem(datasets.SEMI, f"semi_test_{lam}", ("smoke_diabetes", lam))
+    zero, one = datasets.semi_dataset("semi_test_0.0"), datasets.semi_dataset("semi_test_1.0")
+    assert np.array_equal(zero.y, base.y) and np.array_equal(one.X[:, :-2], base.X)
+    assert np.array_equal(zero.X, one.X) and np.array_equal(one.groups, base.groups)  # same u1, u2
+    u = one.X[:, -2:]
+    assert np.allclose(one.y - base.y, base.y.std() * u[:, 0] * u[:, 1])
+    for seed in range(3):
+        assert np.array_equal(fold_ids(one.y, one.groups, "regression", 5, seed),
+                              fold_ids(base.y, base.groups, "regression", 5, seed))
+
+
+def test_onehot_specs_list_the_number_coded_categories_and_stay_out_of_all():
+    from dfx.data import encode
+    from dfx.datasets import ALL, DATASETS, ONEHOT
+
+    assert len(ALL) == 32 and not {s.name for s in ONEHOT} & set(ALL)
+    for spec in ONEHOT:
+        orig = DATASETS[spec.name.removesuffix("_onehot")]
+        assert spec.categorical and not orig.categorical
+        assert (spec.task, spec.target, spec.drop, spec.group) == (orig.task, orig.target, orig.drop, orig.group)
+    _, cat = encode(pd.DataFrame({"a": [1, 2, 1], "b": [0.5, 0.1, 0.2]}), ("a",))
+    assert cat.tolist() == [True, False]

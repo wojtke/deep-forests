@@ -1,0 +1,18 @@
+# Exploratory controls (08.11.2026, branch explore), chosen after the main results. Synthetic data
+# built in memory (src/dfx/datasets.py), 1,000 rows each, 3 seeds as in positive.toml.
+# - wide_xor, wide_pair: the positive control with 28 noise features (435 candidate products, K = 30).
+# - raw_xor, raw_pair: a multiplicative interaction of positive features on their raw scale, where
+#   products of mean-centred features pivot at the wrong point. Expected if centring matters: the
+#   "raw" check helps here and the default products do not.
+datasets = ["wide_xor", "wide_pair", "raw_xor", "raw_pair"]
+seeds = [0, 1, 2]
+outer_folds = 5
+
+[[check]]
+name = "default"
+methods = ["base", "random_xx", "target_xx", "residual_xx", "shuffled_xx", "rf", "rf_target_xx", "lightgbm"]
+
+[[check]]
+name = "raw"
+methods = ["target_xx", "residual_xx", "rf_target_xx"]
+cascade = { product_origin = "raw" }

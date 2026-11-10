@@ -10,6 +10,7 @@ without them (the *base cascade*) on 32 public datasets.
 ## Documents
 
 - **[Research plan](docs/plan.pdf)**: hypotheses H1–H5, methods and protocol, fixed before the runs.
+- **[Short report](docs/short-report.pdf)** (draft): the plan and the results in 8 pages. Start here.
 - **[Results report](docs/results-report.pdf)** (draft): results, discussion and the exploratory
   follow-up runs. In short, none of H1–H5 is supported, while on synthetic data with a planted
   interaction the products do help.
@@ -77,7 +78,7 @@ signed-rank test over the 32 datasets, with Holm's correction over the six; H2 n
 ## Layout
 
 ```
-docs/          plan, results report, settings, data audit, result-file format
+docs/          plan, short report, results report, settings, data audit, result-file format
 experiments/   one TOML file per experiment: datasets, methods, seeds and settings
 src/dfx/       the code
   datasets.py    the 32 dataset specs: source, target, exclusions, groups

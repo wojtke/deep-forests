@@ -6,6 +6,7 @@ columns that reveal the target). See docs/data-audit.md for what each spec produ
 """
 import io
 import re
+import zlib
 import subprocess
 import zipfile
 from pathlib import Path
@@ -359,6 +360,64 @@ SPECS = [
 ]
 
 
+# --- large datasets (exploratory follow-up, 12.11.2026; experiments/large.toml) ---------------
+# Not in ALL. At most 100,000 rows each (ours), so that 5 outer folds leave up to 64,000 training rows.
+
+LARGE_ROWS = 100_000
+
+
+def read_covertype(raw: Path) -> pd.DataFrame:
+    names = ([f"num{i}" for i in range(10)] + [f"wilderness{i}" for i in range(4)]
+             + [f"soil{i}" for i in range(40)] + ["cover_type"])
+    return pd.read_csv(io.BytesIO(zip_bytes(raw, "covtype.data.gz")), header=None, names=names, compression="gzip")
+
+
+def read_miniboone(raw: Path) -> pd.DataFrame:
+    text = zip_bytes(raw, "MiniBooNE_PID.txt")
+    n_signal = int(text.split(None, 1)[0])  # first line: number of signal rows, number of background rows
+    frame = pd.read_csv(io.BytesIO(text), sep=r"\s+", header=None, skiprows=1, names=[f"v{i}" for i in range(50)])
+    frame = frame.replace(-999.0, np.nan)
+    frame["signal"] = np.where(np.arange(len(frame)) < n_signal, "signal", "background")
+    return frame
+
+
+def read_sgemm(raw: Path) -> pd.DataFrame:
+    frame = from_zip(raw, "sgemm_product.csv")
+    runs = [c for c in frame.columns if c.startswith("Run")]
+    frame["log_runtime"] = np.log(frame[runs].mean(axis=1))  # the usual target: log of the mean of the 4 runs
+    return frame.drop(columns=runs)
+
+
+def read_higgs(raw: Path) -> pd.DataFrame:
+    from sklearn.datasets import fetch_openml
+
+    bunch = fetch_openml(data_id=23512, data_home=raw, as_frame=True, parser="auto")  # checks the file's md5
+    return bunch.frame.rename(columns={bunch.target_names[0]: "class"})
+
+
+HIGGS_HIGH_LEVEL = ("m_jj", "m_jjj", "m_lv", "m_jlv", "m_bb", "m_wbb", "m_wwbb")
+LARGE = [
+    Spec("covertype", "classification", "cover_type", read_covertype, f"{UCI}/31/covertype.zip",
+         "89a975c2457cd48e824238ae43c5a3cb762e42c4b4078d9b44a4514055105f6d",
+         max_rows=LARGE_ROWS, note="exploratory; 581,012 rows subsampled; 44 of the 54 features are 0/1 dummies"),
+    Spec("miniboone", "classification", "signal", read_miniboone,
+         f"{UCI}/199/miniboone+particle+identification.zip",
+         "af4573ca81797ca1c5bfc623f0fdf26ed07e626e2717c322224f96e8795f8752", max_rows=LARGE_ROWS,
+         note="exploratory; 130,064 rows subsampled; -999 = missing"),
+    Spec("higgs", "classification", "class", read_higgs, max_rows=LARGE_ROWS,
+         note="exploratory; OpenML 23512, 98,050 rows of the UCI HIGGS data; 21 low-level + 7 high-level features"),
+    Spec("higgs_low", "classification", "class", read_higgs, drop=HIGGS_HIGH_LEVEL, max_rows=LARGE_ROWS,
+         note="exploratory; higgs without the 7 high-level features, which physicists built from the other 21"),
+    Spec("sgemm", "regression", "log_runtime", read_sgemm, f"{UCI}/440/sgemm+gpu+kernel+performance.zip",
+         "8d3ee0d82708df11b54debc6a4fbade77c604a047f019fa7940413032eb7b096",
+         max_rows=LARGE_ROWS, note="exploratory; 241,600 rows subsampled; target = log of the mean of 4 runs (ours)"),
+    Spec("casp", "regression", "RMSD", lambda raw: from_zip(raw, "CASP.csv"),
+         f"{UCI}/265/physicochemical+properties+of+protein+tertiary+structure.zip",
+         "ee6536c8cc415dc50d66bd247af7c9bc95c187ab8a4ea0f1f546b127206c1100", max_rows=LARGE_ROWS,
+         note="exploratory; 45,730 rows, all used"),
+]
+
+
 # --- smoke datasets: no download, built in memory ---------------------------------------------
 
 def smoke_dataset(name: str) -> Dataset:
@@ -393,6 +452,22 @@ def smoke_dataset(name: str) -> Dataset:
         X = rng.uniform(1, 4, size=(1000, 6))
         y = X[:, 1] * X[:, 2] + 0.5 * X[:, 0] + rng.normal(scale=0.5, size=1000)
         classes, task = [], "regression"
+    elif name in SYNTH:
+        # Exploratory follow-up (12.11.2026; experiments/synth.toml): 1,000 rows, 10 N(0,1) features, and a
+        # target that is additive ("add"), holds an exact product ("prod"), or holds an interaction whose
+        # product x1*x2 is uncorrelated with it ("hidden"). "_oracle" adds the true interaction term as an
+        # 11th column; "_oracle_noise" adds it and 10 N(0,1) noise columns (K = 10 for d = 10).
+        kind, _, extra = name.removeprefix("syn_").partition("_")
+        rng = np.random.default_rng(zlib.crc32(kind.encode()))  # the same X, y for all variants of a kind
+        X = rng.normal(size=(1000, 10))
+        term = {"add": X[:, 1] + X[:, 2], "prod": 3 * X[:, 1] * X[:, 2],
+                "hidden": 1.5 * np.sign(X[:, 1]) * X[:, 2] ** 2}[kind]
+        y = X[:, 0] + term + rng.normal(scale=0.5, size=1000)
+        noise = rng.normal(size=(1000, 10))
+        plain_groups = related_groups(X)  # the same groups, hence the same folds, for all variants
+        if extra:
+            X = np.column_stack([X, term] + ([noise] if extra == "oracle_noise" else []))
+        classes, task = [], "regression"
     elif name == "smoke_mixed":  # categorical column with missing values, three classes
         X = rng.normal(size=(300, 5))
         X[:, 0] = rng.integers(0, 3, 300)
@@ -408,9 +483,12 @@ def smoke_dataset(name: str) -> Dataset:
         raise KeyError(name)
     categorical = np.zeros(X.shape[1], dtype=bool)
     categorical[0] = name == "smoke_mixed"
-    groups = related_groups(X)
+    groups = plain_groups if name in SYNTH else related_groups(X)
     return Dataset(name, task, X, y, groups, np.arange(len(y)), [f"x{j}" for j in range(X.shape[1])],
                    categorical, classes, f"smoke-{name}")
+
+
+SYNTH = {f"syn_{kind}{extra}" for kind in ("add", "prod", "hidden") for extra in ("", "_oracle", "_oracle_noise")}
 
 
 # Exploratory interaction sweep, branch explore (09.11.2026): a real regression dataset plus two
@@ -442,7 +520,7 @@ def semi_dataset(name: str) -> Dataset:
 
 SMOKE = {"smoke_xor", "smoke_pair", "smoke_mixed", "smoke_diabetes",  # built in memory, for tests
          "wide_xor", "wide_pair", "raw_xor", "raw_pair",  # exploratory controls (branch explore)
-         *SEMI}
+         *SEMI, *SYNTH}
 DATASETS = {spec.name: spec for spec in SPECS}
 ALL = list(DATASETS)  # what experiments mean by datasets = "all"
 
@@ -463,4 +541,4 @@ def _onehot(name: str, categorical: tuple[str, ...]) -> Spec:
 
 ONEHOT = [_onehot("credit_default", ("SEX", "EDUCATION", "MARRIAGE")), _onehot("auto_mpg", ("origin",)),
           _onehot("energy", ("X6", "X8"))]  # Energy: X6 orientation, X8 glazing-area distribution
-DATASETS.update({spec.name: spec for spec in ONEHOT})
+DATASETS.update({spec.name: spec for spec in [*ONEHOT, *LARGE]})

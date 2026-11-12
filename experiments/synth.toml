@@ -1,0 +1,21 @@
+# Exploratory follow-up of 12.11.2026 (course folder pro/followup-2026-11-12/plan.md), chosen after the main
+# results and two reviews. Not in the plan; decides no hypothesis. Bars and predictions below were
+# written before the run. "Reduction" is the relative error reduction of the main report.
+#
+# N3, selection or representation. Synthetic data built in memory (src/dfx/datasets.py): 1,000 rows, 10
+# N(0,1) features, 3 seeds. Targets: additive (add); an exact product x1*x2 (prod); an interaction
+# sign(x1)*x2^2 with which the product x1*x2 is uncorrelated (hidden). "_oracle" holds the true
+# interaction term as an extra input and "_oracle_noise" holds it with 10 noise columns; for these two the
+# base cascade is the method of interest (the others run too, for completeness). Folds are the same for
+# all variants of a target. 7 x 9 x 3 x 5 = 945 tasks.
+# Expected: add: nothing helps. prod: the chosen products do about as well as the oracle. hidden: the
+# chosen products do not help while the oracle does (selection misses it). The oracle with noise columns
+# shows how much of the oracle's gain the extra columns take back.
+datasets = ["syn_add", "syn_prod", "syn_hidden", "syn_add_oracle", "syn_prod_oracle", "syn_hidden_oracle",
+            "syn_add_oracle_noise", "syn_prod_oracle_noise", "syn_hidden_oracle_noise"]
+seeds = [0, 1, 2]
+outer_folds = 5
+
+[[check]]
+name = "default"
+methods = ["base", "random_xx", "target_xx", "residual_xx", "target_noise_xx", "rf", "lightgbm"]

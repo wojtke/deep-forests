@@ -43,6 +43,11 @@ The other experiments in `experiments/` run the same way:
 - `positive`: 330 runs, 2 minutes; every method on two synthetic datasets with one planted interaction;
 - `explore`, `explore_synthetic`, `explore_encoding`, `explore_sweep`: the exploratory follow-up runs of the
   results report (Appendix B), with `scripts/` for the interaction measure, the split counts and the summary;
+- `content`, `leaf`, `mixed`, `size`, `draws`, `synth`, `sweep_size`, `large`, `large64`: the second exploratory
+  follow-up (12.11.2026): what the added columns hold, leaf size, products for half the forests, fewer training
+  rows, bias and variance, synthetic targets and six large datasets. Each file states its question, bar and
+  prediction, written before the run. The large datasets need `uv run dfx data casp sgemm covertype miniboone
+  higgs higgs_low`, and `large` and `large64` run outer folds 0–2 only (`--folds 0,1,2`).
 - `smoke`: every method on tiny built-in data, 30 s; not a result.
 
 The planned runs (`main`, `sensitivity`, `positive`) were made with the code of the repository's first commit.

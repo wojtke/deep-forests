@@ -1,0 +1,30 @@
+# Exploratory follow-up of 12.11.2026 (course folder pro/followup-2026-11-12/plan.md), chosen after the main
+# results and two reviews. Not in the plan; decides no hypothesis. Bars and predictions below were
+# written before the run. "Reduction" is the relative error reduction of the main report.
+#
+# E2, leaf size. All 32 datasets, seed 0; minimum leaf size 5 and 20 for every cascade tree (leaf 1 is
+# content.toml). 2 x 4 x 32 x 5 = 1,280 tasks. Every comparison is at equal leaf size. Leaf 20 is read only on
+# datasets with at least 1,000 training rows, since smaller ones can hardly split at all.
+#
+# Bars:
+# - L1 the noise penalty shrinks: the reduction of target_noise_xx against base is higher (closer to
+#   zero or positive) at leaf 5 than at leaf 1 on at least 20 of 32 datasets, at layer 1 and at the chosen
+#   layer. Prediction: yes at the chosen layer, open at layer 1.
+# - L2 a remedy: at leaf 5 or 20, residual_xx is a clear win over base at the same leaf size (median > 0,
+#   at least 20 of 32 better), and base at that leaf size is not worse in median than base at leaf 1.
+#   Prediction: no.
+# If the penalty shrinks only because base gets worse, that is underfitting, not support.
+datasets = "all"
+seeds = [0]
+outer_folds = 5
+reference = "content"
+
+[[check]]
+name = "leaf5"
+methods = ["base", "target_xx", "residual_xx", "target_noise_xx"]
+cascade = { min_leaf = 5 }
+
+[[check]]
+name = "leaf20"
+methods = ["base", "target_xx", "residual_xx", "target_noise_xx"]
+cascade = { min_leaf = 20 }

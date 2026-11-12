@@ -121,3 +121,18 @@ DF21 line numbers were read from the v0.1.7 source on 22.10.2026.
   hashed by name, so a change to their generator is not detected either. `dfx run --dry-run` can
   create a missing split file (`run.py` asks for the fingerprints, which create splits, before it
   checks the flag). All three are left as run, since fixing them edits compute files.
+
+## Exploratory follow-up of 12.11.2026
+
+Chosen after the main results; all off by default (the defaults reproduce the earlier runs bit for bit).
+
+| Setting | Value | Source |
+|---|---|---|
+| Content of the added columns (`target_sum_xx`, `target_copy_xx`, `target_noise_xx`) | the pairs of target-XX; sum x_i + x_j, copy of x_i, or noise: per row, the products of a random training row of the fold model | ours |
+| Minimum leaf size (`min_leaf`) | 1 (DF21); 5 and 20 in `leaf` | ours |
+| Forests that get the added columns (`added_forests`) | all; in `mixed` the first RF and the first ERF of each layer | ours |
+| Training rows (`train_rows`, `train_draws`, `train_draw`) | all; nested stratified subsets of 250 to 64,000 rows, or 4 disjoint draws of 1,000 | ours |
+| Rows of the large datasets | at most 100,000, subsampled as in the plan | ours |
+| Large datasets | Covertype, MiniBooNE, HIGGS (OpenML 23512, with and without its 7 high-level features), SGEMM (target: log of the mean of 4 runs), CASP | ours |
+| Synthetic targets (`syn_*`) | 1,000 rows, 10 N(0,1) features; x0 + x1 + x2, x0 + 3 x1 x2, x0 + 1.5 sign(x1) x2^2, noise sd 0.5 | ours |
+

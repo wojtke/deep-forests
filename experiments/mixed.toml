@@ -1,0 +1,22 @@
+# Exploratory follow-up of 12.11.2026 (course folder pro/followup-2026-11-12/plan.md), chosen after the main
+# results and two reviews. Not in the plan; decides no hypothesis. Bars and predictions below were
+# written before the run. "Reduction" is the relative error reduction of the main report.
+#
+# N5, products for half of the forests. All 32 datasets, seed 0. In each layer the first RF and the first ERF
+# get the added columns; the second RF and the second ERF see only X and P, as in the base cascade. Same
+# trees and depth rule. One possible reading of the instructor's "interactions within a layer".
+# "All forests" and base are in content.toml. 3 x 32 x 5 = 480 tasks.
+#
+# Bars (clear win = median > 0 and at least 20 of 32 better):
+# - M1 half beats all: residual_xx with half the forests is a clear win over residual_xx with all.
+#   Prediction: yes, because half the forests are free of the penalty.
+# - M2 half beats base: a clear win over the base cascade. Prediction: no.
+datasets = "all"
+seeds = [0]
+outer_folds = 5
+reference = "content"
+
+[[check]]
+name = "half"
+methods = ["random_xx", "target_xx", "residual_xx"]
+cascade = { added_forests = "half" }

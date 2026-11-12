@@ -1,0 +1,24 @@
+# Exploratory follow-up of 12.11.2026 (course folder pro/followup-2026-11-12/plan.md), chosen after the main
+# results and two reviews. Not in the plan; decides no hypothesis. Bars and predictions below were
+# written before the run. "Reduction" is the relative error reduction of the main report.
+#
+# N3, second part: the planted-product sweep of explore_sweep.toml at fewer training rows. The 6 base
+# datasets with at least 1,000 outer-training rows, 4 strengths, seed 0, 250 and 1,000 training rows
+# (full size is explore_sweep). 2 x 2 x 24 x 5 = 480 tasks.
+# Question: how strong must a planted product be before products help when rows are few? Bar as in the
+# sweep: products help at a strength if residual_xx beats base in median and on at least 5 of 6 datasets.
+# Prediction: at 250 rows the bar is met only from 20% of the variance; at 1,000 rows from 6%.
+datasets = ["semi_abalone_l000", "semi_abalone_l025", "semi_abalone_l050", "semi_abalone_l100", "semi_air_quality_l000", "semi_air_quality_l025", "semi_air_quality_l050", "semi_air_quality_l100", "semi_ccpp_l000", "semi_ccpp_l025", "semi_ccpp_l050", "semi_ccpp_l100", "semi_communities_l000", "semi_communities_l025", "semi_communities_l050", "semi_communities_l100", "semi_parkinsons_l000", "semi_parkinsons_l025", "semi_parkinsons_l050", "semi_parkinsons_l100", "semi_wine_red_l000", "semi_wine_red_l025", "semi_wine_red_l050", "semi_wine_red_l100"]
+seeds = [0]
+outer_folds = 5
+reference = "explore_sweep"
+
+[[check]]
+name = "n250"
+methods = ["base", "residual_xx"]
+cascade = { train_rows = 250 }
+
+[[check]]
+name = "n1000"
+methods = ["base", "residual_xx"]
+cascade = { train_rows = 1000 }

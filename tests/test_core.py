@@ -348,3 +348,78 @@ def test_onehot_specs_list_the_number_coded_categories_and_stay_out_of_all():
         assert (spec.task, spec.target, spec.drop, spec.group) == (orig.task, orig.target, orig.drop, orig.group)
     _, cat = encode(pd.DataFrame({"a": [1, 2, 1], "b": [0.5, 0.1, 0.2]}), ("a",))
     assert cat.tolist() == [True, False]
+
+
+# --- exploratory follow-up (12.11.2026; course folder pro/followup-2026-11-12) ----------------------
+
+def test_content_variants_keep_the_target_chosen_pairs():
+    X, y = problem()
+    xs = Preprocessor().fit(X, np.zeros(X.shape[1], bool)).transform(X)
+    kw = dict(task="classification", n_classes=2, seed=7)
+    fitted = {c: Products("xx", "target", 3, content=c).fit(xs[:200], None, y[:200], **kw)
+              for c in ("product", "sum", "copy", "noise")}
+    assert all(f.info == fitted["product"].info for f in fitted.values())
+    i, j = fitted["product"].i, fitted["product"].j
+    np.testing.assert_array_equal(fitted["sum"].transform(xs, None), xs[:, i] + xs[:, j])
+    np.testing.assert_array_equal(fitted["copy"].transform(xs, None), xs[:, i])
+    noise, donor = fitted["noise"], xs[:200, i] * xs[:200, j]
+    a = noise.transform(xs, None)
+    assert {tuple(r) for r in a} <= {tuple(r) for r in donor}  # whole training rows of products
+    np.testing.assert_array_equal(a, noise.transform(xs, None))  # a row set always gets the same noise
+    assert not np.array_equal(a[:200], donor)
+    assert not np.array_equal(noise.transform(xs[:50], None), a[:50])  # another row set, another draw
+    assert noise.transform(xs[:1], None).shape == (1, 3)
+
+
+def test_min_leaf_and_half_forests_change_only_what_they_should():
+    X, y = problem()
+    base = cascade("base", X, y)
+    for cfg in (CascadeConfig(n_trees=4, max_layers=3, min_leaf=1),
+                CascadeConfig(n_trees=4, max_layers=3, added_forests="half")):
+        for p, s in zip(base.layers, cascade("base", X, y, cfg=cfg).layers):
+            assert np.array_equal(p.test_pred, s.test_pred)
+    assert not np.array_equal(base.layers[0].test_pred,
+                              cascade("base", X, y, cfg=CascadeConfig(n_trees=4, max_layers=3, min_leaf=20))
+                              .layers[0].test_pred)
+    # "half": the second RF and the second ERF grow the base cascade's trees at layer 1
+    seen = {}
+
+    def spy(kind, task, n_trees, Z, *args, **kwargs):
+        seen.setdefault(mode, []).append(Z.shape[1])
+        return grow_forest(kind, task, n_trees, Z, *args, **kwargs)
+
+    import pytest as _pytest
+    with _pytest.MonkeyPatch.context() as mp:
+        mp.setattr(cascade_module, "grow_forest", spy)
+        for mode in ("all", "half"):
+            cascade("target_xx", X, y, cfg=CascadeConfig(n_trees=4, max_layers=1, added_forests=mode))
+    d, k = X.shape[1], k_products(X.shape[1])
+    assert seen["all"] == [d + k] * 12 and seen["half"] == [d + k, d, d + k, d] * 3
+
+
+def test_train_subsets_are_nested_disjoint_and_stratified():
+    from dfx.data import train_subset
+
+    y = np.random.default_rng(0).choice(3, 3000, p=[0.6, 0.3, 0.1])
+    small, large = (train_subset(y, "classification", n, 1, 0, seed=5) for n in (250, 1000))
+    assert set(small) <= set(large) and len(small) == 250 and len(np.unique(large)) == 1000
+    assert np.abs(np.bincount(y[small]) / 250 - np.bincount(y) / 3000).max() < 0.01
+    draws = [train_subset(y, "classification", 500, 4, j, seed=5) for j in range(4)]
+    assert len(set(np.concatenate(draws))) == 2000
+    assert all(np.abs(np.bincount(y[d]) / 500 - np.bincount(y) / 3000).max() < 0.02 for d in draws)
+    with pytest.raises(ValueError):
+        train_subset(y, "classification", 1000, 4, 0, seed=5)
+    assert len(train_subset(y.astype(float), "regression", 100, 1, 0, seed=5)) == 100
+
+
+def test_synthetic_variants_share_target_groups_and_folds():
+    from dfx.data import load
+
+    plain, oracle, noisy = (load(f"syn_prod{e}") for e in ("", "_oracle", "_oracle_noise"))
+    assert oracle.X.shape[1] == 11 and noisy.X.shape[1] == 21
+    for other in (oracle, noisy):
+        assert np.array_equal(plain.y, other.y) and np.array_equal(plain.groups, other.groups)
+        assert np.array_equal(plain.X, other.X[:, :10])
+    np.testing.assert_allclose(oracle.X[:, 10], 3 * plain.X[:, 1] * plain.X[:, 2])
+    hidden = load("syn_hidden")
+    assert abs(np.corrcoef(hidden.X[:, 1] * hidden.X[:, 2], hidden.y)[0, 1]) < 0.1

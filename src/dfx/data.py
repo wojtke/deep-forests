@@ -42,6 +42,7 @@ class Spec:
     categorical: tuple[str, ...] = ()  # numeric-coded categoricals; text columns always are
     plan: tuple[int, int] | None = None  # rows x features in plan Table 2
     note: str = ""  # one line for docs/data-audit.md
+    max_rows: int = MAX_ROWS  # larger only for the exploratory large-data study (12.11.2026)
 
 
 @dataclass
@@ -116,6 +117,26 @@ def subsample(y: np.ndarray, groups: np.ndarray, task: str, max_rows: int, seed:
     return np.flatnonzero(np.isin(groups, keep))
 
 
+def train_subset(y: np.ndarray, task: str, rows: int, draws: int, draw: int, seed: int) -> np.ndarray:
+    """Positions (sorted) of `rows` training rows: draw `draw` of `draws` disjoint draws (exploratory,
+    12.11.2026). Within each class (regression: over all rows) the rows are shuffled and dealt to the
+    draws in turn; a draw's rows are then ordered so that every prefix keeps the class proportions,
+    and the first `rows` are taken. So the draws are disjoint and stratified, and for one seed a
+    smaller subset lies inside every larger one."""
+    rng = np.random.default_rng(seed)
+    jitter, of_draw, key = rng.random(len(y)), np.empty(len(y), dtype=int), np.empty(len(y))
+    for c in np.unique(y) if task == "classification" else [None]:
+        members = np.arange(len(y)) if c is None else np.flatnonzero(y == c)
+        rank = rng.permutation(len(members))
+        of_draw[members] = rank % draws
+        key[members] = (rank // draws + jitter[members]) / -(-len(members) // draws)
+    part = np.flatnonzero(of_draw == draw)
+    part = part[np.argsort(key[part], kind="stable")]
+    if rows > len(part):
+        raise ValueError(f"train_rows = {rows} but draw {draw} of {draws} has only {len(part)} rows")
+    return np.sort(part[:rows])
+
+
 def encode(frame: pd.DataFrame, categorical: tuple) -> tuple[np.ndarray, np.ndarray]:
     """Features as floats: text or listed columns become categorical codes (sorted labels)."""
     columns, is_cat = [], []
@@ -152,7 +173,7 @@ def prepare(spec: Spec) -> tuple[Dataset, dict]:
     else:
         classes, y = [], target.to_numpy(dtype=float)
     groups = related_groups(X, frame[spec.group].to_numpy() if spec.group else None)
-    keep = subsample(y, groups, spec.task, MAX_ROWS, SUBSAMPLE_SEED)
+    keep = subsample(y, groups, spec.task, spec.max_rows, SUBSAMPLE_SEED)
     X, y, row_ids = X[keep], y[keep], np.flatnonzero(usable)[keep]
     groups = np.unique(groups[keep], return_inverse=True)[1]
     digest = hashlib.sha256(X.tobytes() + y.tobytes() + groups.tobytes()).hexdigest()

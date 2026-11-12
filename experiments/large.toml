@@ -1,0 +1,33 @@
+# Exploratory follow-up of 12.11.2026 (course folder pro/followup-2026-11-12/plan.md), chosen after the main
+# results and two reviews. Not in the plan; decides no hypothesis. Bars and predictions below were
+# written before the run. "Reduction" is the relative error reduction of the main report.
+#
+# E1, large data. Six datasets outside the benchmark (src/dfx/datasets.py, LARGE), each cut to at most
+# 100,000 rows; seed 0; outer folds 0-2 of 5 are run (--folds 0,1,2), so 3 test sets of about 20% each.
+# Training rows: 1,000, 4,000 and 16,000 here; 64,000 in large64.toml. higgs_low is higgs without the 7
+# features physicists engineered from the other 21: a real-data positive control, since those 7 are known
+# useful functions of the inputs. 3 x 6 x 6 x 3 = 324 tasks.
+#
+# Case studies, read as curves per dataset; six datasets cannot carry a significance test.
+# - Z1 the noise penalty (target_noise_xx against base) shrinks from 1,000 to the largest size on at least
+#   5 of 6 datasets. Prediction: yes at the chosen layer.
+# - Z2 at the largest size residual_xx beats base on at least 5 of 6 datasets. Prediction: no.
+# - Z3 products gain more on higgs_low than on higgs at every size. Prediction: yes, but small.
+datasets = ["covertype", "miniboone", "higgs", "higgs_low", "sgemm", "casp"]
+seeds = [0]
+outer_folds = 5
+
+[[check]]
+name = "n1000"
+methods = ["base", "random_xx", "residual_xx", "target_noise_xx", "rf", "lightgbm"]
+cascade = { train_rows = 1000 }
+
+[[check]]
+name = "n4000"
+methods = ["base", "random_xx", "residual_xx", "target_noise_xx", "rf", "lightgbm"]
+cascade = { train_rows = 4000 }
+
+[[check]]
+name = "n16000"
+methods = ["base", "random_xx", "residual_xx", "target_noise_xx", "rf", "lightgbm"]
+cascade = { train_rows = 16000 }

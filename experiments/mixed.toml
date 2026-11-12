@@ -14,7 +14,6 @@
 datasets = "all"
 seeds = [0]
 outer_folds = 5
-reference = "content"
 
 [[check]]
 name = "half"

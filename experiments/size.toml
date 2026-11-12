@@ -20,7 +20,6 @@ datasets = ["parkinsons", "air_quality", "ccpp", "phishing", "bike_sharing", "ba
             "credit_default", "california", "superconductivity"]
 seeds = [0]
 outer_folds = 5
-reference = "content"
 
 [[check]]
 name = "n250"

@@ -11,7 +11,6 @@
 datasets = ["semi_abalone_l000", "semi_abalone_l025", "semi_abalone_l050", "semi_abalone_l100", "semi_air_quality_l000", "semi_air_quality_l025", "semi_air_quality_l050", "semi_air_quality_l100", "semi_ccpp_l000", "semi_ccpp_l025", "semi_ccpp_l050", "semi_ccpp_l100", "semi_communities_l000", "semi_communities_l025", "semi_communities_l050", "semi_communities_l100", "semi_parkinsons_l000", "semi_parkinsons_l025", "semi_parkinsons_l050", "semi_parkinsons_l100", "semi_wine_red_l000", "semi_wine_red_l025", "semi_wine_red_l050", "semi_wine_red_l100"]
 seeds = [0]
 outer_folds = 5
-reference = "explore_sweep"
 
 [[check]]
 name = "n250"

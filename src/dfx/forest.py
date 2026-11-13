@@ -15,7 +15,8 @@ def grow_forest(kind: str, task: str, n_trees: int, Z: np.ndarray, y: np.ndarray
     """Fit a forest on (Z, y); for each array in `evals` return (mean, mean_sq): the forest's
     prediction (n, C), C = 1 in regression, and in regression the mean of the squared tree
     predictions (n,), from which the tree standard deviation of plan eq. 3 follows.
-    max_features: DF21's sqrt, or a count (exploratory `split_scale`, branch explore).
+    max_features: DF21's sqrt, a count (exploratory `split_scale`, branch explore) or a share of the
+    columns as a float (exploratory `max_features`, 13.11.2026).
     min_leaf: DF21's 1 (fully grown), or a larger minimum leaf size (exploratory, 12.11.2026)."""
     rng = np.random.default_rng(seed)
     classification = task == "classification"

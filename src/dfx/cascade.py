@@ -47,6 +47,8 @@ class CascadeConfig:
     train_rows: int = 0  # > 0: train on this many of the outer-training rows (run.run_task)
     train_draws: int = 1  # the outer-training rows are dealt into this many disjoint draws ...
     train_draw: int = 0  # ... and this one is used
+    # Exploratory (13.11.2026; course folder pro/followup-2026-11-12/results.md):
+    max_features: float = 0.0  # 0: DF21's sqrt(m) columns tried per split; else this share of them (1.0 = all)
 
 
 @dataclass
@@ -117,6 +119,8 @@ def fit_predict(xs_tr, y_tr, groups_tr, xs_te, *, method: str, task: str, n_clas
     xb_tr, xb_te = x_binner.transform(xs_tr), x_binner.transform(xs_te)
     k = k_products(xs_tr.shape[1], cfg.k_mode)
     kinds = ["rf"] * cfg.n_forests + ["erf"] * cfg.n_forests
+    if not 0 <= cfg.max_features <= 1 or (cfg.max_features and cfg.split_scale):
+        raise ValueError("max_features is 0 (sqrt) or a share in (0, 1], and excludes split_scale")
     if cfg.added_forests not in ("all", "half"):
         raise ValueError(f"added_forests must be 'all' or 'half', not {cfg.added_forests!r}")
     plain = [cfg.added_forests == "half" and j % cfg.n_forests >= (cfg.n_forests + 1) // 2 for j in range(len(kinds))]
@@ -146,7 +150,7 @@ def fit_predict(xs_tr, y_tr, groups_tr, xs_te, *, method: str, task: str, n_clas
                 z_tr = np.hstack([xb_tr, binner.transform(a_tr)])
                 z_te = np.hstack([xb_te, binner.transform(a_te)])
             test = empty(len(xs_te))
-            max_features = "sqrt"
+            max_features = cfg.max_features or "sqrt"
             m_base = xs_tr.shape[1] + (0 if prev_tr is None else prev_tr.P.shape[1])
             if cfg.split_scale and z_tr.shape[1] > m_base:
                 # exploratory: each original or P column keeps the base cascade's chance int(sqrt(m))/m

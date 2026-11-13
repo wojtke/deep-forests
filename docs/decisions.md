@@ -130,6 +130,7 @@ Chosen after the main results; all off by default (the defaults reproduce the ea
 |---|---|---|
 | Content of the added columns (`target_sum_xx`, `target_copy_xx`, `target_noise_xx`) | the pairs of target-XX; sum x_i + x_j, copy of x_i, or noise: per row, the products of a random training row of the fold model | ours |
 | Minimum leaf size (`min_leaf`) | 1 (DF21); 5 and 20 in `leaf` | ours |
+| Columns tried per split (`max_features`) | sqrt(m) (DF21); all columns in `sampling` and `sampling_large` (13.11.2026) | ours |
 | Forests that get the added columns (`added_forests`) | all; in `mixed` the first RF and the first ERF of each layer | ours |
 | Training rows (`train_rows`, `train_draws`, `train_draw`) | all; nested stratified subsets of 250 to 64,000 rows, or 4 disjoint draws of 1,000 | ours |
 | Rows of the large datasets | at most 100,000, subsampled as in the plan | ours |

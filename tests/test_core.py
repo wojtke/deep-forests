@@ -397,6 +397,28 @@ def test_min_leaf_and_half_forests_change_only_what_they_should():
     assert seen["all"] == [d + k] * 12 and seen["half"] == [d + k, d, d + k, d] * 3
 
 
+def test_max_features_default_is_sqrt_and_a_share_changes_the_trees():
+    X, y = problem()
+    base = cascade("base", X, y)
+    same = cascade("base", X, y, cfg=CascadeConfig(n_trees=4, max_layers=3, max_features=0.0))
+    assert all(np.array_equal(p.test_pred, s.test_pred) for p, s in zip(base.layers, same.layers))
+    full = cascade("base", X, y, cfg=CascadeConfig(n_trees=4, max_layers=3, max_features=1.0))
+    assert not np.array_equal(base.layers[0].test_pred, full.layers[0].test_pred)
+    seen = []
+
+    def spy(*args, **kwargs):
+        seen.append(kwargs["max_features"])
+        return grow_forest(*args, **kwargs)
+
+    import pytest as _pytest
+    with _pytest.MonkeyPatch.context() as mp:
+        mp.setattr(cascade_module, "grow_forest", spy)
+        cascade("target_xx", X, y, cfg=CascadeConfig(n_trees=4, max_layers=1, max_features=1.0))
+        with _pytest.raises(ValueError):
+            cascade("base", X, y, cfg=CascadeConfig(n_trees=4, max_layers=1, max_features=1.0, split_scale=True))
+    assert seen == [1.0] * 12
+
+
 def test_train_subsets_are_nested_disjoint_and_stratified():
     from dfx.data import train_subset
 

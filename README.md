@@ -48,6 +48,9 @@ The other experiments in `experiments/` run the same way:
   rows, bias and variance, synthetic targets and six large datasets. Each file states its question, bar and
   prediction, written before the run. The large datasets need `uv run dfx data casp sgemm covertype miniboone
   higgs higgs_low`, and `large` and `large64` run outer folds 0–2 only (`--folds 0,1,2`).
+- `large_content`, `sampling`, `sampling_large`: added on 13.11.2026 after reading those results: sum and copy
+  controls on the large datasets, and cascades whose forests try all columns at each split. The two on the
+  large datasets run outer folds 0–2 only.
 - `smoke`: every method on tiny built-in data, 30 s; not a result.
 
 The planned runs (`main`, `sensitivity`, `positive`) were made with the code of the repository's first commit.

@@ -1,0 +1,21 @@
+# Exploratory follow-up of 12.11.2026 (course folder pro/followup-2026-11-12/plan.md), chosen after the main
+# results and two reviews. Not in the plan; decides no hypothesis. Bars and predictions below were
+# written before the run. "Reduction" is the relative error reduction of the main report.
+#
+# N2, what is in a product column. All 32 datasets, seed 0, main settings. The three target_*_xx variants use
+# the pairs target_xx chooses (the same at every layer) and put other content into the K columns: the sum
+# x_i + x_j, a copy of x_i, or noise drawn from the products' training values (the repaired noise control).
+# base, random_xx, target_xx and residual_xx repeat the main runs of seed 0 under this code and must equal
+# them bit for bit. This experiment is also the reference (leaf 1, all forests, all rows) for leaf.toml,
+# mixed.toml and size.toml. 7 x 32 x 5 = 1,120 tasks.
+#
+# Bars (a "clear win" = median reduction > 0 and at least 20 of 32 datasets better):
+# - C0 noise penalty: target_noise_xx is clearly worse than base. Prediction: yes.
+# - C1 real columns beat noise: target_xx is a clear win over target_noise_xx. Prediction: yes.
+# - C2 products beat other real columns: target_xx is a clear win over target_sum_xx and over
+#   target_copy_xx. Prediction: no. If C1 holds and C2 fails, "the products carry information" is wrong:
+#   any real column hurts less than noise.
+datasets = "all"
+seeds = [0]
+outer_folds = 5
+methods = ["base", "random_xx", "target_xx", "residual_xx", "target_sum_xx", "target_copy_xx", "target_noise_xx"]

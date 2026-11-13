@@ -11,11 +11,13 @@ from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 
 
 def grow_forest(kind: str, task: str, n_trees: int, Z: np.ndarray, y: np.ndarray, evals: list,
-                n_classes: int, seed: int, max_features="sqrt") -> list[tuple[np.ndarray, np.ndarray | None]]:
+                n_classes: int, seed: int, max_features="sqrt", min_leaf: int = 1) -> list[tuple[np.ndarray, np.ndarray | None]]:
     """Fit a forest on (Z, y); for each array in `evals` return (mean, mean_sq): the forest's
     prediction (n, C), C = 1 in regression, and in regression the mean of the squared tree
     predictions (n,), from which the tree standard deviation of plan eq. 3 follows.
-    max_features: DF21's sqrt, or a count (exploratory `split_scale`, branch explore)."""
+    max_features: DF21's sqrt, a count (exploratory `split_scale`, branch explore) or a share of the
+    columns as a float (exploratory `max_features`, 13.11.2026).
+    min_leaf: DF21's 1 (fully grown), or a larger minimum leaf size (exploratory, 12.11.2026)."""
     rng = np.random.default_rng(seed)
     classification = task == "classification"
     tree_class = DecisionTreeClassifier if classification else DecisionTreeRegressor
@@ -24,7 +26,8 @@ def grow_forest(kind: str, task: str, n_trees: int, Z: np.ndarray, y: np.ndarray
     squares = [np.zeros(len(e)) for e in evals]
     for _ in range(n_trees):
         rows = np.unique(rng.integers(0, len(Z), len(Z)))  # distinct rows of a bootstrap draw
-        tree = tree_class(splitter=splitter, max_features=max_features, random_state=int(rng.integers(2**31 - 1)))
+        tree = tree_class(splitter=splitter, max_features=max_features, min_samples_leaf=min_leaf,
+                          random_state=int(rng.integers(2**31 - 1)))
         tree.fit(Z[rows], y[rows])
         for i, e in enumerate(evals):
             if classification:

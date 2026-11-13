@@ -1,0 +1,737 @@
+
+====================================================================================================
+Identity: content (new code) vs main seed 0, same method/dataset/fold
+====================================================================================================
+  640 shared runs, error bit-identical in 640; max abs diff 0
+  by method: {'base': {'sum': 160, 'size': 160}, 'random_xx': {'sum': 160, 'size': 160}, 'residual_xx': {'sum': 160, 'size': 160}, 'target_xx': {'sum': 160, 'size': 160}}
+
+====================================================================================================
+N2 content: what is in a product column (32 datasets, seed 0)
+====================================================================================================
+ [chosen layer]
+  C0 noise vs base                               median  -4.06%  mean  -7.72%  W/L  4/28 of 32  p=0.000  bar met in reverse (count only; see p)
+  C1 target_xx vs noise                          median  +3.53%  mean  +5.47%  W/L 26/ 6 of 32  p=0.000  bar met
+  C2 target_xx vs sum                            median  -0.10%  mean  -0.64%  W/L 14/18 of 32  p=0.561  bar not met
+  C2 target_xx vs copy                           median  +0.26%  mean  +1.79%  W/L 17/15 of 32  p=0.548  bar not met
+     target_xx vs base                           median  -0.41%  mean  -2.60%  W/L 13/19 of 32  p=0.134  bar not met
+     target_sum_xx vs base                       median  -0.47%  mean  -1.84%  W/L 12/20 of 32  p=0.217  bar met in reverse (count only; see p)
+     target_copy_xx vs base                      median  -1.87%  mean  -4.07%  W/L 10/22 of 32  p=0.006  bar met in reverse (count only; see p)
+     random_xx vs base                           median  -1.04%  mean  -2.49%  W/L 12/20 of 32  p=0.052  bar met in reverse (count only; see p)
+     residual_xx vs base                         median  -0.56%  mean  -2.45%  W/L 13/18 of 32  p=0.130  bar not met
+     sum vs noise                                median  +3.32%  mean  +5.97%  W/L 25/ 7 of 32  p=0.000  bar met
+     copy vs noise                               median  +1.25%  mean  +3.55%  W/L 23/ 9 of 32  p=0.011  bar met
+     random_xx vs noise                          median  +2.65%  mean  +5.66%  W/L 27/ 5 of 32  p=0.000  bar met
+ [layer 1]
+  C0 noise vs base                               median  -8.52%  mean -12.75%  W/L  2/29 of 32  p=0.000  bar met in reverse (count only; see p)
+  C1 target_xx vs noise                          median  +6.94%  mean +12.58%  W/L 29/ 3 of 32  p=0.000  bar met
+  C2 target_xx vs sum                            median  -0.35%  mean  -2.36%  W/L 11/21 of 32  p=0.119  bar met in reverse (count only; see p)
+  C2 target_xx vs copy                           median  -0.45%  mean  +0.73%  W/L 14/18 of 32  p=0.846  bar not met
+     target_xx vs base                           median  -0.48%  mean  -0.64%  W/L 12/20 of 32  p=0.536  bar met in reverse (count only; see p)
+     target_sum_xx vs base                       median  -0.14%  mean  +1.52%  W/L 15/17 of 32  p=0.638  bar not met
+     target_copy_xx vs base                      median  -0.80%  mean  -1.22%  W/L 13/19 of 32  p=0.524  bar not met
+     random_xx vs base                           median  -1.05%  mean  -2.23%  W/L  9/22 of 32  p=0.005  bar met in reverse (count only; see p)
+     residual_xx vs base                         median  -0.48%  mean  -0.64%  W/L 12/20 of 32  p=0.536  bar met in reverse (count only; see p)
+     sum vs noise                                median  +8.16%  mean +14.05%  W/L 29/ 3 of 32  p=0.000  bar met
+     copy vs noise                               median  +7.50%  mean +12.28%  W/L 29/ 3 of 32  p=0.000  bar met
+     random_xx vs noise                          median  +7.25%  mean +11.36%  W/L 29/ 2 of 32  p=0.000  bar met
+ [old shuffled control vs repaired noise control, chosen layer]
+  old shuffled_xx vs base                        median  -2.62%  mean  -6.19%  W/L  5/27 of 32  p=0.000  bar met in reverse (count only; see p)
+  repaired noise vs old shuffled                 median  -0.53%  mean  -1.63%  W/L  8/24 of 32  p=0.007  bar met in reverse (count only; see p)
+                   random_xx  residual_xx  target_copy_xx  target_noise_xx  target_sum_xx  target_xx        n task
+dataset                                                                                                           
+concrete_slump         -5.78       -13.60          -13.11           -12.66           5.59     -10.78     82.4  reg
+servo                   4.68         4.69            2.49            -6.50           2.63       3.45    133.6  reg
+automobile             -8.49        -9.48           -5.73           -17.34          -2.93      -8.94    160.8  reg
+sonar                  14.96        11.37           -4.54            -6.74          -5.54      13.65    166.4  cla
+spectf                -11.83        -7.65          -12.39           -20.77          -5.50     -13.25    213.6  cla
+heart_statlog         -10.22         0.00           -6.91            -1.46          13.37       3.47    216.0  cla
+student_math            1.17         0.13           -0.58            -1.19          -0.78      -0.07    316.0  reg
+auto_mpg                1.85        -1.05           -2.46            -2.77          -5.68      -4.92    318.4  reg
+real_estate             0.86        -0.33            0.57             0.28           0.15       0.10    331.2  reg
+climate_crashes       -18.46        -3.96           -2.69           -32.22          20.29      -3.54    432.0  cla
+energy                 -2.81         0.76           -1.80           -17.62          -1.66       3.04    614.4  reg
+vehicle                -4.11         2.91            4.80            -3.91          -1.77       3.28    676.8  cla
+tictactoe             -29.63       -46.34          -57.63           -53.07         -37.38     -30.82    766.4  cla
+german_credit          -4.33         2.55            6.02            -4.20           4.67       3.04    800.0  cla
+qsar_biodeg             1.78        -2.19            0.04            -6.08           3.88       0.42    844.0  cla
+wine_red               -1.11        -0.92           -1.09            -3.11          -0.79      -0.92   1279.2  reg
+steel_plates           -0.74        -5.32           -3.23           -11.42          -6.87      -6.82   1552.8  cla
+communities            -0.59        -0.87           -0.45            -1.14          -0.15      -0.82   1595.2  reg
+cardiotocography        4.16        -7.51           -7.88            -7.83          -8.39      -9.06   1700.8  cla
+abalone                -0.55        -1.13           -1.48            -1.60          -0.13      -1.13   3341.6  reg
+spambase                3.87         5.30            3.76            -9.91           3.24       3.40   3680.8  cla
+page_blocks             0.91        -3.67            2.92             6.74          -6.43      -8.84   4378.4  cla
+parkinsons             -0.96         0.10           -2.99             0.36          -0.08       0.46   4700.0  reg
+air_quality            -1.17         0.29            1.69            -3.09           0.56       0.29   5875.2  reg
+ccpp                   -1.94        -3.04           -6.40            -4.39          -2.97      -3.04   7654.4  reg
+phishing               -5.20        -0.43           -2.91            -9.38          -3.63      -0.43   8844.0  cla
+bike_sharing           -2.44        -2.23           -9.88            -2.94         -25.09     -14.89  13903.2  reg
+bank_marketing          0.22         0.99           -1.25            -2.59           0.42       0.92  15999.2  cla
+adult                  -1.15         1.11           -1.93            -3.06          -0.96      -0.38  15999.2  cla
+credit_default          0.43         0.26            0.26             0.14          -0.00      -0.44  15999.2  cla
+california             -3.83        -0.70           -5.63            -4.71           1.54      -0.38  16000.0  reg
+superconductivity       0.60         1.49            0.09            -2.94           1.40       0.64  16000.0  reg
+ mean layers trained / chosen layer: {'base': {'n_layers': 3.68, 'best_layer': 1.68}, 'random_xx': {'n_layers': 3.93, 'best_layer': 1.93}, 'residual_xx': {'n_layers': 3.65, 'best_layer': 1.65}, 'target_copy_xx': {'n_layers': 3.7, 'best_layer': 1.7}, 'target_noise_xx': {'n_layers': 4.22, 'best_layer': 2.22}, 'target_sum_xx': {'n_layers': 3.57, 'best_layer': 1.57}, 'target_xx': {'n_layers': 3.81, 'best_layer': 1.81}}
+
+====================================================================================================
+E2 leaf size (leaf 1 = content)
+====================================================================================================
+ [chosen layer]
+  leaf1: noise vs base                           median  -4.06%  mean  -7.72%  W/L  4/28 of 32  p=0.000
+  leaf1: residual_xx vs base (L2)                median  -0.56%  mean  -2.45%  W/L 13/18 of 32  p=0.130  bar not met
+  leaf1: target_xx vs base                       median  -0.41%  mean  -2.60%  W/L 13/19 of 32  p=0.134
+  leaf1: target_xx vs noise                      median  +3.53%  mean  +5.47%  W/L 26/ 6 of 32  p=0.000
+  leaf5: noise vs base                           median  -4.12%  mean  -6.43%  W/L  5/27 of 32  p=0.000
+  leaf5: residual_xx vs base (L2)                median  -0.57%  mean  -0.94%  W/L 12/20 of 32  p=0.400  bar met in reverse (count only; see p)
+  leaf5: target_xx vs base                       median  -1.10%  mean  -3.12%  W/L 10/22 of 32  p=0.048
+  leaf5: target_xx vs noise                      median  +0.91%  mean  +2.73%  W/L 20/12 of 32  p=0.048
+  leaf5: base vs base at leaf 1                  median  -3.82%  mean  -9.42%  W/L  6/26 of 32  p=0.000
+  leaf5: residual_xx vs BASE AT LEAF 1           median  -3.17%  mean  -9.28%  W/L  6/26 of 32  p=0.000
+  leaf20: noise vs base                          median  -1.80%  mean  -2.02%  W/L  4/13 of 17  p=0.002
+  leaf20: residual_xx vs base (L2)               median  -0.09%  mean  +0.10%  W/L  6/11 of 17  p=0.548  bar met in reverse (count only; see p)
+  leaf20: target_xx vs base                      median  -0.64%  mean  -1.59%  W/L  3/14 of 17  p=0.007
+  leaf20: target_xx vs noise                     median  +0.76%  mean  +0.43%  W/L 10/ 7 of 17  p=0.353
+  leaf20: base vs base at leaf 1                 median  -7.41%  mean -14.69%  W/L  3/14 of 17  p=0.000
+  leaf20: residual_xx vs BASE AT LEAF 1          median  -7.49%  mean -14.71%  W/L  2/15 of 17  p=0.000
+  L1: penalty smaller at leaf 5 than leaf 1 on 18 of 32 (bar 20); median change +1.14 pts
+      penalty smaller at leaf 20 than leaf 1 on 14 of 17 (>=1,000 rows); median change +1.01 pts
+ [layer 1]
+  leaf1: noise vs base                           median  -8.52%  mean -12.75%  W/L  2/29 of 32  p=0.000
+  leaf1: residual_xx vs base (L2)                median  -0.48%  mean  -0.64%  W/L 12/20 of 32  p=0.536  bar met in reverse (count only; see p)
+  leaf1: target_xx vs base                       median  -0.48%  mean  -0.64%  W/L 12/20 of 32  p=0.536
+  leaf1: target_xx vs noise                      median  +6.94%  mean +12.58%  W/L 29/ 3 of 32  p=0.000
+  leaf5: noise vs base                           median  -5.60%  mean  -7.05%  W/L  1/30 of 32  p=0.000
+  leaf5: residual_xx vs base (L2)                median  +0.01%  mean  +2.20%  W/L 16/15 of 32  p=0.189  bar not met
+  leaf5: target_xx vs base                       median  +0.01%  mean  +2.20%  W/L 16/15 of 32  p=0.189
+  leaf5: target_xx vs noise                      median  +6.23%  mean  +8.96%  W/L 29/ 2 of 32  p=0.000
+  leaf5: base vs base at leaf 1                  median  -9.86%  mean -15.23%  W/L  2/29 of 32  p=0.000
+  leaf5: residual_xx vs BASE AT LEAF 1           median  -5.86%  mean -13.40%  W/L  4/27 of 32  p=0.000
+  leaf20: noise vs base                          median  -3.46%  mean  -3.68%  W/L  1/16 of 17  p=0.000
+  leaf20: residual_xx vs base (L2)               median  +0.11%  mean  +2.16%  W/L 10/ 7 of 17  p=0.306  bar not met
+  leaf20: target_xx vs base                      median  +0.11%  mean  +2.16%  W/L 10/ 7 of 17  p=0.306
+  leaf20: target_xx vs noise                     median  +4.37%  mean  +5.70%  W/L 16/ 1 of 17  p=0.000
+  leaf20: base vs base at leaf 1                 median -15.95%  mean -22.24%  W/L  1/16 of 17  p=0.000
+  leaf20: residual_xx vs BASE AT LEAF 1          median -15.71%  mean -20.45%  W/L  1/16 of 17  p=0.000
+  L1: penalty smaller at leaf 5 than leaf 1 on 21 of 32 (bar 20); median change +2.32 pts
+      penalty smaller at leaf 20 than leaf 1 on 12 of 17 (>=1,000 rows); median change +2.36 pts
+  best-leaf residual_xx vs best-leaf base (test-picked) median  -0.81%  mean  -2.26%  W/L 10/22 of 32  p=0.068  bar met in reverse (count only; see p)
+
+====================================================================================================
+N5 mixed: products for half of the forests ('all' and base = content)
+====================================================================================================
+ [chosen layer]
+  M1 half vs all: residual_xx                    median  +0.79%  mean  +3.21%  W/L 25/ 7 of 32  p=0.001  bar met
+  M2 half vs base: residual_xx                   median  +0.16%  mean  +0.72%  W/L 17/15 of 32  p=0.477  bar not met
+     all vs base: residual_xx                    median  -0.56%  mean  -2.45%  W/L 13/18 of 32  p=0.130  bar not met
+  M1 half vs all: target_xx                      median  +0.74%  mean  +2.71%  W/L 22/10 of 32  p=0.002  bar met
+  M2 half vs base: target_xx                     median  +0.12%  mean  +0.08%  W/L 16/16 of 32  p=0.665  bar not met
+     all vs base: target_xx                      median  -0.41%  mean  -2.60%  W/L 13/19 of 32  p=0.134  bar not met
+  M1 half vs all: random_xx                      median  +0.69%  mean  +1.64%  W/L 20/12 of 32  p=0.048  bar met
+  M2 half vs base: random_xx                     median  -0.44%  mean  -0.93%  W/L 12/20 of 32  p=0.304  bar met in reverse (count only; see p)
+     all vs base: random_xx                      median  -1.04%  mean  -2.49%  W/L 12/20 of 32  p=0.052  bar met in reverse (count only; see p)
+ [layer 1]
+  M1 half vs all: residual_xx                    median  +0.73%  mean  +1.03%  W/L 24/ 8 of 32  p=0.024  bar met
+  M2 half vs base: residual_xx                   median  -0.05%  mean  +0.30%  W/L 15/17 of 32  p=0.761  bar not met
+     all vs base: residual_xx                    median  -0.48%  mean  -0.64%  W/L 12/20 of 32  p=0.536  bar met in reverse (count only; see p)
+  M1 half vs all: target_xx                      median  +0.73%  mean  +1.03%  W/L 24/ 8 of 32  p=0.024  bar met
+  M2 half vs base: target_xx                     median  -0.05%  mean  +0.30%  W/L 15/17 of 32  p=0.761  bar not met
+     all vs base: target_xx                      median  -0.48%  mean  -0.64%  W/L 12/20 of 32  p=0.536  bar met in reverse (count only; see p)
+  M1 half vs all: random_xx                      median  +0.64%  mean  +1.21%  W/L 22/ 9 of 32  p=0.005  bar met
+  M2 half vs base: random_xx                     median  -0.45%  mean  -1.13%  W/L 10/21 of 32  p=0.058  bar met in reverse (count only; see p)
+     all vs base: random_xx                      median  -1.05%  mean  -2.23%  W/L  9/22 of 32  p=0.005  bar met in reverse (count only; see p)
+
+====================================================================================================
+N1 size study (10 datasets; full = content)
+====================================================================================================
+ [chosen layer]
+  S1 noise vs base         median by size: n250  -2.96%  n1000  -3.71%  n4000  -3.00%  full  -3.00%   higher at full than at 250 on 3/10; wins at each size: 1/1/2/2
+check              n250  n1000  n4000  full
+dataset                                    
+adult             -0.00  -4.31  -2.68 -3.06
+air_quality       -1.35  -4.97  -2.34 -3.09
+bank_marketing    -2.45  -2.31  -1.38 -2.59
+bike_sharing      -6.06 -11.95 -10.20 -2.94
+california        -1.43  -3.12  -4.11 -4.71
+ccpp              -3.58  -2.54  -3.63 -4.39
+credit_default    -3.47  -1.18   0.39  0.14
+parkinsons         0.92   1.52   0.54  0.36
+phishing          -8.77  -6.89 -10.17 -9.38
+superconductivity -3.74  -4.75  -3.31 -2.94
+  S2 residual_xx vs base   median by size: n250  -0.91%  n1000  -0.02%  n4000  +0.04%  full  +0.18%   higher at full than at 250 on 7/10; wins at each size: 3/5/5/6
+check              n250  n1000  n4000  full
+dataset                                    
+adult              1.09   3.55  -1.99  1.11
+air_quality        1.04   0.47   0.50  0.29
+bank_marketing     0.69   0.28   0.37  0.99
+bike_sharing      -2.15   2.06   5.09 -2.23
+california        -5.60  -3.49  -1.74 -0.70
+ccpp              -1.39  -1.10  -1.70 -3.04
+credit_default    -0.66  -1.05  -1.18  0.26
+parkinsons        -1.11  -0.32  -0.29  0.10
+phishing          -7.57  -3.17   1.65 -0.43
+superconductivity -0.72   0.85   1.15  1.49
+     target_xx vs base     median by size: n250  -1.52%  n1000  -1.32%  n4000  -0.01%  full  -0.38%   higher at full than at 250 on 7/10; wins at each size: 2/3/5/4
+     random_xx vs base     median by size: n250  -1.62%  n1000  -1.44%  n4000  -0.79%  full  -1.16%   higher at full than at 250 on 6/10; wins at each size: 0/2/1/3
+  S3 target_xx vs noise    median by size: n250  +1.32%  n1000  +2.36%  n4000  +1.97%  full  +3.03%   higher at full than at 250 on 7/10; wins at each size: 6/7/7/8
+check              n250  n1000  n4000   full
+dataset                                     
+adult             -1.49   7.19   1.97   2.69
+air_quality        2.42   5.42   2.83   3.37
+bank_marketing     2.63   3.46   1.39   3.49
+bike_sharing       0.42   0.71  -5.03 -12.31
+california        -1.36  -2.60   2.55   4.35
+ccpp               2.23   1.45   1.96   1.39
+credit_default     2.81  -1.52  -0.42  -0.58
+parkinsons        -2.90  -2.41  -0.33   0.10
+phishing          -0.43   3.85  11.66   8.98
+superconductivity  2.24   3.27   3.68   3.56
+     random_xx vs noise    median by size: n250  +1.27%  n1000  +1.78%  n4000  +1.57%  full  +1.94%   higher at full than at 250 on 8/10; wins at each size: 7/7/8/9
+ [layer 1]
+  S1 noise vs base         median by size: n250  -7.12%  n1000  -6.88%  n4000  -6.61%  full  -5.04%   higher at full than at 250 on 5/10; wins at each size: 1/1/1/1
+check               n250  n1000  n4000   full
+dataset                                      
+adult             -14.05 -11.41  -8.37  -5.70
+air_quality        -5.85  -5.19  -3.12  -3.09
+bank_marketing     -1.71  -3.42  -2.92  -4.33
+bike_sharing       -9.25 -12.58 -16.33 -17.70
+california        -10.31  -9.81  -9.36  -8.80
+ccpp               -3.58  -2.54  -3.63  -4.39
+credit_default     -8.32  -5.73  -4.85  -3.21
+parkinsons          1.06   1.42   0.91   1.26
+phishing          -10.30  -8.14 -13.77 -16.80
+superconductivity  -5.92  -8.04  -8.88  -8.68
+  S2 residual_xx vs base   median by size: n250  -1.31%  n1000  -0.53%  n4000  +0.19%  full  -0.32%   higher at full than at 250 on 4/10; wins at each size: 4/5/5/3
+check              n250  n1000  n4000   full
+dataset                                     
+adult              1.13   1.88   1.82  -0.21
+air_quality        0.84   0.47   0.50   0.29
+bank_marketing     2.46   3.51   2.66   1.65
+bike_sharing      -1.23  -4.07  -8.30 -12.37
+california        -3.63  -2.28  -1.47  -1.10
+ccpp              -1.39  -1.10  -1.70  -3.04
+credit_default     1.23   3.89   3.28   0.62
+parkinsons        -1.84   0.04  -0.13  -0.03
+phishing          -9.16  -3.17   1.65  -0.43
+superconductivity -1.68  -1.72  -1.30  -0.82
+     target_xx vs base     median by size: n250  -1.31%  n1000  -0.53%  n4000  +0.19%  full  -0.32%   higher at full than at 250 on 4/10; wins at each size: 4/5/5/3
+     random_xx vs base     median by size: n250  -1.70%  n1000  -1.25%  n4000  -0.62%  full  -0.97%   higher at full than at 250 on 8/10; wins at each size: 1/1/4/2
+  S3 target_xx vs noise    median by size: n250  +5.47%  n1000  +6.62%  n4000  +7.82%  full  +5.70%   higher at full than at 250 on 5/10; wins at each size: 9/9/9/9
+check               n250  n1000  n4000   full
+dataset                                      
+adult              15.02  13.07  10.04   5.50
+air_quality         6.64   5.64   3.61   3.37
+bank_marketing      4.13   6.80   5.51   5.90
+bike_sharing        8.12   8.88   8.76   6.08
+california          6.93   7.70   8.02   7.79
+ccpp                2.23   1.45   1.96   1.39
+credit_default      9.45   9.39   7.97   3.81
+parkinsons         -2.88  -1.37  -1.03  -1.29
+phishing            1.25   5.14  15.20  16.44
+superconductivity   4.31   6.43   7.67   7.92
+     random_xx vs noise    median by size: n250  +4.77%  n1000  +5.09%  n4000  +5.36%  full  +4.26%   higher at full than at 250 on 6/10; wins at each size: 9/9/9/9
+ d and K by size:
+                        d                         K                     n_train                       
+check               full n1000  n250  n4000   full n1000  n250  n4000     full   n1000   n250   n4000
+dataset                                                                                              
+adult              104.0  89.0  74.0  101.0  104.0  89.0  74.0  101.0  15999.0  1000.0  250.0  4000.0
+air_quality          8.0   8.0   8.0    8.0    7.0   7.0   7.0    7.0   5875.0  1000.0  250.0  4000.0
+bank_marketing      50.0  50.0  49.0   50.0   50.0  50.0  49.0   50.0  15999.0  1000.0  250.0  4000.0
+bike_sharing        59.0  58.0  58.0   59.0   59.0  58.0  58.0   59.0  13903.0  1000.0  250.0  4000.0
+california           8.0   8.0   8.0    8.0    7.0   7.0   7.0    7.0  16000.0  1000.0  250.0  4000.0
+ccpp                 4.0   4.0   4.0    4.0    1.0   1.0   1.0    1.0   7654.0  1000.0  250.0  4000.0
+credit_default      23.0  23.0  23.0   23.0   23.0  23.0  23.0   23.0  15999.0  1000.0  250.0  4000.0
+parkinsons          18.0  18.0  18.0   18.0   18.0  18.0  18.0   18.0   4700.0  1000.0  250.0  4000.0
+phishing            30.0  30.0  30.0   30.0   30.0  30.0  30.0   30.0   8844.0  1000.0  250.0  4000.0
+superconductivity   81.0  81.0  81.0   81.0   81.0  81.0  81.0   81.0  16000.0  1000.0  250.0  4000.0
+ mean chosen layer by size:
+ method  base  random_xx  residual_xx  target_copy_xx  target_noise_xx  target_sum_xx  target_xx
+check                                                                                          
+n250    1.74       1.66         1.32             NaN             2.30            NaN       1.68
+n1000   1.90       1.88         1.60             NaN             2.16            NaN       1.78
+n4000   1.94       2.10         2.10             NaN             2.22            NaN       1.84
+full    1.84       2.10         1.78            1.74             2.34            1.6       1.92
+
+====================================================================================================
+N4 bias and variance (11 datasets, 4 disjoint draws of 1,000 rows)
+====================================================================================================
+ [chosen]  (squared error of probabilities / of y; variance = spread over draws; bias+noise = rest)
+  residual_xx vs base: variance higher on 9/11 (bar 9), bias+noise higher on 6/11; medians: mse % +0.65, var % +3.92, bias % +0.07, var share base +0.09, d var / base mse % +0.33, d bias / base mse % +0.07
+                   mse %  var %  bias %  var share base  d var / base mse %  d bias / base mse %
+dataset                                                                                         
+adult              -1.23  -1.36   -1.22            0.09               -0.12                -1.11
+air_quality        -1.15   9.44   -1.60            0.04                0.39                -1.54
+bank_marketing      0.65  17.49   -0.31            0.05                0.95                -0.30
+bike_sharing       -0.39   3.92   -1.21            0.16                0.62                -1.02
+california          7.00   0.91    7.75            0.11                0.10                 6.90
+ccpp                2.30   2.67    2.26            0.08                0.22                 2.08
+credit_default      0.40   7.50    0.07            0.04                0.33                 0.07
+page_blocks         2.57   2.83    2.53            0.12                0.33                 2.24
+parkinsons          0.86 -21.04    1.12            0.01               -0.24                 1.10
+phishing            4.01  13.97    3.03            0.09                1.25                 2.75
+superconductivity   0.02  15.83   -1.71            0.10                1.56                -1.55
+  target_noise_xx vs base: variance higher on 2/11 (bar 9), bias+noise higher on 10/11; medians: mse % +4.68, var % -23.48, bias % +6.20, var share base +0.09, d var / base mse % -1.13, d bias / base mse % +5.48
+                   mse %  var %  bias %  var share base  d var / base mse %  d bias / base mse %
+dataset                                                                                         
+adult              -0.15 -39.74    3.78            0.09               -3.58                 3.44
+air_quality         2.82  39.77    1.23            0.04                1.64                 1.17
+bank_marketing     -0.33 -20.18    0.81            0.05               -1.09                 0.76
+bike_sharing       26.72 -21.00   35.75            0.16               -3.34                30.06
+california          7.90 -25.22   11.98            0.11               -2.77                10.66
+ccpp                5.60 -24.25    8.25            0.08               -1.98                 7.58
+credit_default     -0.42 -25.68    0.75            0.04               -1.13                 0.71
+page_blocks         4.68  -6.87    6.20            0.12               -0.80                 5.48
+parkinsons         -1.65 -24.09   -1.39            0.01               -0.28                -1.37
+phishing           16.12  23.06   15.43            0.09                2.07                14.05
+superconductivity  10.02 -23.48   13.69            0.10               -2.32                12.34
+ [layer1]  (squared error of probabilities / of y; variance = spread over draws; bias+noise = rest)
+  residual_xx vs base: variance higher on 11/11 (bar 9), bias+noise higher on 7/11; medians: mse % +2.30, var % +14.88, bias % +1.94, var share base +0.06, d var / base mse % +0.99, d bias / base mse % +1.81
+                   mse %  var %  bias %  var share base  d var / base mse %  d bias / base mse %
+dataset                                                                                         
+adult              -1.45   6.45   -2.12            0.08                0.51                -1.96
+air_quality        -1.15   9.44   -1.60            0.04                0.39                -1.54
+bank_marketing      1.08  41.26   -0.89            0.05                1.92                -0.84
+bike_sharing        6.44  55.23    3.49            0.06                3.16                 3.29
+california          4.32  26.14    3.46            0.04                0.99                 3.33
+ccpp                2.30   2.67    2.26            0.08                0.22                 2.08
+credit_default      0.54  32.03   -0.68            0.04                1.19                -0.65
+page_blocks         2.81  14.88    1.94            0.07                1.00                 1.81
+parkinsons          0.64   8.01    0.55            0.01                0.09                 0.55
+phishing            4.59  31.99    2.95            0.06                1.81                 2.78
+superconductivity   3.65   6.73    3.37            0.08                0.56                 3.09
+  target_noise_xx vs base: variance higher on 0/11 (bar 9), bias+noise higher on 10/11; medians: mse % +10.64, var % -37.31, bias % +12.27, var share base +0.06, d var / base mse % -1.74, d bias / base mse % +11.77
+                   mse %  var %  bias %  var share base  d var / base mse %  d bias / base mse %
+dataset                                                                                         
+adult               3.62 -62.23    9.24            0.08               -4.89                 8.51
+air_quality        10.64 -27.28   12.27            0.04               -1.13                11.77
+bank_marketing      0.02 -37.31    1.84            0.05               -1.74                 1.76
+bike_sharing       31.32 -26.58   34.83            0.06               -1.52                32.84
+california         23.26 -26.72   25.22            0.04               -1.01                24.27
+ccpp                5.60 -24.25    8.25            0.08               -1.98                 7.58
+credit_default      0.64 -39.43    2.19            0.04               -1.47                 2.11
+page_blocks        17.92 -38.62   22.00            0.07               -2.60                20.52
+parkinsons         -2.10 -22.20   -1.87            0.01               -0.25                -1.85
+phishing           25.33 -41.67   29.36            0.06               -2.36                27.69
+superconductivity  18.78 -41.36   24.26            0.08               -3.45                22.23
+  draws: residual_xx vs base (error, 4 draws x 5 folds) median  -0.01%  mean  -0.73%  W/L  5/ 6 of 11  p=0.413  bar not met
+  draws: noise vs base                           median  -2.88%  mean  -4.03%  W/L  1/10 of 11  p=0.002  bar met in reverse (count only; see p)
+
+====================================================================================================
+N3 synthetic: selection or representation (1,000 rows, 3 seeds x 5 folds)
+====================================================================================================
+ mean error (chosen layer):
+ method                     base  lightgbm  random_xx  residual_xx      rf  target_noise_xx  target_xx
+dataset                                                                                              
+syn_add                  0.6166    0.5887     0.6632       0.6658  0.7505           0.6572     0.6663
+syn_add_oracle           0.5892    0.5600     0.6179       0.6215  0.6649           0.6185     0.6258
+syn_add_oracle_noise     0.6194    0.5688     0.6708       0.6848  0.7731           0.6678     0.6896
+syn_hidden               1.1171    0.9626     1.2418       1.2425  1.3420           1.3084     1.2498
+syn_hidden_oracle        0.7548    0.7815     0.8055       0.8358  0.8769           0.8127     0.8324
+syn_hidden_oracle_noise  0.8184    0.7843     0.9426       0.9668  1.0807           0.9474     0.9714
+syn_prod                 1.5309    1.2841     1.5244       1.0528  2.6309           2.2885     1.0617
+syn_prod_oracle          0.9189    0.9197     0.9844       0.9304  1.1606           0.9618     0.9305
+syn_prod_oracle_noise    0.9846    0.9120     1.1209       1.0565  1.4636           1.1195     1.0679
+ mean error (layer 1, cascade methods):
+ method                     base  lightgbm  random_xx  residual_xx      rf  target_noise_xx  target_xx
+dataset                                                                                              
+syn_add                  0.7965    0.5887     0.8991       0.8965  0.7505           0.9800     0.8965
+syn_add_oracle           0.6991    0.5600     0.7725       0.7839  0.6649           0.8458     0.7839
+syn_add_oracle_noise     0.8323    0.5688     0.9178       0.9153  0.7731           0.9642     0.9153
+syn_hidden               1.6841    0.9626     1.8485       1.7811  1.3420           1.9728     1.7811
+syn_hidden_oracle        1.0268    0.7815     1.2204       1.1833  0.8769           1.3480     1.1833
+syn_hidden_oracle_noise  1.3189    0.7843     1.4622       1.4210  1.0807           1.5672     1.4210
+syn_prod                 2.5246    1.2841     2.5461       1.5503  2.6309           2.8416     1.5503
+syn_prod_oracle          1.2799    0.9197     1.5157       1.2077  1.1606           1.6862     1.2077
+syn_prod_oracle_noise    1.6434    0.9120     1.8425       1.4477  1.4636           1.9520     1.4477
+ [add] reduction vs base cascade on plain data: lightgbm +4.5%, random_xx -7.0%, residual_xx -7.4%, rf -17.8%, target_noise_xx -6.2%, target_xx -7.5% | oracle (base) +4.4% | oracle+10 noise (base) -0.5%
+ [prod] reduction vs base cascade on plain data: lightgbm +16.1%, random_xx +0.4%, residual_xx +31.2%, rf -41.8%, target_noise_xx -33.1%, target_xx +30.6% | oracle (base) +40.0% | oracle+10 noise (base) +35.7%
+ [hidden] reduction vs base cascade on plain data: lightgbm +13.8%, random_xx -10.0%, residual_xx -10.1%, rf -16.8%, target_noise_xx -14.6%, target_xx -10.6% | oracle (base) +32.4% | oracle+10 noise (base) +26.7%
+ per-seed errors:
+ seed                                          0       1       2
+dataset                 method                                 
+syn_add                 base             0.6116  0.6157  0.6226
+                        lightgbm         0.5865  0.5821  0.5974
+                        random_xx        0.6587  0.6594  0.6715
+                        residual_xx      0.6606  0.6705  0.6664
+                        rf               0.7474  0.7466  0.7575
+                        target_noise_xx  0.6547  0.6578  0.6590
+                        target_xx        0.6580  0.6712  0.6696
+syn_add_oracle          base             0.5843  0.5860  0.5973
+                        lightgbm         0.5545  0.5613  0.5643
+                        random_xx        0.6081  0.6142  0.6315
+                        residual_xx      0.6168  0.6220  0.6256
+                        rf               0.6637  0.6673  0.6637
+                        target_noise_xx  0.6173  0.6167  0.6214
+                        target_xx        0.6229  0.6251  0.6295
+syn_add_oracle_noise    base             0.6167  0.6188  0.6228
+                        lightgbm         0.5642  0.5661  0.5761
+                        random_xx        0.6652  0.6774  0.6697
+                        residual_xx      0.6883  0.6793  0.6867
+                        rf               0.7718  0.7699  0.7775
+                        target_noise_xx  0.6662  0.6679  0.6693
+                        target_xx        0.6871  0.6891  0.6926
+syn_hidden              base             1.1022  1.1307  1.1183
+                        lightgbm         0.9607  0.9329  0.9942
+                        random_xx        1.2624  1.2474  1.2155
+                        residual_xx      1.2576  1.2334  1.2366
+                        rf               1.3468  1.3353  1.3440
+                        target_noise_xx  1.2827  1.3528  1.2897
+                        target_xx        1.2612  1.2428  1.2454
+syn_hidden_oracle       base             0.7463  0.7593  0.7589
+                        lightgbm         0.7731  0.7885  0.7828
+                        random_xx        0.7931  0.7995  0.8238
+                        residual_xx      0.8311  0.8402  0.8360
+                        rf               0.8681  0.8904  0.8722
+                        target_noise_xx  0.8086  0.8087  0.8208
+                        target_xx        0.8318  0.8247  0.8408
+syn_hidden_oracle_noise base             0.8125  0.8201  0.8228
+                        lightgbm         0.7700  0.7854  0.7975
+                        random_xx        0.9418  0.9459  0.9400
+                        residual_xx      0.9762  0.9540  0.9702
+                        rf               1.0715  1.0936  1.0771
+                        target_noise_xx  0.9500  0.9362  0.9559
+                        target_xx        0.9742  0.9590  0.9810
+syn_prod                base             1.5390  1.4651  1.5886
+                        lightgbm         1.3028  1.2433  1.3063
+                        random_xx        1.6639  1.4492  1.4601
+                        residual_xx      1.0784  1.0460  1.0340
+                        rf               2.6685  2.6164  2.6078
+                        target_noise_xx  2.3791  2.1298  2.3564
+                        target_xx        1.1010  1.0570  1.0272
+syn_prod_oracle         base             0.9758  0.8935  0.8873
+                        lightgbm         0.9606  0.9084  0.8901
+                        random_xx        1.0590  0.9569  0.9372
+                        residual_xx      1.0092  0.8872  0.8948
+                        rf               1.2191  1.1396  1.1230
+                        target_noise_xx  1.0026  0.9600  0.9229
+                        target_xx        1.0026  0.8877  0.9013
+syn_prod_oracle_noise   base             1.0450  0.9474  0.9614
+                        lightgbm         0.9378  0.8992  0.8991
+                        random_xx        1.1650  1.0932  1.1045
+                        residual_xx      1.1004  1.0273  1.0418
+                        rf               1.5091  1.4232  1.4585
+                        target_noise_xx  1.1729  1.1008  1.0848
+                        target_xx        1.1164  1.0393  1.0482
+
+====================================================================================================
+N3b planted product at fewer rows (6 datasets; full = explore_sweep)
+====================================================================================================
+      median %                    wins of 6                bar met                   
+lam       l000  l025  l050   l100      l000 l025 l050 l100    l000   l025  l050  l100
+check                                                                                
+full     -1.00  1.94  8.94  19.58         0    6    6    6   False   True  True  True
+n1000    -0.75  1.27  8.20  23.49         2    6    6    6   False   True  True  True
+n250     -1.48  0.78  5.33  22.50         1    4    6    6   False  False  True  True
+lam                l000   l025   l050   l100
+check src                                   
+full  abalone     -1.20   2.22   7.45  17.26
+      air_quality -0.22  12.13  25.52  26.37
+      ccpp        -1.11   6.44  12.92  19.31
+      communities -1.23   0.77   9.64  29.37
+      parkinsons  -0.89   1.66   6.36  17.74
+      wine_red    -0.16   1.17   8.24  19.84
+n1000 abalone     -1.04   1.05   9.04  22.68
+      air_quality  0.13   8.30  26.50  42.37
+      ccpp         2.11  13.51  28.93  36.55
+      communities -0.92   1.23   7.35  24.31
+      parkinsons  -1.34   1.02   4.18  15.63
+      wine_red    -0.58   1.30   7.15  21.17
+n250  abalone     -1.38  -0.40   6.25  23.72
+      air_quality -1.67   2.28  15.52  35.09
+      ccpp         0.39  14.21  27.23  42.07
+      communities -1.59   0.21   1.92   8.62
+      parkinsons  -1.37   1.36   3.68  13.78
+      wine_red    -1.85  -0.38   4.40  21.27
+
+====================================================================================================
+E1 large data (6 datasets, folds 0-2)
+====================================================================================================
+ tasks: {'n1000': 108, 'n16000': 108, 'n4000': 108, 'n64000': 90} | CPU-hours: 12.4
+ [chosen layer]
+  mean error:
+ check       n1000                                                          n4000                                                         n16000                                                         n64000                                                       
+method       base lightgbm random_xx residual_xx      rf target_noise_xx    base lightgbm random_xx residual_xx      rf target_noise_xx    base lightgbm random_xx residual_xx      rf target_noise_xx    base lightgbm random_xx residual_xx      rf target_noise_xx
+dataset                                                                                                                                                                                                                                                              
+casp       4.8025   4.8678    4.8332      4.8368  4.7484          5.1414  4.3557   4.3433    4.3705      4.3492  4.2727          4.5050  3.7235   3.8639    3.7230      3.7213  3.7918          3.9893     NaN      NaN       NaN         NaN     NaN             NaN
+covertype  0.5794   0.5593    0.5773      0.5518  0.5531          0.6126  0.4194   0.4374    0.4418      0.4061  0.4385          0.5085  0.2756   0.3035    0.2769      0.2632  0.3183          0.3774  0.1607   0.1656    0.1583      0.1514  0.2028          0.2540
+higgs      0.3378   0.3324    0.3366      0.3431  0.3331          0.3540  0.3089   0.3032    0.3082      0.3113  0.3059          0.3130  0.2965   0.2874    0.2962      0.2938  0.2934          0.2981  0.2813   0.2748    0.2824      0.2781  0.2827          0.2873
+higgs_low  0.4447   0.4494    0.4423      0.4273  0.4391          0.4558  0.4095   0.4192    0.4108      0.3937  0.4100          0.4322  0.3818   0.3798    0.3807      0.3733  0.3809          0.3991  0.3592   0.3590    0.3620      0.3541  0.3596          0.3751
+miniboone  0.1020   0.1141    0.1146      0.1195  0.1380          0.1250  0.0928   0.0856    0.0957      0.0937  0.1119          0.0958  0.0763   0.0718    0.0765      0.0793  0.0940          0.0781  0.0637   0.0626    0.0651      0.0668  0.0802          0.0674
+sgemm      0.3648   0.3774    0.3663      0.2691  0.5463          0.4057  0.1999   0.2062    0.1836      0.1710  0.3909          0.2316  0.1280   0.1274    0.1243      0.1022  0.2610          0.1468  0.0777   0.0968    0.0704      0.0621  0.1603          0.0912
+  Z1 noise vs base
+check      n1000  n4000  n16000  n64000
+dataset                                
+casp       -6.59  -3.31   -6.66     NaN
+covertype  -5.41 -17.53  -26.99  -36.74
+higgs      -4.59  -1.29   -0.54   -2.09
+higgs_low  -2.44  -5.24   -4.32   -4.24
+miniboone -18.40  -3.14   -2.33   -5.45
+sgemm     -10.09 -13.70  -12.77  -14.84
+  Z2 residual_xx vs base
+check      n1000  n4000  n16000  n64000
+dataset                                
+casp       -0.71   0.15    0.06     NaN
+covertype   4.77   3.17    4.48    5.77
+higgs      -1.57  -0.76    0.91    1.16
+higgs_low   3.92   3.86    2.24    1.42
+miniboone -14.70  -0.88   -3.83   -4.56
+sgemm      26.22  14.47   20.19   20.08
+     random_xx vs base
+check      n1000  n4000  n16000  n64000
+dataset                                
+casp       -0.64  -0.34    0.01     NaN
+covertype   0.36  -5.07   -0.48    1.51
+higgs       0.33   0.24    0.09   -0.36
+higgs_low   0.54  -0.32    0.30   -0.78
+miniboone -11.01  -3.01   -0.26   -2.13
+sgemm      -0.41   8.16    2.91    9.36
+     residual_xx vs noise
+check      n1000  n4000  n16000  n64000
+dataset                                
+casp        5.92   3.46    6.72     NaN
+covertype   9.91  20.14   30.26   40.39
+higgs       3.07   0.54    1.44    3.22
+higgs_low   6.26   8.90    6.46    5.60
+miniboone   4.35   2.28   -1.54    0.94
+sgemm      33.66  26.19   30.39   31.94
+     random_xx vs noise
+check      n1000  n4000  n16000  n64000
+dataset                                
+casp        5.99   2.99    6.68     NaN
+covertype   5.75  13.13   26.64   37.70
+higgs       4.91   1.53    0.63    1.73
+higgs_low   2.97   4.94    4.61    3.48
+miniboone   8.31   0.13    2.08    3.40
+sgemm       9.72  20.75   15.31   22.81
+     base vs lightgbm
+check      n1000  n4000  n16000  n64000
+dataset                                
+casp        1.34  -0.29    3.63     NaN
+covertype  -3.48   4.12    9.21    2.95
+higgs      -1.58  -1.85   -3.06   -2.33
+higgs_low   1.06   2.30   -0.52   -0.05
+miniboone  10.61  -7.77   -5.91   -1.71
+sgemm       3.35   3.07   -0.47   19.75
+     base vs rf
+check      n1000  n4000  n16000  n64000
+dataset                                
+casp       -1.13  -1.90    1.80     NaN
+covertype  -4.54   4.35   13.43   20.76
+higgs      -1.37  -0.99   -1.03    0.48
+higgs_low  -1.26   0.12   -0.23    0.11
+miniboone  26.11  17.05   18.83   20.58
+sgemm      33.22  48.87   50.96   51.56
+ [layer 1]
+  Z1 noise vs base
+check      n1000  n4000  n16000  n64000
+dataset                                
+casp       -6.59  -8.04   -9.42     NaN
+covertype -14.82 -21.24  -30.51  -44.36
+higgs      -6.88  -5.42   -3.26   -3.51
+higgs_low  -4.17  -5.61   -5.92   -5.65
+miniboone  -9.14 -10.21  -11.38  -11.62
+sgemm     -17.20 -23.05  -30.49  -39.52
+  Z2 residual_xx vs base
+check      n1000  n4000  n16000  n64000
+dataset                                
+casp       -0.71   0.15   -0.03     NaN
+covertype   6.43   6.98    8.90   10.65
+higgs      -1.85  -0.76   -0.12   -0.20
+higgs_low   3.09   3.86    2.24    0.39
+miniboone  -4.61  -4.00   -4.97   -4.98
+sgemm      36.78  45.51   46.51   43.82
+     random_xx vs base
+check      n1000  n4000  n16000  n64000
+dataset                                
+casp       -0.64  -0.34   -0.28     NaN
+covertype   1.03  -0.17    1.67    6.27
+higgs      -1.46  -0.83   -0.83   -1.52
+higgs_low  -0.31  -1.40   -1.00   -1.48
+miniboone  -3.18  -2.66   -3.32   -3.20
+sgemm       8.43  21.88   32.57   40.06
+     residual_xx vs noise
+check      n1000  n4000  n16000  n64000
+dataset                                
+casp        5.92   8.17    9.39     NaN
+covertype  20.30  26.74   36.70   50.29
+higgs       5.13   4.70    3.15    3.32
+higgs_low   7.13   9.25    8.02    6.02
+miniboone   4.74   6.47    6.74    6.98
+sgemm      47.66  58.07   62.82   66.02
+     random_xx vs noise
+check      n1000  n4000  n16000  n64000
+dataset                                
+casp        5.99   7.72    9.16     NaN
+covertype  15.70  21.11   31.67   47.85
+higgs       5.50   4.63    2.45    2.02
+higgs_low   3.87   4.27    4.97    4.24
+miniboone   6.16   7.75    8.34    8.69
+sgemm      24.18  39.89   53.13   63.74
+ mean chosen layer:
+ method  base  lightgbm  random_xx  residual_xx   rf  target_noise_xx
+check                                                               
+n1000   1.89       1.0       1.78         1.56  1.0             2.83
+n16000  1.89       1.0       1.89         1.89  1.0             2.67
+n4000   1.67       1.0       1.89         1.56  1.0             2.44
+n64000  2.13       1.0       2.07         2.27  1.0             3.20
+ per-fold residual_xx vs base (sign consistency):
+fold                  0      1      2
+dataset   check                      
+casp      n1000   -0.58  -0.73  -0.82
+          n16000  -0.24   0.67  -0.26
+          n4000   -0.03   0.20   0.27
+covertype n1000    8.47   5.03   0.76
+          n16000   0.59   3.53   8.89
+          n4000    8.11  -1.77   3.23
+          n64000   3.97   7.59   5.70
+higgs     n1000   -1.91  -4.07   1.34
+          n16000  -0.57   2.61   0.70
+          n4000   -2.30  -0.89   0.93
+          n64000   3.25   0.51  -0.31
+higgs_low n1000    3.07   2.90   5.73
+          n16000   1.00   4.28   1.44
+          n4000    4.68   4.36   2.53
+          n64000   2.17   0.12   1.95
+miniboone n1000  -21.85  -5.29 -16.68
+          n16000   2.36  -8.80  -4.75
+          n4000   -5.17   6.43  -3.27
+          n64000  -3.22  -4.22  -6.19
+sgemm     n1000   23.95  25.10  29.70
+          n16000  21.58  17.20  21.86
+          n4000   10.18  17.24  15.82
+          n64000  21.78  16.42  22.09
+
+====================================================================================================
+LC1 large_content: products, sums and copies on the large datasets (base etc. = large)
+====================================================================================================
+ [chosen layer]
+                  target_xx vs base  target_sum_xx vs base  target_copy_xx vs base  residual_xx vs base  random_xx vs base  target_noise_xx vs base
+dataset   check                                                                                                                                    
+casp      n1000               -0.71                  -0.06                   -0.43                -0.71              -0.64                    -6.59
+          n4000                0.15                   0.27                   -0.55                 0.15              -0.34                    -3.31
+          n16000              -0.19                  -0.15                   -1.86                 0.06               0.01                    -6.66
+covertype n1000                6.41                   6.72                    4.36                 4.77               0.36                    -5.41
+          n4000                3.47                   4.01                    3.81                 3.17              -5.07                   -17.53
+          n16000               4.22                   3.82                    0.84                 4.48              -0.48                   -26.99
+higgs     n1000               -1.67                  -0.18                    0.21                -1.57               0.33                    -4.59
+          n4000               -0.76                   0.03                   -1.21                -0.76               0.24                    -1.29
+          n16000              -0.12                   1.37                    0.66                 0.91               0.09                    -0.54
+higgs_low n1000                4.22                   3.95                    2.66                 3.92               0.54                    -2.44
+          n4000                3.86                   2.31                    2.30                 3.86              -0.32                    -5.24
+          n16000               2.61                   0.91                    0.56                 2.24               0.30                    -4.32
+miniboone n1000              -14.78                 -13.75                   -7.48               -14.70             -11.01                   -18.40
+          n4000                0.20                   3.20                    3.83                -0.88              -3.01                    -3.14
+          n16000              -7.00                  -1.15                   -5.10                -3.83              -0.26                    -2.33
+sgemm     n1000               23.45                  24.75                   20.46                26.22              -0.41                   -10.09
+          n4000                5.78                   7.11                    6.49                14.47               8.16                   -13.70
+          n16000               9.44                  10.82                   10.80                20.19               2.91                   -12.77
+ [layer 1]
+                  target_xx vs base  target_sum_xx vs base  target_copy_xx vs base  residual_xx vs base  random_xx vs base  target_noise_xx vs base
+dataset   check                                                                                                                                    
+casp      n1000               -0.71                  -0.06                   -0.43                -0.71              -0.64                    -6.59
+          n4000                0.15                   0.27                   -0.55                 0.15              -0.34                    -8.04
+          n16000              -0.03                  -0.15                   -1.08                -0.03              -0.28                    -9.42
+covertype n1000                6.43                   6.08                    3.38                 6.43               1.03                   -14.82
+          n4000                6.98                   8.25                    3.71                 6.98              -0.17                   -21.24
+          n16000               8.90                   8.87                    3.18                 8.90               1.67                   -30.51
+higgs     n1000               -1.85                  -0.74                   -0.73                -1.85              -1.46                    -6.88
+          n4000               -0.76                   0.03                   -1.21                -0.76              -0.83                    -5.42
+          n16000              -0.12                   1.37                    0.66                -0.12              -0.83                    -3.26
+higgs_low n1000                3.09                   3.14                    2.34                 3.09              -0.31                    -4.17
+          n4000                3.86                   2.62                    2.30                 3.86              -1.40                    -5.61
+          n16000               2.24                   0.91                    0.56                 2.24              -1.00                    -5.92
+miniboone n1000               -4.61                  -1.63                    4.08                -4.61              -3.18                    -9.14
+          n4000               -4.00                  -0.39                    6.76                -4.00              -2.66                   -10.21
+          n16000              -4.97                   0.15                    3.52                -4.97              -3.32                   -11.38
+sgemm     n1000               36.78                  37.99                   33.24                36.78               8.43                   -17.20
+          n4000               45.51                  45.47                   44.43                45.51              21.88                   -23.05
+          n16000              46.51                  46.92                   44.48                46.51              32.57                   -30.49
+ LC1 per fold at 16,000 rows: products vs sums, products vs copies
+          vs sum             vs copy            
+fold           0     1     2       0     1     2
+dataset                                         
+casp       -0.15  0.45 -0.42    1.15  3.20  0.63
+covertype   0.61  2.20 -1.58    3.58  4.20  2.46
+higgs      -1.66 -1.62 -1.18   -1.67 -1.14  0.44
+higgs_low   0.89  2.38  1.89    1.19  3.03  1.97
+miniboone  -7.68 -5.54 -4.51   -4.23 -0.10 -1.60
+sgemm      -2.03 -1.94 -0.62   -0.40 -0.39 -3.66
+
+====================================================================================================
+F5-F7 sampling: all columns tried at each split, 10 benchmark datasets at 4,000 rows (sqrt = size n4000)
+====================================================================================================
+ [chosen layer]  x|sqrt, x|all: reduction of x against base, both with that sampling
+                   base all vs sqrt  noise|sqrt  noise|all  target|sqrt  target|all  resid|sqrt  resid|all  copy|sqrt  copy|all
+dataset                                                                                                                        
+adult                          1.26       -2.68      -2.27        -0.72       -1.94       -1.99      -1.81      -0.51     -2.15
+air_quality                    0.97       -2.34      -0.13         0.50       -0.33        0.50      -0.33       1.80     -0.15
+bank_marketing                 0.23       -1.38      -0.31         0.01        0.84        0.37       2.19      -1.61      0.53
+bike_sharing                   8.63      -10.20      -5.78       -14.72       -8.29        5.09      -4.22     -11.30     -2.31
+california                    -8.45       -4.11      -2.94        -1.60        0.30       -1.74       0.30      -6.00     -0.91
+ccpp                          -2.39       -3.63      -2.08        -1.70       -0.65       -1.70      -0.65      -3.13     -1.18
+credit_default                -0.96        0.39       0.30        -0.03        0.79       -1.18       1.39       0.08      0.02
+parkinsons                    -2.08        0.54      -2.83         0.22        0.41       -0.29      -2.84      -3.74     -2.25
+phishing                      -3.42      -10.17      -8.67         1.65        2.77        1.65       2.89      -2.37     -2.37
+superconductivity              0.62       -3.31      -5.52         0.38       -0.94        1.15      -0.94      -0.53      0.09
+  median: {'base all vs sqrt': -0.36, 'noise|sqrt': -3.0, 'noise|all': -2.55, 'target|sqrt': -0.01, 'target|all': -0.02, 'resid|sqrt': 0.04, 'resid|all': -0.49, 'copy|sqrt': -1.99, 'copy|all': -1.04}
+  better on: {'base all vs sqrt': 5, 'noise|sqrt': 2, 'noise|all': 1, 'target|sqrt': 5, 'target|all': 5, 'resid|sqrt': 5, 'resid|all': 4, 'copy|sqrt': 2, 'copy|all': 3} of 10
+  F5 noise penalty closer to zero with all columns: 8 of 10
+ [layer 1]  x|sqrt, x|all: reduction of x against base, both with that sampling
+                   base all vs sqrt  noise|sqrt  noise|all  target|sqrt  target|all  resid|sqrt  resid|all  copy|sqrt  copy|all
+dataset                                                                                                                        
+adult                          4.46       -8.37      -3.40         1.82       -0.68        1.82      -0.68       2.15     -0.69
+air_quality                    0.97       -3.12      -0.13         0.50       -0.33        0.50      -0.33       1.80     -0.15
+bank_marketing                 2.28       -2.92      -0.14         2.66        2.31        2.66       2.31      -1.04      0.97
+bike_sharing                  16.07      -16.33      -8.16        -8.30       -5.31       -8.30      -5.31      -6.03     -1.52
+california                    -1.55       -9.36      -2.94        -1.47        0.30       -1.47       0.30      -4.19     -0.91
+ccpp                          -2.39       -3.63      -2.08        -1.70       -0.65       -1.70      -0.65      -3.13     -1.18
+credit_default                 3.28       -4.85      -0.29         3.28        0.45        3.28       0.45       3.20      0.02
+parkinsons                    -7.57        0.91      -0.05        -0.13        3.39       -0.13       3.39      -5.99     -1.88
+phishing                      -4.21      -13.77      -7.91         1.65        3.46        1.65       3.46      -2.37     -1.28
+superconductivity              1.26       -8.88      -5.52        -1.30       -0.94       -1.30      -0.94      -0.54      0.09
+  median: {'base all vs sqrt': 1.12, 'noise|sqrt': -6.61, 'noise|all': -2.51, 'target|sqrt': 0.19, 'target|all': -0.02, 'resid|sqrt': 0.19, 'resid|all': -0.02, 'copy|sqrt': -1.71, 'copy|all': -0.8}
+  better on: {'base all vs sqrt': 6, 'noise|sqrt': 1, 'noise|all': 0, 'target|sqrt': 5, 'target|all': 5, 'resid|sqrt': 5, 'resid|all': 5, 'copy|sqrt': 3, 'copy|all': 3} of 10
+  F5 noise penalty closer to zero with all columns: 10 of 10
+
+====================================================================================================
+F1-F4 sampling_large: all columns, six large datasets (sqrt = large and large_content; sum = sampling_large_sum)
+====================================================================================================
+ [chosen layer]
+                  base all vs sqrt  noise|sqrt  noise|all  target|sqrt  target|all  resid|sqrt  resid|all  copy|sqrt  copy|all  sum|sqrt  sum|all
+dataset   check                                                                                                                                  
+casp      n16000             -3.08       -6.66      -2.77        -0.19       -1.17        0.06      -0.16      -1.86     -1.13     -0.15     0.14
+          n4000               0.11       -3.31      -4.79         0.15        0.13        0.15       0.13      -0.55      0.11      0.27     0.00
+covertype n16000              6.77      -26.99     -21.28         4.22        4.80        4.48       3.31       0.84      0.68      3.82     2.28
+          n4000               1.97      -17.53     -13.46         3.47        3.44        3.17       4.03       3.81      4.09      4.01     0.00
+higgs     n16000              1.52       -0.54      -1.54        -0.12       -0.26        0.91      -0.26       0.66      0.19      1.37     0.58
+          n4000               0.99       -1.29      -1.55        -0.76       -0.42       -0.76      -0.42      -1.21     -0.79      0.03     0.00
+higgs_low n16000              1.29       -4.32      -2.80         2.61        1.77        2.24       1.77       0.56     -0.32      0.91    -0.17
+          n4000               1.36       -5.24      -4.15         3.86        2.21        3.86       2.21       2.30      0.19      2.31     0.00
+miniboone n16000              0.46       -2.33      -6.34        -7.00       -6.67       -3.83      -2.77      -5.10     -5.33     -1.15    -3.41
+          n4000               3.70       -3.14      -2.77         0.20       -3.94       -0.88      -4.10       3.83     -0.43      3.20     0.00
+sgemm     n16000             22.56      -12.77     -13.62         9.44        4.39       20.19       6.17      10.80     -4.61     10.82     6.03
+          n4000              18.87      -13.70     -11.02         5.78        2.91       14.47       6.10       6.49     -4.51      7.11     0.00
+ [layer 1]
+                  base all vs sqrt  noise|sqrt  noise|all  target|sqrt  target|all  resid|sqrt  resid|all  copy|sqrt  copy|all  sum|sqrt  sum|all
+dataset   check                                                                                                                                  
+casp      n16000              0.81       -9.42      -5.01        -0.03       -0.25       -0.03      -0.25      -1.08     -0.21     -0.15    -0.94
+          n4000               0.11       -8.04      -4.79         0.15        0.13        0.15       0.13      -0.55      0.11      0.27     0.00
+covertype n16000             11.82      -30.51     -21.24         8.90        2.30        8.90       2.30       3.18      0.86      8.87     1.34
+          n4000               7.37      -21.24     -15.02         6.98        2.76        6.98       2.76       3.71      0.12      8.25     0.00
+higgs     n16000              1.52       -3.26      -1.81        -0.12       -0.26       -0.12      -0.26       0.66      0.19      1.37     0.58
+          n4000               0.99       -5.42      -1.55        -0.76       -0.42       -0.76      -0.42      -1.21     -0.79      0.03     0.00
+higgs_low n16000              1.29       -5.92      -2.85         2.24        1.77        2.24       1.77       0.56     -0.32      0.91    -0.17
+          n4000               1.36       -5.61      -4.15         3.86        2.21        3.86       2.21       2.30      0.19      2.62     0.00
+miniboone n16000              8.26      -11.38      -5.05        -4.97       -3.49       -4.97      -3.49       3.52     -1.17      0.15     0.56
+          n4000              10.68      -10.21      -5.76        -4.00       -2.47       -4.00      -2.47       6.76     -0.03     -0.39     0.00
+sgemm     n16000             64.20      -30.49     -21.57        46.51        6.22       46.51       6.22      44.48     -2.22     46.92     7.20
+          n4000              57.14      -23.05     -19.52        45.51        5.53       45.51       5.53      44.43     -1.11     45.47     0.00
+ per fold at 16,000 rows, all columns:
+          products vs base              products vs copies             copies vs base             sums vs base              products vs sums            
+fold                     0     1      2                  0     1     2              0     1     2            0     1      2                0     1     2
+dataset                                                                                                                                                 
+casp                 -0.45 -2.76  -0.29              -0.25  0.41 -0.29          -0.20 -3.16  0.00         1.83 -0.56  -0.82            -2.28 -2.21  0.53
+covertype             0.32 -0.01  12.71               3.40  4.06  4.93          -3.08 -4.07  8.18        -1.56 -3.55  10.68             1.88  3.55  2.28
+higgs                -0.37 -0.66   0.23              -0.46 -1.42  0.50           0.09  0.76 -0.27         0.62  0.24   0.86            -0.99 -0.90 -0.63
+higgs_low             0.62  4.06   0.64               1.09  4.24  0.94          -0.48 -0.19 -0.31        -0.81  0.85  -0.53             1.42  3.24  1.16
+miniboone            -5.22 -7.80  -6.98              -2.06 -0.65 -1.55          -3.22 -7.20 -5.52        -3.69 -1.71  -4.73            -1.59 -6.20 -2.36
+sgemm                 3.39  5.22   4.56               7.69  9.64  9.07          -4.45 -4.67 -4.72         5.74  7.81   4.52            -2.43 -2.74  0.05

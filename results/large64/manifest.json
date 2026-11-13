@@ -1,0 +1,25 @@
+{
+ "experiment": "large64",
+ "settings": "# Exploratory follow-up of 12.11.2026 (course folder pro/followup-2026-11-12/plan.md), chosen after the main\n# results and two reviews. Not in the plan; decides no hypothesis. Bars and predictions below were\n# written before the run. \"Reduction\" is the relative error reduction of the main report.\n#\n# E1, large data, 64,000 training rows: the five datasets of large.toml that have them (casp has 36,584).\n# Bars and settings in large.toml. Outer folds 0-2 are run. 6 x 5 x 3 = 90 tasks.\ndatasets = [\"covertype\", \"miniboone\", \"higgs\", \"higgs_low\", \"sgemm\"]\nseeds = [0]\nouter_folds = 5\n\n[[check]]\nname = \"n64000\"\nmethods = [\"base\", \"random_xx\", \"residual_xx\", \"target_noise_xx\", \"rf\", \"lightgbm\"]\ncascade = { train_rows = 64000 }\n",
+ "python": "3.12.13",
+ "platform": "macOS-27.0.1-arm64-arm-64bit",
+ "packages": {
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "scikit-learn": "1.9.1",
+  "pandas": "3.0.6",
+  "lightgbm": "4.7.0"
+ },
+ "code_and_lock_sha256": "1755c9e2c7cf5eac93aa6e8cce1e0bec394d07996aabf2d978b9ad9fde525e9a",
+ "git": {
+  "commit": "aa28a380fe163509a4411197244eeafa8d7f8b19",
+  "dirty": false
+ },
+ "datasets": {
+  "covertype": "5a492b899701490c9079fbb1f4ef5175c5298e3f6e2cd00973fe7b154df9ab7a",
+  "miniboone": "139271f42e6b2517e81aef4159c20a128592e9f4312d08a4fa679fb8a1e6b719",
+  "higgs": "0749c3af7e487884fc21801743fbd0e90f8d4fa950690cd287b2bed17d0af714",
+  "higgs_low": "3f6ffe8b382c021150a6a90fbe0561c2aa11d36231726705989b042d5a1f7571",
+  "sgemm": "1295fddff033b73ee70db57c5f24c317849d8a1411f82a4c27a7b19dceba0a33"
+ }
+}

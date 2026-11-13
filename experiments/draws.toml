@@ -1,0 +1,37 @@
+# Exploratory follow-up of 12.11.2026 (course folder pro/followup-2026-11-12/plan.md), chosen after the main
+# results and two reviews. Not in the plan; decides no hypothesis. Bars and predictions below were
+# written before the run. "Reduction" is the relative error reduction of the main report.
+#
+# N4, bias and variance. The 11 datasets with at least 4,000 outer-training rows, seed 0. Each
+# outer-training set is dealt into 4 disjoint draws of 1,000 rows; every draw trains a model that predicts
+# the same test rows. The spread of the 4 predictions of a test row is the variance part of the squared
+# error (class probabilities in classification); the rest is bias and noise. 4 x 3 x 11 x 5 = 660 tasks.
+#
+# Bar:
+# - V1 added columns raise the variance: the variance part of residual_xx is above the base cascade's on
+#   at least 9 of 11 datasets. The same for target_noise_xx. Prediction: no for residual_xx, open for
+#   noise. V1 is the instructor's remark (the method can represent more, so it may overfit) as a test.
+datasets = ["page_blocks", "parkinsons", "air_quality", "ccpp", "phishing", "bike_sharing", "bank_marketing",
+            "adult", "credit_default", "california", "superconductivity"]
+seeds = [0]
+outer_folds = 5
+
+[[check]]
+name = "d0"
+methods = ["base", "residual_xx", "target_noise_xx"]
+cascade = { train_rows = 1000, train_draws = 4, train_draw = 0 }
+
+[[check]]
+name = "d1"
+methods = ["base", "residual_xx", "target_noise_xx"]
+cascade = { train_rows = 1000, train_draws = 4, train_draw = 1 }
+
+[[check]]
+name = "d2"
+methods = ["base", "residual_xx", "target_noise_xx"]
+cascade = { train_rows = 1000, train_draws = 4, train_draw = 2 }
+
+[[check]]
+name = "d3"
+methods = ["base", "residual_xx", "target_noise_xx"]
+cascade = { train_rows = 1000, train_draws = 4, train_draw = 3 }

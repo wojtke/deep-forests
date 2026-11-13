@@ -1,0 +1,36 @@
+# Exploratory follow-up of 13.11.2026 (course folder pro/followup-2026-11-12/results.md), chosen after the
+# night run of 12.11 and three reviews. Not in the plan; decides no hypothesis. Bars and predictions below
+# were written before the run. "Reduction" is the relative error reduction of the main report.
+#
+# Feature-sampling control on the large datasets. Every cascade forest tries all columns at each split
+# (max_features = 1.0) instead of DF21's sqrt(m). The six datasets of large.toml, seed 0, outer folds 0-2,
+# 4,000 and 16,000 training rows. The sqrt(m) reference is large.toml and large_content.toml.
+# 2 x 5 x 6 x 3 = 180 tasks.
+# Why: in large.toml products gained on sgemm and covertype, but a copy of a feature (sgemm) or a sum
+# (covertype) gained as much, and a reviewer's single forests suggested the gain is relief from sqrt(m)
+# sampling. Read per dataset at 16,000 rows.
+#
+# Bars:
+# - F1 sampling limits the base cascade: base with all columns has a lower mean error than base with sqrt(m)
+#   on sgemm and on covertype. Prediction: yes on both.
+# - F2 the gains were about sampling: with all columns, the reduction of target_copy_xx against base on
+#   sgemm, and of target_xx against base on sgemm and covertype, is under half of its sqrt(m) value.
+#   Prediction: yes.
+# - F3 the product-specific gain stays: on higgs_low, with all columns, target_xx beats base and
+#   target_copy_xx in all 3 folds. Prediction: yes.
+# - F4 the noise penalty is about sampling: with all columns the reduction of target_noise_xx against base
+#   is closer to zero than with sqrt(m) on at least 5 of 6 datasets, at layer 1. Prediction: yes (a forest
+#   that tries every column can pass over a noise column).
+datasets = ["covertype", "miniboone", "higgs", "higgs_low", "sgemm", "casp"]
+seeds = [0]
+outer_folds = 5
+
+[[check]]
+name = "all_n4000"
+methods = ["base", "target_xx", "residual_xx", "target_copy_xx", "target_noise_xx"]
+cascade = { train_rows = 4000, max_features = 1.0 }
+
+[[check]]
+name = "all_n16000"
+methods = ["base", "target_xx", "residual_xx", "target_copy_xx", "target_noise_xx"]
+cascade = { train_rows = 16000, max_features = 1.0 }

@@ -1,0 +1,26 @@
+{
+ "experiment": "sampling_large_sum",
+ "settings": "# Exploratory follow-up of 13.11.2026 (course folder pro/followup-2026-11-12/results.md). Not in the plan;\n# decides no hypothesis.\n#\n# The sum control that sampling_large.toml lacks: target_sum_xx with all columns tried at each split\n# (max_features = 1.0), six large datasets, 16,000 training rows, seed 0, outer folds 0-2. 18 tasks.\n# NOT a blind test: a reviewer's diagnostic (fit_predict called directly, same pairs) already gave sums +6.0%\n# against base on sgemm, more than the products' +4.4%. This run makes that an official result.\n# Question, as in large_content.toml (LC1): with all columns, does target_xx (sampling_large.toml) beat\n# target_sum_xx in all 3 folds? Expected from the diagnostic: no on sgemm and covertype, yes on higgs_low.\ndatasets = [\"covertype\", \"miniboone\", \"higgs\", \"higgs_low\", \"sgemm\", \"casp\"]\nseeds = [0]\nouter_folds = 5\n\n[[check]]\nname = \"all_n16000\"\nmethods = [\"target_sum_xx\"]\ncascade = { train_rows = 16000, max_features = 1.0 }\n",
+ "python": "3.12.13",
+ "platform": "macOS-27.0.1-arm64-arm-64bit",
+ "packages": {
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "scikit-learn": "1.9.1",
+  "pandas": "3.0.6",
+  "lightgbm": "4.7.0"
+ },
+ "code_and_lock_sha256": "524ab5b111fa1ec242534de0e942244f5674cb34ab05dc92d236237987f3d89a",
+ "git": {
+  "commit": "99f44d7935114fb11822f9c2e60dfe4113f9acc5",
+  "dirty": false
+ },
+ "datasets": {
+  "covertype": "5a492b899701490c9079fbb1f4ef5175c5298e3f6e2cd00973fe7b154df9ab7a",
+  "miniboone": "139271f42e6b2517e81aef4159c20a128592e9f4312d08a4fa679fb8a1e6b719",
+  "higgs": "0749c3af7e487884fc21801743fbd0e90f8d4fa950690cd287b2bed17d0af714",
+  "higgs_low": "3f6ffe8b382c021150a6a90fbe0561c2aa11d36231726705989b042d5a1f7571",
+  "sgemm": "1295fddff033b73ee70db57c5f24c317849d8a1411f82a4c27a7b19dceba0a33",
+  "casp": "e4b9ba0c47aac99d2b28d00df6c11c7825ed541981b72e1182dc64b4dadaa772"
+ }
+}

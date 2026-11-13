@@ -1,0 +1,44 @@
+{
+ "experiment": "sweep_size",
+ "settings": "# Exploratory follow-up of 12.11.2026 (course folder pro/followup-2026-11-12/plan.md), chosen after the main\n# results and two reviews. Not in the plan; decides no hypothesis. Bars and predictions below were\n# written before the run. \"Reduction\" is the relative error reduction of the main report.\n#\n# N3, second part: the planted-product sweep of explore_sweep.toml at fewer training rows. The 6 base\n# datasets with at least 1,000 outer-training rows, 4 strengths, seed 0, 250 and 1,000 training rows\n# (full size is explore_sweep). 2 x 2 x 24 x 5 = 480 tasks.\n# Question: how strong must a planted product be before products help when rows are few? Bar as in the\n# sweep: products help at a strength if residual_xx beats base in median and on at least 5 of 6 datasets.\n# Prediction: at 250 rows the bar is met only from 20% of the variance; at 1,000 rows from 6%.\ndatasets = [\"semi_abalone_l000\", \"semi_abalone_l025\", \"semi_abalone_l050\", \"semi_abalone_l100\", \"semi_air_quality_l000\", \"semi_air_quality_l025\", \"semi_air_quality_l050\", \"semi_air_quality_l100\", \"semi_ccpp_l000\", \"semi_ccpp_l025\", \"semi_ccpp_l050\", \"semi_ccpp_l100\", \"semi_communities_l000\", \"semi_communities_l025\", \"semi_communities_l050\", \"semi_communities_l100\", \"semi_parkinsons_l000\", \"semi_parkinsons_l025\", \"semi_parkinsons_l050\", \"semi_parkinsons_l100\", \"semi_wine_red_l000\", \"semi_wine_red_l025\", \"semi_wine_red_l050\", \"semi_wine_red_l100\"]\nseeds = [0]\nouter_folds = 5\n\n[[check]]\nname = \"n250\"\nmethods = [\"base\", \"residual_xx\"]\ncascade = { train_rows = 250 }\n\n[[check]]\nname = \"n1000\"\nmethods = [\"base\", \"residual_xx\"]\ncascade = { train_rows = 1000 }\n",
+ "python": "3.12.13",
+ "platform": "macOS-27.0.1-arm64-arm-64bit",
+ "packages": {
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "scikit-learn": "1.9.1",
+  "pandas": "3.0.6",
+  "lightgbm": "4.7.0"
+ },
+ "code_and_lock_sha256": "1755c9e2c7cf5eac93aa6e8cce1e0bec394d07996aabf2d978b9ad9fde525e9a",
+ "git": {
+  "commit": "aa28a380fe163509a4411197244eeafa8d7f8b19",
+  "dirty": false
+ },
+ "datasets": {
+  "semi_abalone_l000": "fd012a7ec1f05613950cddfef4db0e14de1353f0a9b5573cce1f26a5387b2c88",
+  "semi_abalone_l025": "60d62fd6638c200fac6287f9742b48fc67cb1d603beb8f6c7d7801db90591360",
+  "semi_abalone_l050": "c1b234c1bef2ada734658cddb0fc365c3f7627113551121d039c4731069dceef",
+  "semi_abalone_l100": "aa60c59653cc4c7bd9623a9db57c58cd48bce84e8d412f30988b8269bfeea5f7",
+  "semi_air_quality_l000": "9617b03f9474974753b52c461139d5dae5f7ee5894948a5e918d3eeac6e9fbbf",
+  "semi_air_quality_l025": "00d57ac0dec889f8cec03bc40e502571085af95ed6352d284df676f9b28d0a16",
+  "semi_air_quality_l050": "36fdd9bd2fc9c3bf4abf919d0dafd7da3c60561a4053498883dc537dbc1b64d6",
+  "semi_air_quality_l100": "e2370b42c0b5ac7a44a321204f5e6d61d49cf9d2237efb857128c924bb41eeef",
+  "semi_ccpp_l000": "0a1f5ecfedc78c4c305cd238f5fb65397d1b5b15cbd5a097c19a67170ec5839e",
+  "semi_ccpp_l025": "ea2f0dc9a5af891f9ae0f1364e4cf8812225039c55b9afb916ede82bc0b0e258",
+  "semi_ccpp_l050": "1a687108c690af03fbb891ddcd6587aaa73d1a13658442787ef9c3349144ec1f",
+  "semi_ccpp_l100": "70d08af725ff9469abcf752e20d5fa2afdfa9b5a6f0056874f8ef3d41b332056",
+  "semi_communities_l000": "36975e55234b576ad67901df30ba4e7202813290fd8d48ff50a1b08f70aff76a",
+  "semi_communities_l025": "da057360a907589381e9dc5fd03c3a8b412135ba4bdfe50fe62cdd849bd74a0f",
+  "semi_communities_l050": "055bed7709dc7fdc1dd866d0872d8b3b271d2afe404c05c9ab30e03fafd4482f",
+  "semi_communities_l100": "eff1f5f1430fd5d2af7c24f6bddbe5146285d673ed20b72853158058f8a05871",
+  "semi_parkinsons_l000": "35a8df2d71072ca64525fe4862ccdc6691c1bbbf202cca3f8065aa61db4fb164",
+  "semi_parkinsons_l025": "c0ea77cb64ce6f7f96167277d59f83d75553cfbb25d16c95ff2ad50f89987b89",
+  "semi_parkinsons_l050": "81c02827847dadf03d60f3e6bbf452a246657da84e428588d1ba000b73117364",
+  "semi_parkinsons_l100": "fa4ca8535e89dea650c63fbe68120bdbcf22bbf0b7f777a747831aa2e7f2980c",
+  "semi_wine_red_l000": "121c03a2e786c72a7e183f6c9660c7d61cd10f1b1574cd7369fd2822556fc42e",
+  "semi_wine_red_l025": "c8770744ae133dc76a61b7ad696def84e3f28983a8e7d3512d4baacab037c84b",
+  "semi_wine_red_l050": "44b416bb9ec44ad0e8f2bee42f99708e99cef716505b5155e32c5f3541af85da",
+  "semi_wine_red_l100": "42c9f45c1a495b8239d30f35af44a3bd861108b79d0924a0c2ca0edfc762616f"
+ }
+}

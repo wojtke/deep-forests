@@ -1,0 +1,17 @@
+# Exploratory follow-up of 13.11.2026 (course folder pro/followup-2026-11-12/results.md). Not in the plan;
+# decides no hypothesis.
+#
+# The sum control that sampling_large.toml lacks: target_sum_xx with all columns tried at each split
+# (max_features = 1.0), six large datasets, 16,000 training rows, seed 0, outer folds 0-2. 18 tasks.
+# NOT a blind test: a reviewer's diagnostic (fit_predict called directly, same pairs) already gave sums +6.0%
+# against base on sgemm, more than the products' +4.4%. This run makes that an official result.
+# Question, as in large_content.toml (LC1): with all columns, does target_xx (sampling_large.toml) beat
+# target_sum_xx in all 3 folds? Expected from the diagnostic: no on sgemm and covertype, yes on higgs_low.
+datasets = ["covertype", "miniboone", "higgs", "higgs_low", "sgemm", "casp"]
+seeds = [0]
+outer_folds = 5
+
+[[check]]
+name = "all_n16000"
+methods = ["target_sum_xx"]
+cascade = { train_rows = 16000, max_features = 1.0 }

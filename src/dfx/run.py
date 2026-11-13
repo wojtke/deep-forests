@@ -30,8 +30,8 @@ import numpy as np
 from threadpoolctl import threadpool_limits
 
 from .baselines import BASELINES, LGBMConfig, run_baseline
-from .cascade import CascadeConfig, fit_predict
-from .data import ROOT, load, outer_split
+from .cascade import TRAIN_ROWS, CascadeConfig, fit_predict, seed_for
+from .data import ROOT, load, outer_split, train_subset
 from .datasets import ALL
 from .features import CASCADE_METHODS
 from .metrics import metrics
@@ -135,6 +135,10 @@ def run_task(task: Task, results: Path, fingerprint: str) -> dict:
     data = load(task.dataset)
     fold_of, _ = outer_split(data, task.seed, task.outer_folds)
     train, test = np.flatnonzero(fold_of != task.fold), np.flatnonzero(fold_of == task.fold)
+    if task.cascade.train_rows:  # exploratory: fewer training rows, the same test rows
+        c = task.cascade
+        train = train[train_subset(data.y[train], data.task, c.train_rows, c.train_draws, c.train_draw,
+                                   seed_for(task.seed, zlib.crc32(task.dataset.encode()), task.fold, TRAIN_ROWS))]
     if task.cascade.product_origin not in ("mean", "raw"):
         raise ValueError(f"product_origin must be 'mean' or 'raw', not {task.cascade.product_origin!r}")
     center = task.cascade.product_origin == "mean"  # "raw" changes only the products (exploratory)

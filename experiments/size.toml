@@ -1,0 +1,37 @@
+# Exploratory follow-up of 12.11.2026 (course folder pro/followup-2026-11-12/plan.md), chosen after the main
+# results and two reviews. Not in the plan; decides no hypothesis. Bars and predictions below were
+# written before the run. "Reduction" is the relative error reduction of the main report.
+#
+# N1, size study inside the benchmark. The 10 datasets with at least 4,700 outer-training rows, seed 0. Each
+# outer-training set is cut to 250, 1,000 and 4,000 rows (nested, class proportions kept); the test rows
+# stay the same; preprocessing is refitted on the smaller set, so d and K can change and are recorded.
+# Full size is content.toml. 3 x 5 x 10 x 5 = 750 tasks.
+#
+# Bars (per dataset, comparing 250 rows with full size; "most" = at least 8 of 10):
+# - S1 the noise penalty shrinks with rows: the reduction of target_noise_xx against base is higher at full
+#   size than at 250 rows on most datasets. Read at layer 1 and at the chosen layer. Prediction: no at
+#   layer 1, yes at the chosen layer (the saved runs show the trend only there).
+# - S2 the net effect grows with rows: the same for residual_xx against base. Prediction: open.
+# - S3 redundancy: the reduction of target_xx against target_noise_xx falls with rows on most datasets.
+#   Prediction: open.
+# S1 at layer 1 supports "extra columns overfit small data"; S1 only at the chosen layer says depth
+# repairs the damage; S3 says larger data makes the products redundant.
+datasets = ["parkinsons", "air_quality", "ccpp", "phishing", "bike_sharing", "bank_marketing", "adult",
+            "credit_default", "california", "superconductivity"]
+seeds = [0]
+outer_folds = 5
+
+[[check]]
+name = "n250"
+methods = ["base", "random_xx", "target_xx", "residual_xx", "target_noise_xx"]
+cascade = { train_rows = 250 }
+
+[[check]]
+name = "n1000"
+methods = ["base", "random_xx", "target_xx", "residual_xx", "target_noise_xx"]
+cascade = { train_rows = 1000 }
+
+[[check]]
+name = "n4000"
+methods = ["base", "random_xx", "target_xx", "residual_xx", "target_noise_xx"]
+cascade = { train_rows = 4000 }

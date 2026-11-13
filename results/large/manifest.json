@@ -1,0 +1,26 @@
+{
+ "experiment": "large",
+ "settings": "# Exploratory follow-up of 12.11.2026 (course folder pro/followup-2026-11-12/plan.md), chosen after the main\n# results and two reviews. Not in the plan; decides no hypothesis. Bars and predictions below were\n# written before the run. \"Reduction\" is the relative error reduction of the main report.\n#\n# E1, large data. Six datasets outside the benchmark (src/dfx/datasets.py, LARGE), each cut to at most\n# 100,000 rows; seed 0; outer folds 0-2 of 5 are run (--folds 0,1,2), so 3 test sets of about 20% each.\n# Training rows: 1,000, 4,000 and 16,000 here; 64,000 in large64.toml. higgs_low is higgs without the 7\n# features physicists engineered from the other 21: a real-data positive control, since those 7 are known\n# useful functions of the inputs. 3 x 6 x 6 x 3 = 324 tasks.\n#\n# Case studies, read as curves per dataset; six datasets cannot carry a significance test.\n# - Z1 the noise penalty (target_noise_xx against base) shrinks from 1,000 to the largest size on at least\n#   5 of 6 datasets. Prediction: yes at the chosen layer.\n# - Z2 at the largest size residual_xx beats base on at least 5 of 6 datasets. Prediction: no.\n# - Z3 products gain more on higgs_low than on higgs at every size. Prediction: yes, but small.\ndatasets = [\"covertype\", \"miniboone\", \"higgs\", \"higgs_low\", \"sgemm\", \"casp\"]\nseeds = [0]\nouter_folds = 5\n\n[[check]]\nname = \"n1000\"\nmethods = [\"base\", \"random_xx\", \"residual_xx\", \"target_noise_xx\", \"rf\", \"lightgbm\"]\ncascade = { train_rows = 1000 }\n\n[[check]]\nname = \"n4000\"\nmethods = [\"base\", \"random_xx\", \"residual_xx\", \"target_noise_xx\", \"rf\", \"lightgbm\"]\ncascade = { train_rows = 4000 }\n\n[[check]]\nname = \"n16000\"\nmethods = [\"base\", \"random_xx\", \"residual_xx\", \"target_noise_xx\", \"rf\", \"lightgbm\"]\ncascade = { train_rows = 16000 }\n",
+ "python": "3.12.13",
+ "platform": "macOS-27.0.1-arm64-arm-64bit",
+ "packages": {
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "scikit-learn": "1.9.1",
+  "pandas": "3.0.6",
+  "lightgbm": "4.7.0"
+ },
+ "code_and_lock_sha256": "1755c9e2c7cf5eac93aa6e8cce1e0bec394d07996aabf2d978b9ad9fde525e9a",
+ "git": {
+  "commit": "aa28a380fe163509a4411197244eeafa8d7f8b19",
+  "dirty": false
+ },
+ "datasets": {
+  "covertype": "5a492b899701490c9079fbb1f4ef5175c5298e3f6e2cd00973fe7b154df9ab7a",
+  "miniboone": "139271f42e6b2517e81aef4159c20a128592e9f4312d08a4fa679fb8a1e6b719",
+  "higgs": "0749c3af7e487884fc21801743fbd0e90f8d4fa950690cd287b2bed17d0af714",
+  "higgs_low": "3f6ffe8b382c021150a6a90fbe0561c2aa11d36231726705989b042d5a1f7571",
+  "sgemm": "1295fddff033b73ee70db57c5f24c317849d8a1411f82a4c27a7b19dceba0a33",
+  "casp": "e4b9ba0c47aac99d2b28d00df6c11c7825ed541981b72e1182dc64b4dadaa772"
+ }
+}

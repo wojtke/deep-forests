@@ -1,0 +1,31 @@
+# Exploratory follow-up of 13.11.2026 (course folder pro/followup-2026-11-12/results.md), chosen after the
+# night run of 12.11 and three reviews. Not in the plan; decides no hypothesis. Bars and predictions below
+# were written before the run. "Reduction" is the relative error reduction of the main report.
+#
+# Feature-sampling control inside the benchmark. The 10 datasets of size.toml at 4,000 training rows, seed 0,
+# 5 folds. Check "all": every cascade forest tries all columns at each split (max_features = 1.0). Check
+# "sqrt_copy": target_copy_xx with DF21's sqrt(m), the one reference that size.toml (check n4000) lacks.
+# 5 x 10 x 5 + 10 x 5 = 300 tasks.
+#
+# Bars (10 datasets; "most" = at least 8):
+# - F5 the noise penalty is about sampling: with all columns the reduction of target_noise_xx against base is
+#   closer to zero than with sqrt(m) on most datasets, at layer 1 and at the chosen layer. Prediction: yes.
+# - F6 products still do not help: with all columns residual_xx is not a clear win over base (median > 0 and
+#   at least 8 of 10 better). Prediction: no clear win.
+# - F7 all columns is not a better base: base with all columns beats base with sqrt(m) on most datasets.
+#   Prediction: no (sqrt(m) is the usual choice for a reason). If F5 holds and F7 fails, the cost of added
+#   columns is the price of the decorrelation that sqrt(m) buys.
+datasets = ["parkinsons", "air_quality", "ccpp", "phishing", "bike_sharing", "bank_marketing", "adult",
+            "credit_default", "california", "superconductivity"]
+seeds = [0]
+outer_folds = 5
+
+[[check]]
+name = "all"
+methods = ["base", "target_xx", "residual_xx", "target_copy_xx", "target_noise_xx"]
+cascade = { train_rows = 4000, max_features = 1.0 }
+
+[[check]]
+name = "sqrt_copy"
+methods = ["target_copy_xx"]
+cascade = { train_rows = 4000 }

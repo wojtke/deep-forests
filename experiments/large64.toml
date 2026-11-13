@@ -1,0 +1,14 @@
+# Exploratory follow-up of 12.11.2026 (course folder pro/followup-2026-11-12/plan.md), chosen after the main
+# results and two reviews. Not in the plan; decides no hypothesis. Bars and predictions below were
+# written before the run. "Reduction" is the relative error reduction of the main report.
+#
+# E1, large data, 64,000 training rows: the five datasets of large.toml that have them (casp has 36,584).
+# Bars and settings in large.toml. Outer folds 0-2 are run. 6 x 5 x 3 = 90 tasks.
+datasets = ["covertype", "miniboone", "higgs", "higgs_low", "sgemm"]
+seeds = [0]
+outer_folds = 5
+
+[[check]]
+name = "n64000"
+methods = ["base", "random_xx", "residual_xx", "target_noise_xx", "rf", "lightgbm"]
+cascade = { train_rows = 64000 }

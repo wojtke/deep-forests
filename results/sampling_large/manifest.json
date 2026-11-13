@@ -1,0 +1,26 @@
+{
+ "experiment": "sampling_large",
+ "settings": "# Exploratory follow-up of 13.11.2026 (course folder pro/followup-2026-11-12/results.md), chosen after the\n# night run of 12.11 and three reviews. Not in the plan; decides no hypothesis. Bars and predictions below\n# were written before the run. \"Reduction\" is the relative error reduction of the main report.\n#\n# Feature-sampling control on the large datasets. Every cascade forest tries all columns at each split\n# (max_features = 1.0) instead of DF21's sqrt(m). The six datasets of large.toml, seed 0, outer folds 0-2,\n# 4,000 and 16,000 training rows. The sqrt(m) reference is large.toml and large_content.toml.\n# 2 x 5 x 6 x 3 = 180 tasks.\n# Why: in large.toml products gained on sgemm and covertype, but a copy of a feature (sgemm) or a sum\n# (covertype) gained as much, and a reviewer's single forests suggested the gain is relief from sqrt(m)\n# sampling. Read per dataset at 16,000 rows.\n#\n# Bars:\n# - F1 sampling limits the base cascade: base with all columns has a lower mean error than base with sqrt(m)\n#   on sgemm and on covertype. Prediction: yes on both.\n# - F2 the gains were about sampling: with all columns, the reduction of target_copy_xx against base on\n#   sgemm, and of target_xx against base on sgemm and covertype, is under half of its sqrt(m) value.\n#   Prediction: yes.\n# - F3 the product-specific gain stays: on higgs_low, with all columns, target_xx beats base and\n#   target_copy_xx in all 3 folds. Prediction: yes.\n# - F4 the noise penalty is about sampling: with all columns the reduction of target_noise_xx against base\n#   is closer to zero than with sqrt(m) on at least 5 of 6 datasets, at layer 1. Prediction: yes (a forest\n#   that tries every column can pass over a noise column).\ndatasets = [\"covertype\", \"miniboone\", \"higgs\", \"higgs_low\", \"sgemm\", \"casp\"]\nseeds = [0]\nouter_folds = 5\n\n[[check]]\nname = \"all_n4000\"\nmethods = [\"base\", \"target_xx\", \"residual_xx\", \"target_copy_xx\", \"target_noise_xx\"]\ncascade = { train_rows = 4000, max_features = 1.0 }\n\n[[check]]\nname = \"all_n16000\"\nmethods = [\"base\", \"target_xx\", \"residual_xx\", \"target_copy_xx\", \"target_noise_xx\"]\ncascade = { train_rows = 16000, max_features = 1.0 }\n",
+ "python": "3.12.13",
+ "platform": "macOS-27.0.1-arm64-arm-64bit",
+ "packages": {
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "scikit-learn": "1.9.1",
+  "pandas": "3.0.6",
+  "lightgbm": "4.7.0"
+ },
+ "code_and_lock_sha256": "524ab5b111fa1ec242534de0e942244f5674cb34ab05dc92d236237987f3d89a",
+ "git": {
+  "commit": "5356091fc9dc4c0bc624c49728275300e3181b88",
+  "dirty": false
+ },
+ "datasets": {
+  "covertype": "5a492b899701490c9079fbb1f4ef5175c5298e3f6e2cd00973fe7b154df9ab7a",
+  "miniboone": "139271f42e6b2517e81aef4159c20a128592e9f4312d08a4fa679fb8a1e6b719",
+  "higgs": "0749c3af7e487884fc21801743fbd0e90f8d4fa950690cd287b2bed17d0af714",
+  "higgs_low": "3f6ffe8b382c021150a6a90fbe0561c2aa11d36231726705989b042d5a1f7571",
+  "sgemm": "1295fddff033b73ee70db57c5f24c317849d8a1411f82a4c27a7b19dceba0a33",
+  "casp": "e4b9ba0c47aac99d2b28d00df6c11c7825ed541981b72e1182dc64b4dadaa772"
+ }
+}

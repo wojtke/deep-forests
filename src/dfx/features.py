@@ -4,6 +4,7 @@ Every added column is computed from raw state: standardized unbinned features `X
 previous layer's outputs on the original scale (`Outputs`). Binning happens later, at the forest
 input. A component is fitted on one fold model's training rows only and then applied unchanged.
 """
+import zlib
 from dataclasses import dataclass
 
 import numpy as np
@@ -26,6 +27,11 @@ CASCADE_METHODS = {
     # Exploratory, branch explore (08.11.2026): residual-chosen products with their rows permuted,
     # so the added columns keep their values but carry no information about the row.
     "shuffled_xx": ("shuffled_xx",),
+    # Exploratory follow-up (12.11.2026): the target-chosen pairs of target_xx with other content in the
+    # added columns: the sum x_i + x_j, a copy of x_i, or noise drawn from the products' training values.
+    "target_sum_xx": ("target_sum_xx",),
+    "target_copy_xx": ("target_copy_xx",),
+    "target_noise_xx": ("target_noise_xx",),
 }
 
 
@@ -99,9 +105,14 @@ class Products:
     XP uses p_t, the mean of the type's forests; in regression it is standardized on the training rows.
     """
 
-    def __init__(self, kind: str, selector: str, k: int, shuffle: bool = False):
+    def __init__(self, kind: str, selector: str, k: int, shuffle: bool = False, content: str = "product"):
         # shuffle (exploratory): the chosen products' rows are permuted, keeping their values
-        self.kind, self.selector, self.k, self.shuffle = kind, selector, k, shuffle
+        # content (exploratory, 12.11.2026): what the K columns hold for the chosen pairs. "product";
+        # "sum" x_i + x_j; "copy" x_i; "noise": for every row, the products of a random training row of
+        # this fold model (drawn with replacement, all K columns from the same row). The draw depends
+        # only on the seed and the row set's content, so training, validation and test rows get
+        # independent noise and a row set always gets the same noise.
+        self.kind, self.selector, self.k, self.shuffle, self.content = kind, selector, k, shuffle, content
 
     def _right(self, Xs, prev):
         """Second factors: the features (XX) or the scaled p_{t,c} columns (XP)."""
@@ -140,6 +151,8 @@ class Products:
             chosen = pool[np.argsort(-score, kind="stable")[:k]]
         chosen = np.sort(chosen)  # candidate order, so the column order never depends on the scores
         self.i, self.j, self.seed = i[chosen], j[chosen], seed
+        if self.content == "noise":
+            self.donor = Xs[:, self.i] * right[:, self.j]
         self.info = {"pairs": np.column_stack([self.i, self.j]).tolist(), "pool": len(pool)}
         if self.kind == "xp" and k:
             # Plan §3: how strongly the chosen XP products repeat the prediction columns.
@@ -147,7 +160,12 @@ class Products:
         return self
 
     def transform(self, Xs, prev):
-        out = Xs[:, self.i] * self._right(Xs, prev)[:, self.j]
+        if self.content == "noise":
+            rng = np.random.default_rng([self.seed, zlib.crc32(np.ascontiguousarray(Xs).tobytes())])
+            return self.donor[rng.integers(0, len(self.donor), len(Xs))]
+        left, right = Xs[:, self.i], self._right(Xs, prev)[:, self.j]
+        out = {"product": lambda: left * right, "sum": lambda: left + right, "copy": lambda: left.copy()}[
+            self.content]()
         if self.shuffle:  # a fixed permutation per row set: same values, no information about the row
             out = out[np.random.default_rng([self.seed, len(Xs)]).permutation(len(Xs))]
         return out
@@ -202,5 +220,8 @@ def components(method: str, layer: int, k: int, activation: str) -> list[tuple[s
     make = {"random_xx": Products("xx", "random", k), "target_xx": Products("xx", "target", k),
             "residual_xx": Products("xx", "residual", k), "xp_mi": Products("xp", "mi", k),
             "shuffled_xx": Products("xx", "residual", k, shuffle=True),
+            "target_sum_xx": Products("xx", "target", k, content="sum"),
+            "target_copy_xx": Products("xx", "target", k, content="copy"),
+            "target_noise_xx": Products("xx", "target", k, content="noise"),
             "nonlinear": NonLinear(), "monotone": Monotone(activation)}
     return [(name, make[name]) for name in CASCADE_METHODS[method] if name.endswith("_xx") or layer >= 2]

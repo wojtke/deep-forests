@@ -1,0 +1,26 @@
+{
+ "experiment": "large_content",
+ "settings": "# Exploratory follow-up of 13.11.2026, added after reading large.toml's results (course folder\n# pro/followup-2026-11-12). Not in the plan; decides no hypothesis. Bar and prediction written before the run.\n#\n# In large.toml residual_xx beat the base cascade in all 3 folds at every size on sgemm (about +20%), on\n# covertype (about +5%) and on higgs_low (+1.4 to +3.9%). content.toml showed that on the benchmark a sum\n# x_i + x_j or a copy of x_i in place of the product does as well as the product. Question: are these three\n# gains about the product itself? The six datasets of large.toml, seed 0, outer folds 0-2, 1,000, 4,000 and\n# 16,000 training rows; base, residual_xx and the noise control are in large.toml. 3 x 3 x 6 x 3 = 162 tasks.\n#\n# Bar:\n# - LC1 the product matters: at 16,000 rows target_xx has a lower mean error than target_sum_xx and than\n#   target_copy_xx in all 3 folds. Read per dataset; of interest on sgemm, covertype and higgs_low.\n#   Prediction: yes on sgemm and higgs_low, open on covertype, no on the other three.\n# If LC1 fails on a dataset, its gain comes from having more real columns, not from the interaction.\ndatasets = [\"covertype\", \"miniboone\", \"higgs\", \"higgs_low\", \"sgemm\", \"casp\"]\nseeds = [0]\nouter_folds = 5\n\n[[check]]\nname = \"n1000\"\nmethods = [\"target_xx\", \"target_sum_xx\", \"target_copy_xx\"]\ncascade = { train_rows = 1000 }\n\n[[check]]\nname = \"n4000\"\nmethods = [\"target_xx\", \"target_sum_xx\", \"target_copy_xx\"]\ncascade = { train_rows = 4000 }\n\n[[check]]\nname = \"n16000\"\nmethods = [\"target_xx\", \"target_sum_xx\", \"target_copy_xx\"]\ncascade = { train_rows = 16000 }\n",
+ "python": "3.12.13",
+ "platform": "macOS-27.0.1-arm64-arm-64bit",
+ "packages": {
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "scikit-learn": "1.9.1",
+  "pandas": "3.0.6",
+  "lightgbm": "4.7.0"
+ },
+ "code_and_lock_sha256": "1755c9e2c7cf5eac93aa6e8cce1e0bec394d07996aabf2d978b9ad9fde525e9a",
+ "git": {
+  "commit": "b5203e32a3e43a251a366cc0628e3366024c7f5d",
+  "dirty": false
+ },
+ "datasets": {
+  "covertype": "5a492b899701490c9079fbb1f4ef5175c5298e3f6e2cd00973fe7b154df9ab7a",
+  "miniboone": "139271f42e6b2517e81aef4159c20a128592e9f4312d08a4fa679fb8a1e6b719",
+  "higgs": "0749c3af7e487884fc21801743fbd0e90f8d4fa950690cd287b2bed17d0af714",
+  "higgs_low": "3f6ffe8b382c021150a6a90fbe0561c2aa11d36231726705989b042d5a1f7571",
+  "sgemm": "1295fddff033b73ee70db57c5f24c317849d8a1411f82a4c27a7b19dceba0a33",
+  "casp": "e4b9ba0c47aac99d2b28d00df6c11c7825ed541981b72e1182dc64b4dadaa772"
+ }
+}

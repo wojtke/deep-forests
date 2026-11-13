@@ -13,6 +13,7 @@ results/**/*.npz
 results/**/*.error.txt
 results/**/*.tmp
 results/**/run.log
+results/*.log
 !results/**/manifest.json
 # Smoke runs are a test, not a result.
 results/smoke/

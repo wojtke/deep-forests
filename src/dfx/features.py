@@ -4,9 +4,8 @@ Every added column is computed from raw state: standardized unbinned features `X
 previous layer's outputs on the original scale (`Outputs`). Binning happens later, at the forest
 input. A component is fitted on one fold model's training rows only and then applied unchanged.
 """
-from dataclasses import dataclass
-
 import zlib
+from dataclasses import dataclass
 
 import numpy as np
 from scipy.special import expit, ndtr

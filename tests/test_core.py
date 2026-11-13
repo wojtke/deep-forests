@@ -416,7 +416,8 @@ def test_max_features_default_is_sqrt_and_a_share_changes_the_trees():
         cascade("target_xx", X, y, cfg=CascadeConfig(n_trees=4, max_layers=1, max_features=1.0))
         with _pytest.raises(ValueError):
             cascade("base", X, y, cfg=CascadeConfig(n_trees=4, max_layers=1, max_features=1.0, split_scale=True))
-    assert seen == [1.0] * 12
+        cascade("target_xx", X, y, cfg=CascadeConfig(n_trees=4, max_layers=1, max_features=1))  # int from TOML
+    assert seen == [1.0] * 24 and all(type(v) is float for v in seen)
 
 
 def test_train_subsets_are_nested_disjoint_and_stratified():

@@ -6,9 +6,9 @@ columns that reveal the target). See docs/data-audit.md for what each spec produ
 """
 import io
 import re
-import zlib
 import subprocess
 import zipfile
+import zlib
 from pathlib import Path
 
 import numpy as np

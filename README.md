@@ -10,11 +10,12 @@ without them (the *base cascade*) on 32 public datasets.
 ## Documents
 
 - **[Research plan](docs/plan.pdf)**: hypotheses H1–H5, methods and protocol, fixed before the runs.
-- **[Short report](docs/short-report.pdf)** (draft): the plan and the results in 8 pages. Start here.
-- **[The report in plain words](docs/plain-report.pdf)** (draft): the short report retold in everyday words,
-  section by section, with a word list. For when the short report is still confusing.
-- **[Results report](docs/results-report.pdf)** (draft): results, discussion and the exploratory
-  follow-up runs. In short, none of H1–H5 is supported, while on synthetic data with a planted
+- **[Short report](docs/short-report.pdf)** (draft, 13.11.2026): the plan and the results in about 10 pages,
+  including the follow-up runs of 12–13.11. Start here.
+- **[The report in plain words](docs/plain-report.pdf)** (draft, 12.11.2026): the short report retold in
+  everyday words, section by section, with a word list. It predates the follow-up runs of 12–13.11.
+- **[Results report](docs/results-report.pdf)** (draft, 12.11.2026): results, discussion and the exploratory
+  follow-up runs up to 09.11; [docs/followup.md](docs/followup.md) has those of 12–13.11. In short, none of H1–H5 is supported, while on synthetic data with a planted
   interaction the products do help.
 - Generated summaries of each experiment: [main](reports/main/summary.md),
   [sensitivity](reports/sensitivity/summary.md), [positive control](reports/positive/summary.md),
@@ -43,14 +44,14 @@ The other experiments in `experiments/` run the same way:
 - `positive`: 330 runs, 2 minutes; every method on two synthetic datasets with one planted interaction;
 - `explore`, `explore_synthetic`, `explore_encoding`, `explore_sweep`: the exploratory follow-up runs of the
   results report (Appendix B), with `scripts/` for the interaction measure, the split counts and the summary;
-- `content`, `leaf`, `mixed`, `size`, `draws`, `synth`, `sweep_size`, `large`, `large64`: the second exploratory
-  follow-up (12.11.2026): what the added columns hold, leaf size, products for half the forests, fewer training
-  rows, bias and variance, synthetic targets and six large datasets. Each file states its question, bar and
-  prediction, written before the run. The large datasets need `uv run dfx data casp sgemm covertype miniboone
-  higgs higgs_low`, and `large` and `large64` run outer folds 0–2 only (`--folds 0,1,2`).
-- `large_content`, `sampling`, `sampling_large`: added on 13.11.2026 after reading those results: sum and copy
-  controls on the large datasets, and cascades whose forests try all columns at each split. The two on the
-  large datasets run outer folds 0–2 only.
+- `content`, `leaf`, `mixed`, `size`, `draws`, `synth`, `sweep_size`, `large`, `large64`, `large_content`,
+  `sampling`, `sampling_large`, `sampling_large_sum`: the second exploratory follow-up (12–13.11.2026): what
+  the added columns hold, leaf size, products for half the forests, fewer training rows, bias and variance,
+  synthetic targets, six large datasets, and forests that try all columns at each split. Each file states its
+  question, bar and prediction. Results, the commit of each run and how to check it: [docs/followup.md](docs/followup.md);
+  `scripts/run_followup.sh` runs them all and `scripts/followup_report.py` writes `reports/followup/summary.txt`.
+  The large datasets need `uv run dfx data casp sgemm covertype miniboone higgs higgs_low`, and the experiments
+  on them run outer folds 0–2 only (`--folds 0,1,2`).
 - `smoke`: every method on tiny built-in data, 30 s; not a result.
 
 The planned runs (`main`, `sensitivity`, `positive`) were made with the code of the repository's first commit.

@@ -1,5 +1,5 @@
 #!/bin/zsh
-# Runs the exploratory follow-up of 12.11.2026 in order, cheapest first, and builds each report.
+# Runs the exploratory follow-up of 12-13.11.2026 (docs/followup.md) in order, cheapest first, and builds each report.
 # Usage: scripts/run_followup.sh            (start now)
 #        START=20:00 scripts/run_followup.sh  (wait until that time today, then start)
 # Resumable: finished tasks are skipped, so run it again after an interruption.
@@ -21,10 +21,15 @@ for e in content leaf mixed size draws synth sweep_size; do
   say "run $e"; caffeinate -is uv run dfx run "$e" --workers "${WORKERS:-10}" >> "$LOG" 2>&1 || say "FAILED tasks in $e"
   uv run dfx report "$e" --allow-incomplete >> "$LOG" 2>&1 || say "report $e FAILED"
 done
-say "run large"
-caffeinate -is uv run dfx run large --folds 0,1,2 --workers "${WORKERS:-10}" >> "$LOG" 2>&1 || say "FAILED tasks in large"
-uv run dfx report large --allow-incomplete >> "$LOG" 2>&1 || say "report large FAILED"
-say "run large64"
-caffeinate -is uv run dfx run large64 --folds 0,1,2 --workers "${WORKERS64:-5}" >> "$LOG" 2>&1 || say "FAILED tasks in large64"
-uv run dfx report large64 --allow-incomplete >> "$LOG" 2>&1 || say "report large64 FAILED"
+for e in large large_content sampling; do
+  folds=(); [[ $e == sampling ]] || folds=(--folds 0,1,2)  # the large datasets run outer folds 0-2 only
+  say "run $e"; caffeinate -is uv run dfx run "$e" $folds --workers "${WORKERS:-10}" >> "$LOG" 2>&1 || say "FAILED tasks in $e"
+  uv run dfx report "$e" --allow-incomplete >> "$LOG" 2>&1 || say "report $e FAILED"
+done
+for e in large64 sampling_large sampling_large_sum; do  # the slow ones: 64,000 rows, or all columns at each split
+  w=${WORKERS:-10}; [[ $e == large64 ]] && w=${WORKERS64:-5}
+  say "run $e"; caffeinate -is uv run dfx run "$e" --folds 0,1,2 --workers "$w" >> "$LOG" 2>&1 || say "FAILED tasks in $e"
+  uv run dfx report "$e" --allow-incomplete >> "$LOG" 2>&1 || say "report $e FAILED"
+done
+uv run python scripts/followup_report.py > /dev/null || say "followup_report FAILED"
 say "all done"

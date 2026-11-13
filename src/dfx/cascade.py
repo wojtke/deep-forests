@@ -41,13 +41,13 @@ class CascadeConfig:
     # Exploratory, branch explore (08.11.2026, after the main results; docs/decisions.md):
     product_origin: str = "mean"  # "mean": products of standardized features (plan); "raw": of x / sd
     split_scale: bool = False  # try each original and P column at a split as often as in the base cascade
-    # Exploratory follow-up (12.11.2026; course folder pro/followup-2026-11-12):
+    # Exploratory follow-up (12.11.2026; docs/followup.md):
     min_leaf: int = 1  # minimum leaf size of every cascade tree (DF21: 1)
     added_forests: str = "all"  # "half": only the first RF and the first ERF of a layer get the added columns
     train_rows: int = 0  # > 0: train on this many of the outer-training rows (run.run_task)
     train_draws: int = 1  # the outer-training rows are dealt into this many disjoint draws ...
     train_draw: int = 0  # ... and this one is used
-    # Exploratory (13.11.2026; course folder pro/followup-2026-11-12/results.md):
+    # Exploratory (13.11.2026; docs/followup.md):
     max_features: float = 0.0  # 0: DF21's sqrt(m) columns tried per split; else this share of them (1.0 = all)
 
 
@@ -150,7 +150,7 @@ def fit_predict(xs_tr, y_tr, groups_tr, xs_te, *, method: str, task: str, n_clas
                 z_tr = np.hstack([xb_tr, binner.transform(a_tr)])
                 z_te = np.hstack([xb_te, binner.transform(a_te)])
             test = empty(len(xs_te))
-            max_features = cfg.max_features or "sqrt"
+            max_features = float(cfg.max_features) or "sqrt"  # a float is a share; an int would be a count
             m_base = xs_tr.shape[1] + (0 if prev_tr is None else prev_tr.P.shape[1])
             if cfg.split_scale and z_tr.shape[1] > m_base:
                 # exploratory: each original or P column keeps the base cascade's chance int(sqrt(m))/m

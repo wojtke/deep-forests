@@ -1,0 +1,30 @@
+{
+ "experiment": "size",
+ "settings": "# Exploratory follow-up of 12.11.2026 (course folder pro/followup-2026-11-12/plan.md), chosen after the main\n# results and two reviews. Not in the plan; decides no hypothesis. Bars and predictions below were\n# written before the run. \"Reduction\" is the relative error reduction of the main report.\n#\n# N1, size study inside the benchmark. The 10 datasets with at least 4,700 outer-training rows, seed 0. Each\n# outer-training set is cut to 250, 1,000 and 4,000 rows (nested, class proportions kept); the test rows\n# stay the same; preprocessing is refitted on the smaller set, so d and K can change and are recorded.\n# Full size is content.toml. 3 x 5 x 10 x 5 = 750 tasks.\n#\n# Bars (per dataset, comparing 250 rows with full size; \"most\" = at least 8 of 10):\n# - S1 the noise penalty shrinks with rows: the reduction of target_noise_xx against base is higher at full\n#   size than at 250 rows on most datasets. Read at layer 1 and at the chosen layer. Prediction: no at\n#   layer 1, yes at the chosen layer (the saved runs show the trend only there).\n# - S2 the net effect grows with rows: the same for residual_xx against base. Prediction: open.\n# - S3 redundancy: the reduction of target_xx against target_noise_xx falls with rows on most datasets.\n#   Prediction: open.\n# S1 at layer 1 supports \"extra columns overfit small data\"; S1 only at the chosen layer says depth\n# repairs the damage; S3 says larger data makes the products redundant.\ndatasets = [\"parkinsons\", \"air_quality\", \"ccpp\", \"phishing\", \"bike_sharing\", \"bank_marketing\", \"adult\",\n            \"credit_default\", \"california\", \"superconductivity\"]\nseeds = [0]\nouter_folds = 5\n\n[[check]]\nname = \"n250\"\nmethods = [\"base\", \"random_xx\", \"target_xx\", \"residual_xx\", \"target_noise_xx\"]\ncascade = { train_rows = 250 }\n\n[[check]]\nname = \"n1000\"\nmethods = [\"base\", \"random_xx\", \"target_xx\", \"residual_xx\", \"target_noise_xx\"]\ncascade = { train_rows = 1000 }\n\n[[check]]\nname = \"n4000\"\nmethods = [\"base\", \"random_xx\", \"target_xx\", \"residual_xx\", \"target_noise_xx\"]\ncascade = { train_rows = 4000 }\n",
+ "python": "3.12.13",
+ "platform": "macOS-27.0.1-arm64-arm-64bit",
+ "packages": {
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "scikit-learn": "1.9.1",
+  "pandas": "3.0.6",
+  "lightgbm": "4.7.0"
+ },
+ "code_and_lock_sha256": "1755c9e2c7cf5eac93aa6e8cce1e0bec394d07996aabf2d978b9ad9fde525e9a",
+ "git": {
+  "commit": "aa28a380fe163509a4411197244eeafa8d7f8b19",
+  "dirty": false
+ },
+ "datasets": {
+  "parkinsons": "f67a5dcf668ff4f6bee570eccbe8cc70312998be11542b1f1475b3c29e3fc765",
+  "air_quality": "56674dcfb2baf7d9c7eea1a73081853054afb6363f2e2737770043b339265c7e",
+  "ccpp": "dc6fa5cadaebe79efc27dd4cc1bbe05d52100f7d13fca20199d2cb9ef47d674e",
+  "phishing": "a46391f962febcd5e18bfdbf91d37e596d285a47019b204c89323ceaed0829e4",
+  "bike_sharing": "29f513a0dce995eff92c38118e0cec63e048cba9046fdf3c28f038f9241593f3",
+  "bank_marketing": "8b067ecf7edb05789a1297ab3dba46dbbb35cb795ab0374862ce27459d2c2c4c",
+  "adult": "abf67a94357f873a9212419148a45bee066d772521330f1a917ab81854446561",
+  "credit_default": "1a26457c25e3216d58ab5d690cc4ac2df18bbdff55fc74c25fd677774b2d837e",
+  "california": "a3899845bb6e81a14d81f58ea2ad3b24a66219c3a64fa9e93b6adbfae52bc456",
+  "superconductivity": "d64d67be2a1c03146dda38d963171ffe2787deeb7778f389c21136a8e52ac0e8"
+ }
+}

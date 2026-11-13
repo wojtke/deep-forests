@@ -1,0 +1,32 @@
+# Exploratory follow-up of 13.11.2026, added after reading large.toml's results (course folder
+# pro/followup-2026-11-12). Not in the plan; decides no hypothesis. Bar and prediction written before the run.
+#
+# In large.toml residual_xx beat the base cascade in all 3 folds at every size on sgemm (about +20%), on
+# covertype (about +5%) and on higgs_low (+1.4 to +3.9%). content.toml showed that on the benchmark a sum
+# x_i + x_j or a copy of x_i in place of the product does as well as the product. Question: are these three
+# gains about the product itself? The six datasets of large.toml, seed 0, outer folds 0-2, 1,000, 4,000 and
+# 16,000 training rows; base, residual_xx and the noise control are in large.toml. 3 x 3 x 6 x 3 = 162 tasks.
+#
+# Bar:
+# - LC1 the product matters: at 16,000 rows target_xx has a lower mean error than target_sum_xx and than
+#   target_copy_xx in all 3 folds. Read per dataset; of interest on sgemm, covertype and higgs_low.
+#   Prediction: yes on sgemm and higgs_low, open on covertype, no on the other three.
+# If LC1 fails on a dataset, its gain comes from having more real columns, not from the interaction.
+datasets = ["covertype", "miniboone", "higgs", "higgs_low", "sgemm", "casp"]
+seeds = [0]
+outer_folds = 5
+
+[[check]]
+name = "n1000"
+methods = ["target_xx", "target_sum_xx", "target_copy_xx"]
+cascade = { train_rows = 1000 }
+
+[[check]]
+name = "n4000"
+methods = ["target_xx", "target_sum_xx", "target_copy_xx"]
+cascade = { train_rows = 4000 }
+
+[[check]]
+name = "n16000"
+methods = ["target_xx", "target_sum_xx", "target_copy_xx"]
+cascade = { train_rows = 16000 }

@@ -1,6 +1,7 @@
 # Follow-up runs of 12–13.11.2026
 
 **Exploratory.** Chosen after the main results, one seed (0) except the synthetic data; decides no hypothesis.
+The [report](short-report.pdf) tells these results in its Section 5 and Appendix C; this file is the full record.
 Each experiment file states its question, bars and predictions, written before the run (one exception,
 `sampling_large_sum`, says so in its header). Drafted by Claude Code (Fable 5.2).
 
@@ -56,12 +57,13 @@ Each experiment file states its question, bars and predictions, written before t
    node without narrowing it in the real features, so the trees behave as if they had larger leaves: across
    the 32 datasets the layer-1 noise penalty tracks the base cascade's own loss from minimum leaf 5 (Spearman
    0.95). In a direct check on three datasets the penalty rises steadily with the number of noise columns.
-3. **The instructor's overfitting remark: a narrow yes, a practical no.** Real products raise the variance at
+3. **Do added columns overfit? A narrow yes, a practical no.** Real products raise the variance at
    layer 1 on 11 of 11 datasets, but variance is 5–10% of the squared error, the rise adds about 1%, and it is
    gone by layer 3 (1 of 11).
-4. **More rows do not remove the cost.** Within 10 benchmark datasets (250 rows to full) and 6 large ones
-   (1,000 to 64,000) the noise penalty does not shrink. Larger leaves shrink the cost and the accuracy
-   together.
+4. **More rows do not remove the cost.** Within 10 benchmark datasets (250 rows to full) the noise penalty at
+   the chosen layer stays at 3%; at layer 1 its median falls from 7.1% to 5.0%, but on only 5 of the 10. On
+   the 6 large datasets (1,000 to 64,000 rows) it shrinks on 2 at the chosen layer and grows on sgemm and
+   covertype. Larger leaves shrink the cost and the accuracy together.
 5. **Products for half the forests** only dilute the cost; they equal the base cascade.
 6. **Synthetic data.** With an exact planted product the chosen products gain 31% (the true term: 40%). With an
    interaction that correlation cannot see they lose 10%, the same as random products, while the true term
@@ -71,11 +73,15 @@ Each experiment file states its question, bars and predictions, written before t
 7. **Six larger datasets** (self-chosen, one seed, 3 test folds). Products beat base on sgemm (+14 to +26%),
    covertype (+3 to +6%) and HIGGS without its engineered features (+1.4 to +3.9%, shrinking with rows); about
    zero on casp and HIGGS; worse on miniboone (−4.6% at 64,000). But on sgemm a plain copy gains as much as the
-   product, and on covertype a sum does: these gains are not about interactions. A reviewer's single-forest
+   product, and on covertype a sum does: these gains are not about interactions. (Residual-XX, which picks new
+   pairs at every layer, gains more than the sums on sgemm with sqrt(m) sampling, +20% against +11%; with all
+   columns tried both gain 6%.) A reviewer's single-forest
    check suggests they come from the forests' square-root feature sampling (sgemm) and from products of one-hot
    columns acting as merged categories (covertype). Only HIGGS without engineered features shows a
    product-specific gain: the dataset built to favour products.
-8. **The old shuffled control understated the penalty a little** (repaired control 0.5% worse, 24 of 32).
+8. **The old shuffled control gave about the same penalty** (repaired control 0.2% worse in median, worse on
+   18 of 32; an earlier version of this line said 0.5% and 24 of 32, because the script pooled two
+   configurations of the old run).
 
 ## Caveats
 
@@ -99,7 +105,7 @@ rows, folds 0–2). Checked by a fourth reviewer: code and numbers confirmed, on
 | F2 | With all columns the sgemm and covertype gains fall below half | yes | **sgemm yes** (copy +10.8% → −4.6%; products +9.4% → +4.4%); **covertype no** at the chosen layer (+4.2% → +4.8%, but no product gain in 2 of 3 folds: +0.3, 0.0, +12.7), yes at layer 1 (+8.9% → +2.3%) |
 | F3 | On higgs_low products still beat base and copy in all 3 folds | yes | **yes** (+1.8%) |
 | F4 | Layer-1 noise penalty is smaller with all columns on 5 of 6 large datasets | yes | **yes**, 6 of 6; still −21% on covertype and −22% on sgemm |
-| F5 | The same on the 10 benchmark datasets | yes | **yes**: layer 1 on 10 of 10 (median −6.6% → −2.5%), chosen layer 8 of 10 (−3.0% → −2.6%) |
+| F5 | The same on the 10 benchmark datasets | yes | **yes**: layer 1 on 10 of 10 (median −6.6% → −2.5%), chosen layer 8 of 10 (−3.0% → −2.5%) |
 | F6 | With all columns products are still no clear win on the benchmark | no clear win | **as predicted**: residual-XX better on 4 of 10, median −0.5% |
 | F7 | All columns is a better base on the benchmark | no | **as predicted**: 5 of 10, median −0.4% |
 
@@ -124,7 +130,7 @@ Reading (corrected after review):
   covertype +2.3% / +4.8% (products above sums in 3 of 3, but neither beats base in folds 0 and 1),
   higgs +0.6% / −0.3%, casp +0.1% / −1.2%, miniboone −3.4% / −6.7%.
 
-## Open
+## Not tested
 
 - A share of columns between sqrt(m) and all is untested.
 - Noise columns at K/2 and 2K on the benchmark (dose).

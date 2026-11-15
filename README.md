@@ -9,17 +9,19 @@ without them (the *base cascade*) on 32 public datasets.
 
 ## Documents
 
+- **[Report](docs/short-report.pdf)** (final version for Project 1, 15.11.2026): the question, the method, the
+  planned results and the follow-up experiments in 10 pages, with appendices that list every experiment.
+  Start here. In short, none of H1–H5 is supported, while on synthetic data with a planted interaction the
+  products do help.
 - **[Research plan](docs/plan.pdf)**: hypotheses H1–H5, methods and protocol, fixed before the runs.
-- **[Short report](docs/short-report.pdf)** (draft, 13.11.2026): the plan and the results in about 10 pages,
-  including the follow-up runs of 12–13.11. Start here.
-- **[The report in plain words](docs/plain-report.pdf)** (draft, 12.11.2026): the short report retold in
-  everyday words, section by section, with a word list. It predates the follow-up runs of 12–13.11.
-- **[Results report](docs/results-report.pdf)** (draft, 12.11.2026): results, discussion and the exploratory
-  follow-up runs up to 09.11; [docs/followup.md](docs/followup.md) has those of 12–13.11. In short, none of H1–H5 is supported, while on synthetic data with a planted
-  interaction the products do help.
+- [Follow-up runs of 12–13.11](docs/followup.md): every bar with its prediction and outcome, and the commit
+  of each run.
 - Generated summaries of each experiment: [main](reports/main/summary.md),
   [sensitivity](reports/sensitivity/summary.md), [positive control](reports/positive/summary.md),
-  [exploratory follow-up](reports/explore/summary.md).
+  [first follow-up](reports/explore/summary.md), [second follow-up](reports/followup/summary.txt).
+- Earlier drafts of 12.11.2026, replaced by the report and kept for reference:
+  [the report in plain words](docs/plain-report.pdf) and the longer [results report](docs/results-report.pdf).
+  Both predate the follow-up runs of 12–13.11.
 - [Settings and their sources](docs/decisions.md): the plan, the DF21 source, a library default, or ours.
 - [Data audit](docs/data-audit.md): what each dataset contributes and what is excluded.
 - [DF21 check](docs/df21-check.md): on four datasets, the base cascade scores within fold-to-fold noise
@@ -42,10 +44,11 @@ uv run dfx report main             # statistics, tables and figures -> reports/m
 The other experiments in `experiments/` run the same way:
 - `sensitivity`: 3,840 runs, 59 CPU-hours;
 - `positive`: 330 runs, 2 minutes; every method on two synthetic datasets with one planted interaction;
-- `explore`, `explore_synthetic`, `explore_encoding`, `explore_sweep`: the exploratory follow-up runs of the
-  results report (Appendix B), with `scripts/` for the interaction measure, the split counts and the summary;
+- `explore`, `explore_synthetic`, `explore_encoding`, `explore_sweep`: the first exploratory follow-up
+  (8–9.11.2026), with `scripts/` for the interaction measure, the split counts and the summary;
 - `content`, `leaf`, `mixed`, `size`, `draws`, `synth`, `sweep_size`, `large`, `large64`, `large_content`,
-  `sampling`, `sampling_large`, `sampling_large_sum`: the second exploratory follow-up (12–13.11.2026): what
+  `sampling`, `sampling_large`, `sampling_large_sum`: the second exploratory follow-up (12–13.11.2026; the
+  report's Section 5 and Appendix C cover both follow-ups): what
   the added columns hold, leaf size, products for half the forests, fewer training rows, bias and variance,
   synthetic targets, six large datasets, and forests that try all columns at each split. Each file states its
   question, bar and prediction. Results, the commit of each run and how to check it: [docs/followup.md](docs/followup.md);
@@ -89,7 +92,7 @@ signed-rank test over the 32 datasets, with Holm's correction over the six; H2 n
 ## Layout
 
 ```
-docs/          plan, reports (short, plain-words, full), settings, data audit, result-file format
+docs/          report, plan, follow-up notes, earlier drafts, settings, data audit, result-file format
 experiments/   one TOML file per experiment: datasets, methods, seeds and settings
 src/dfx/       the code
   datasets.py    the 32 dataset specs: source, target, exclusions, groups
@@ -107,7 +110,7 @@ results/       per experiment: runs.csv, layers.csv, manifest.json (per-run file
 reports/       per experiment: summary.md, tables and figures, written by dfx report
 splits/        the outer folds of each dataset
 tests/         unit tests and an end-to-end smoke test
-scripts/       check_df21.py: the comparison with the official DF21 package (own environment)
+scripts/       the comparison with the official DF21 package (own environment); follow-up scripts and summaries
 data/          downloads and prepared arrays (not in git)
 ```
 
@@ -122,6 +125,7 @@ data/          downloads and prepared arrays (not in git)
 
 ## AI assistance
 
-The code was written with Claude Code (Opus 5.5) from the authors' research plan. The implementation
+The code was written with Claude Code (Opus 5.5; Fable 5.2 for the follow-up of 12–13.11) from the authors'
+research plan. The implementation
 plan and the code were reviewed by Claude agents and by Codex (gpt-6-astra), and Claude Code applied the
 findings. The authors decided the design and are responsible for the code and results.

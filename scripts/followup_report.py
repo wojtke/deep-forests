@@ -106,6 +106,7 @@ def main():
             line("   random_xx vs noise", red(e.target_noise_xx, e.random_xx), 20)
         if (RES / "explore/runs.csv").exists():
             X = pd.read_csv(RES / "explore/runs.csv")
+            X = X[X.check == "default"]  # its other checks (raw, split_scale) are different cascades
             ex = errs(X[X.seed == 0]) if "seed" in X else errs(X)
             if "shuffled_xx" in ex:
                 print(" [old shuffled control vs repaired noise control, chosen layer]")
@@ -139,7 +140,10 @@ def main():
                 line(f"{c}: target_xx vs noise", red(ec.target_noise_xx, ec.target_xx), None)
                 if c != "leaf1":
                     b1 = e.loc["leaf1"].base.reindex(ec.index)
-                    line(f"{c}: base vs base at leaf 1", red(b1, ec.base), None)
+                    loss = line(f"{c}: base vs base at leaf 1", red(b1, ec.base), None)
+                    if c == "leaf5":
+                        rho = pen["leaf1"].corr(loss, method="spearman")
+                        print(f"  rank correlation over datasets: noise penalty at leaf 1 with base's loss from leaf 5: {rho:+.2f}")
                     line(f"{c}: residual_xx vs BASE AT LEAF 1", red(b1, ec.residual_xx), None)
             d5 = (pen["leaf5"] - pen["leaf1"])
             print(f"  L1: penalty smaller at leaf 5 than leaf 1 on {int((d5 > 0).sum())} of {len(d5)} (bar 20); median change {100 * d5.median():+.2f} pts")
@@ -189,18 +193,19 @@ def main():
     head("N4 bias and variance (11 datasets, 4 disjoint draws of 1,000 rows)")
     D, _ = load("draws")
     BV = OUT / "bias_variance.csv"
+    WHERE = ["chosen", "layer1", "layer2", "layer3"]  # every cascade trains at least 3 layers
     if D is not None:
         if (RES / "draws" / "d0").exists():
             rows = []
             for (ds, m), g in D.groupby(["dataset", "method"]):
                 task = g.task.iloc[0]
-                for where in ["chosen", "layer1"]:
+                for where in WHERE:
                     tot = var = bias = n = 0.0
                     for f in sorted(g.fold.unique()):
                         preds, y = [], None
                         for c in ["d0", "d1", "d2", "d3"]:
                             z = np.load(RES / "draws" / c / ds / m / f"s0-f{f}.npz")
-                            bl = int(g[(g.check == c) & (g.fold == f)].best_layer.iloc[0]) if where == "chosen" else 1
+                            bl = int(g[(g.check == c) & (g.fold == f)].best_layer.iloc[0]) if where == "chosen" else int(where[-1])
                             preds.append(z["pred_by_layer"][bl - 1].astype(float))
                             y = z["y_true"]
                         P = np.stack(preds)  # draws x rows x outputs
@@ -214,7 +219,7 @@ def main():
         else:
             print(" per-run prediction files not found: reading", BV.relative_to(ROOT))
             B = pd.read_csv(BV)
-        for where in ["chosen", "layer1"]:
+        for where in WHERE:
             b = B[B["where"] == where].set_index(["dataset", "method"])
             print(f" [{where}]  (squared error of probabilities / of y; variance = spread over draws; bias+noise = rest)")
             for m in ["residual_xx", "target_noise_xx"]:

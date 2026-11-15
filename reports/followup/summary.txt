@@ -35,8 +35,8 @@ N2 content: what is in a product column (32 datasets, seed 0)
      copy vs noise                               median  +7.50%  mean +12.28%  W/L 29/ 3 of 32  p=0.000  bar met
      random_xx vs noise                          median  +7.25%  mean +11.36%  W/L 29/ 2 of 32  p=0.000  bar met
  [old shuffled control vs repaired noise control, chosen layer]
-  old shuffled_xx vs base                        median  -2.62%  mean  -6.19%  W/L  5/27 of 32  p=0.000  bar met in reverse (count only; see p)
-  repaired noise vs old shuffled                 median  -0.53%  mean  -1.63%  W/L  8/24 of 32  p=0.007  bar met in reverse (count only; see p)
+  old shuffled_xx vs base                        median  -3.04%  mean  -6.62%  W/L  6/26 of 32  p=0.000  bar met in reverse (count only; see p)
+  repaired noise vs old shuffled                 median  -0.17%  mean  -0.91%  W/L 14/18 of 32  p=0.278  bar not met
                    random_xx  residual_xx  target_copy_xx  target_noise_xx  target_sum_xx  target_xx        n task
 dataset                                                                                                           
 concrete_slump         -5.78       -13.60          -13.11           -12.66           5.59     -10.78     82.4  reg
@@ -86,6 +86,7 @@ E2 leaf size (leaf 1 = content)
   leaf5: target_xx vs base                       median  -1.10%  mean  -3.12%  W/L 10/22 of 32  p=0.048
   leaf5: target_xx vs noise                      median  +0.91%  mean  +2.73%  W/L 20/12 of 32  p=0.048
   leaf5: base vs base at leaf 1                  median  -3.82%  mean  -9.42%  W/L  6/26 of 32  p=0.000
+  rank correlation over datasets: noise penalty at leaf 1 with base's loss from leaf 5: +0.80
   leaf5: residual_xx vs BASE AT LEAF 1           median  -3.17%  mean  -9.28%  W/L  6/26 of 32  p=0.000
   leaf20: noise vs base                          median  -1.80%  mean  -2.02%  W/L  4/13 of 17  p=0.002
   leaf20: residual_xx vs base (L2)               median  -0.09%  mean  +0.10%  W/L  6/11 of 17  p=0.548  bar met in reverse (count only; see p)
@@ -105,6 +106,7 @@ E2 leaf size (leaf 1 = content)
   leaf5: target_xx vs base                       median  +0.01%  mean  +2.20%  W/L 16/15 of 32  p=0.189
   leaf5: target_xx vs noise                      median  +6.23%  mean  +8.96%  W/L 29/ 2 of 32  p=0.000
   leaf5: base vs base at leaf 1                  median  -9.86%  mean -15.23%  W/L  2/29 of 32  p=0.000
+  rank correlation over datasets: noise penalty at leaf 1 with base's loss from leaf 5: +0.95
   leaf5: residual_xx vs BASE AT LEAF 1           median  -5.86%  mean -13.40%  W/L  4/27 of 32  p=0.000
   leaf20: noise vs base                          median  -3.46%  mean  -3.68%  W/L  1/16 of 17  p=0.000
   leaf20: residual_xx vs base (L2)               median  +0.11%  mean  +2.16%  W/L 10/ 7 of 17  p=0.306  bar not met
@@ -312,6 +314,64 @@ page_blocks        17.92 -38.62   22.00            0.07               -2.60     
 parkinsons         -2.10 -22.20   -1.87            0.01               -0.25                -1.85
 phishing           25.33 -41.67   29.36            0.06               -2.36                27.69
 superconductivity  18.78 -41.36   24.26            0.08               -3.45                22.23
+ [layer2]  (squared error of probabilities / of y; variance = spread over draws; bias+noise = rest)
+  residual_xx vs base: variance higher on 7/11 (bar 9), bias+noise higher on 10/11; medians: mse % +1.10, var % +0.90, bias % +1.14, var share base +0.11, d var / base mse % +0.13, d bias / base mse % +0.96
+                   mse %  var %  bias %  var share base  d var / base mse %  d bias / base mse %
+dataset                                                                                         
+adult              -0.67   1.77   -0.90            0.09                0.15                -0.82
+air_quality        -0.11 -12.12    1.00            0.08               -1.03                 0.91
+bank_marketing      0.85  11.19    0.28            0.05                0.58                 0.27
+bike_sharing        1.10   0.90    1.14            0.16                0.14                 0.96
+california          6.29   1.19    6.90            0.11                0.13                 6.16
+ccpp                1.17   0.08    1.33            0.13                0.01                 1.16
+credit_default      0.08  -4.97    0.32            0.05               -0.22                 0.30
+page_blocks         2.10   1.08    2.24            0.12                0.13                 1.97
+parkinsons          0.24 -11.45    0.36            0.01               -0.11                 0.35
+phishing            2.31   7.82    1.50            0.13                1.01                 1.30
+superconductivity   2.14  -6.49    3.43            0.13               -0.84                 2.98
+  target_noise_xx vs base: variance higher on 0/11 (bar 9), bias+noise higher on 10/11; medians: mse % +3.38, var % -23.92, bias % +6.34, var share base +0.11, d var / base mse % -2.42, d bias / base mse % +5.80
+                   mse %  var %  bias %  var share base  d var / base mse %  d bias / base mse %
+dataset                                                                                         
+adult               0.60 -42.56    4.70            0.09               -3.69                 4.29
+air_quality         3.38 -28.50    6.34            0.08               -2.42                 5.80
+bank_marketing     -0.20 -19.19    0.84            0.05               -1.00                 0.80
+bike_sharing       27.90 -23.92   37.71            0.16               -3.81                31.71
+california          8.69 -22.69   12.44            0.11               -2.42                11.11
+ccpp                2.00 -12.79    4.18            0.13               -1.64                 3.64
+credit_default     -0.48 -29.72    0.90            0.05               -1.34                 0.86
+page_blocks         5.44 -19.90    8.96            0.12               -2.43                 7.87
+parkinsons         -2.32 -13.70   -2.20            0.01               -0.13                -2.18
+phishing            7.62 -37.99   14.38            0.13               -4.90                12.52
+superconductivity  15.56 -39.01   23.67            0.13               -5.05                20.61
+ [layer3]  (squared error of probabilities / of y; variance = spread over draws; bias+noise = rest)
+  residual_xx vs base: variance higher on 1/11 (bar 9), bias+noise higher on 7/11; medians: mse % +0.09, var % -4.36, bias % +0.42, var share base +0.13, d var / base mse % -0.47, d bias / base mse % +0.40
+                   mse %  var %  bias %  var share base  d var / base mse %  d bias / base mse %
+dataset                                                                                         
+adult              -0.70  -2.68   -0.49            0.09               -0.25                -0.45
+air_quality        -0.76 -15.70    0.79            0.09               -1.48                 0.71
+bank_marketing      0.17   3.10   -0.01            0.06                0.18                -0.01
+bike_sharing       -8.90  -3.88  -10.10            0.19               -0.75                -8.15
+california          5.43  -4.36    7.03            0.14               -0.61                 6.04
+ccpp                0.77  -1.06    1.09            0.15               -0.16                 0.93
+credit_default      0.09  -6.13    0.42            0.05               -0.31                 0.40
+page_blocks         0.33  -3.47    0.92            0.13               -0.47                 0.80
+parkinsons         -1.17 -23.29   -0.87            0.01               -0.30                -0.86
+phishing           -0.46  -4.70    0.36            0.16               -0.76                 0.30
+superconductivity   1.44  -8.26    2.93            0.13               -1.10                 2.54
+  target_noise_xx vs base: variance higher on 0/11 (bar 9), bias+noise higher on 10/11; medians: mse % +2.08, var % -29.58, bias % +4.71, var share base +0.13, d var / base mse % -2.19, d bias / base mse % +4.27
+                   mse %  var %  bias %  var share base  d var / base mse %  d bias / base mse %
+dataset                                                                                         
+adult              -0.82 -41.67    3.42            0.09               -3.92                 3.09
+air_quality         2.08 -23.29    4.71            0.09               -2.19                 4.27
+bank_marketing     -0.66 -30.11    1.19            0.06               -1.78                 1.12
+bike_sharing       23.93 -25.86   35.80            0.19               -4.98                28.91
+california          5.51 -24.94   10.48            0.14               -3.50                 9.01
+ccpp                1.02  -9.08    2.75            0.15               -1.33                 2.35
+credit_default     -0.86 -36.31    1.01            0.05               -1.82                 0.96
+page_blocks         2.53 -15.86    5.38            0.13               -2.13                 4.66
+parkinsons         -1.88 -29.58   -1.51            0.01               -0.39                -1.49
+phishing            2.61 -36.90   10.25            0.16               -5.98                 8.59
+superconductivity  14.02 -38.43   22.06            0.13               -5.11                19.13
   draws: residual_xx vs base (error, 4 draws x 5 folds) median  -0.01%  mean  -0.73%  W/L  5/ 6 of 11  p=0.413  bar not met
   draws: noise vs base                           median  -2.88%  mean  -4.03%  W/L  1/10 of 11  p=0.002  bar met in reverse (count only; see p)
 

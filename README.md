@@ -9,7 +9,7 @@ without them (the *base cascade*) on 32 public datasets.
 
 ## Documents
 
-- **[Report](docs/short-report.pdf)** (final version for Project 1, 15.11.2026): the question, the method, the
+- **[Report](docs/short-report.pdf)** (final version for Project 1, 16.11.2026): the question, the method, the
   planned results and the follow-up experiments in 10 pages, with appendices that list every experiment.
   Start here. In short, none of H1–H5 is supported, while on synthetic data with a planted interaction the
   products do help.
